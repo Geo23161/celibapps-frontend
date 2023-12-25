@@ -1,0 +1,621 @@
+    1  sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386
+    2  sudo apt-get update
+    3  sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386
+    4  ./sdkmanager --list
+    5  sudo apt install default-jdk
+    6  java
+    7  javac
+    8  ./sdkmanager --list
+    9  ./sdkmanager --version
+   10  ./sdkmanager --update
+   11  android
+   12  ls
+   13  ./sdkmanager
+   14  sdkmanager 
+   15  cd
+   16  source .bashrc 
+   17  sdkmanager
+   18  sdkmanager --version
+   19  cp Geox.zip /home/georis/Documents/
+   20  sdkmanager --list
+   21  sdkmanager "build-tools;latest"
+   22  sdkmanager "build-tools;34.0.0"
+   23  sdkmanager "platform-tools"
+   24  gradlew
+   25  ls
+   26  gradlew assembleDebug
+   27  ./gradlew assembleDebug
+   28  echo $PATH
+   29  cd
+   30  source .bashrc 
+   31  ./gradlew --status
+   32  cd build-tools/
+   33  cd ..
+   34  source .bashrc 
+   35  cd  /home/georis/Téléchargements/commandlinetools-linux-9477386_latest
+   36  source .bashrc 
+   37  cd
+   38  source .bashrc 
+   39  sdkmanager
+   40  sudo apt-get upgrade
+   41  vim
+   42  sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386
+   43  sudo apt-get install libc6-i386 libncurses5:i386 libstdc++6:i386 lib32z1 libbz2-1.0:i386
+   44  sudo apt-get install libc6-i386 libncurses5-i386 libstdc++6-i386 lib32z1 libbz2-1.0-i386
+   45  sudo apt-get install libc6-i386 
+   46  ./gradlew assembleDebug
+   47  ./gradlew assembleDebug --offline
+   48  ./gradlew assemble
+   49  ./gradlew assembleDebug 
+   50  sdkmanager "build-tools;30.0.3"
+   51  ./studio.sh 
+   52  sudo systemctl status ssh
+   53  ssh
+   54  ssh -v
+   55  cd Documents/Geox/geox/android
+   56  ls
+   57  ./gradlew assembleDebug
+   58  ./gradlew assembleDebug --offline
+   59  history
+   60  sdkmanager "build-tools;30.0.3"
+   61  cd Téléchargements/
+   62  sudo dpkg code_1.80.1-1689183569_amd64.deb
+   63  sudo dpkg -i  code_1.80.1-1689183569_amd64.deb
+   64  npm
+   65  sudo apt install npm
+   66  npm
+   67  npm install -g @ionic/cli
+   68  sudo npm install -g @ionic/cli
+   69  sudo npm uninstall -g @ionic/cli
+   70  sudo npm uninstall  @ionic/cli
+   71  sudo npm install -g @ionic/cli
+   72  code .
+   73  ionic serve
+   74  npx
+   75  ionic serve
+   76  ionic --version
+   77  ionic serve
+   78  npx ionic serve
+   79  npx ionic serve --external
+   80  npx vite
+   81  ionic serve
+   82  npm i 
+   83  sudo rm -rf ./*
+   84  sudo npm uninstall -g @ionic/cli
+   85  ionic
+   86  sudo npm i -g  @ionic/cli@6.16.3
+   87  ionic
+   88  sudo npm uninstall -g @ionic/cli
+   89  sudo npm i -g  @ionic/cli@7.0.0
+   90  ionic
+   91  code .
+   92  cd geox/
+   93  code .
+   94  code .
+   95  ionic
+   96  ionic serve
+   97  ionic serve
+   98  code .
+   99  npm i
+  100  ionic serve
+  101  npm i
+  102  ionic serve
+  103  npm install -D vite-plugin-pwa
+  104  ionic serve
+  105  npm install -D vite-plugin-pwa
+  106  ionic serve
+  107  ionic build
+  108  sudo systemctl restart network-manager
+  109  sudo service network-manager restart
+  110  lspci
+  111  nmcli
+  112  nmcli dev wifi
+  113  sudo nmcli dev wifi
+  114  sudo apt update 
+  115  sudo apt upgrade
+  116  ls
+  117  sudo apt upgrade
+  118  code  .
+  119  code .
+  120  ls
+  121  cd Geox
+  122  cd ..
+  123  python3 -m venv .geox_env
+  124  apt install python3.11-venv
+  125  sudo apt install python3.11-venv
+  126  python3 -m venv .geox_env
+  127  source .geox_env/bin/activate
+  128  pip install django
+  129  pip install django-rest-framework
+  130  pip install pip install django-cors-headers
+  131  pip install rest-framework-simplejwt*
+  132  pip install rest-framework-simplejwt
+  133  pip install cloudinary
+  134  pip install django-cloudinary-storage
+  135  pip install fcm-django
+  136  pip install firebase-admin
+  137  cd Geox_backend/
+  138  cd Geox
+  139  python3 manage.py runserver 0.0.0.0:8080
+  140  pip install rest-framework-simplejwt
+  141  deactivate 
+  142  source ../../.geox_env/bin/activate
+  143  ll
+  144  pip install rest-framework-simplejwt
+  145  pip install --upgrade  rest-framework-simplejwt
+  146  cd 
+  147  ls
+  148  ll
+  149  npm i
+  150  source ../../.geox_env/bin/activate
+  151  pip install rest-framework-simplejwt
+  152  pip install rest-framework-simplejwt --upgrade
+  153  pip install rest-framework-simplejwt -y
+  154  pip
+  155  pip download rest-framework-simplejwt 
+  156  pip install djangorestframework-simplejwt
+  157  python3 manage.py runserver 0.0.0.0:8080
+  158  pip install googlemaps
+  159  python3 manage.py runserver 0.0.0.0:8080
+  160  pip install haversine
+  161  python3 manage.py runserver 0.0.0.0:8080
+  162  pip install Pillow
+  163  python3 manage.py runserver 0.0.0.0:8080
+  164  python3 manage.py migrate
+  165  python3 manage.py runserver 0.0.0.0:8080
+  166  npm uninstall @capacitor/share 
+  167  clear
+  168  ionic serve
+  169  ionic serve --host 0.0.0.0
+  170  code .
+  171  npx cap sync
+  172  ionic cap add android
+  173  npx cap sync
+  174  code .
+  175  ionic build
+  176  ionic cap add android
+  177  history | grep cordova-res
+  178  cordova-res android --skip-config --copy
+  179  code .
+  180  npx cap sync
+  181  ionic build
+  182  ionic cap add android
+  183  npx cap sync
+  184  ionic cap sync
+  185  cordova-res android --skip-config --copy
+  186  code .
+  187  code . 
+  188  source ../../../../../../.geox_env/bin/activate
+  189  python3 manage.py runserver 0.0.0.0:8080
+  190  ls
+  191  ll
+  192  code .
+  193  ionic server --host 0.0.0.0
+  194  ionic server
+  195  ionic serve --host 0.0.0.0
+  196  ionic serve
+  197  ls
+  198  rm -rf node_modules
+  199  ls
+  200  npm i
+  201  code .
+  202  npx
+  203  npx vue-cli-service.js 
+  204  python3 -m http.server
+  205  code .
+  206  heroku run python3 manage
+  207  heroku run python3 manage.py shell
+  208  heroku run python3 manage.py shell --app stattusmax
+  209  heroku run python3 manage
+  210  heroku run python3 manage.py shell --app stattusmax 
+  211  heroku logs --tail
+  212  heroku logs --tail --app stattusmax
+  213  git add .
+  214  git commit  -m "new way"
+  215  git push
+  216  git push heroku main
+  217  heroku run python3 manage.py shell
+  218  git add .
+  219  git commit  -m "new way"
+  220  git push
+  221  git push heroku main
+  222  heroku run python3 manage.py shell
+  223  heroku run python3 manage.py shell --app stattusmax
+  224  npm install @ionic-native/http
+  225  npm uninstall @ionic-native/http
+  226  npm install @ionic-native/file-opener cordova-plugin-file-opener2
+  227  npm uninstall @ionic-native/file-opener cordova-plugin-file-opener2
+  228  npm install @capacitor/filesystem
+  229  npx cap sync
+  230  npx cap sync android
+  231  ionic serve
+  232  ionic serve --host 0.0.0.0
+  233  npx cap sync android
+  234  npx cap sync 
+  235  ionic build
+  236  ionic cap add android
+  237  npx cap sync
+  238  ionic build
+  239  ionic cap add android
+  240  history | cordova-res
+  241  history | grep  cordova-res
+  242  cordova-res android --skip-config --copy
+  243  ionic build
+  244  npx cap sync
+  245  code .
+  246  ionic build
+  247  npx cap sync
+  248  pip
+  249  source ../.geox_env/bin/activate
+  250  pip install pywhatkit
+  251  touch send_bulk.py
+  252  code .
+  253  heroku run python3 manage.py shell
+  254  git add .
+  255  git commit -m "nee"
+  256  git push
+  257  git push heroku main
+  258  git push
+  259  git add .
+  260  git commit -m "nee"
+  261  git push
+  262  git push heroku main
+  263  code .
+  264  source ../.geox_env/bin/activate
+  265  python3 send_bulk.py 
+  266  sudo python3 send_bulk.py 
+  267  python3 send_bulk.py 
+  268  xhost
+  269  xhost +
+  270  python3 send_bulk.py 
+  271  sudo apt-get install python3-tk python3-dev
+  272  python3 send_bulk.py 
+  273  ionic serve
+  274  git add .
+  275  git push
+  276  git commit -m "nn"
+  277  git pyush
+  278  git push
+  279  git push heroku main
+  280  code .
+  281  code .
+  282  source ../.geox_env/bin/activate
+  283  source ../../.geox_env/bin/activate
+  284  python3 manage.py runserver 0.0.0.0:8080
+  285  code .
+  286  heroku logs 
+  287  heroku logs --app stattusmax
+  288  heroku logs --app stattusmax --tail
+  289  git add .
+  290  git commit -m "my name"
+  291  git push
+  292  git push heroku main
+  293  git add .
+  294  git commit -m "my name"
+  295  git push
+  296  git push heroku main
+  297  heroku logs 
+  298  git add .
+  299  git push heroku main
+  300  git add .
+  301  git commit -m "my name"
+  302  git push
+  303  git push heroku main
+  304  ionic serve
+  305  source ../../.geox_env/bin/activate
+  306  python3 manage.py runserver 0.0.0.0:8080
+  307  clear
+  308  pip install twilio
+  309  ionic serve
+  310  source ../../.geox_env/bin/activate
+  311  python3 manage.py runserver 0.0.0.0:8080
+  312  code .
+  313  code .
+  314  git add .
+  315  git commit -m "neww"
+  316  git push
+  317  git push heroku main
+  318  heroku run python3 manage.py shell
+  319  heroku run python3 manage.py shell
+  320  heroku run python3 manage.py shell --app stattusmax
+  321  git add .
+  322  git commit -m "my"
+  323  git push
+  324  git push heroku main
+  325  git add .
+  326  git commit -m my
+  327  git add .
+  328  git commit -m my
+  329  git push
+  330  code .
+  331  ionic serve
+  332  npn install
+  333  npm install
+  334  npm install --force
+  335  ionic serve
+  336  npm install
+  337  npm install --force
+  338  ionic serve
+  339  npm install --force
+  340  ionic serve
+  341  npm install --force
+  342  ionic serve
+  343  code .
+  344  sudo snap install vlc
+  345  node -v
+  346  sudo apt update
+  347  curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
+  348  sudo apt  install curl
+  349  cat /etc/apt/sources.list.d/nodesource.list
+  350  curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
+  351  cat /etc/apt/sources.list.d/nodesource.list
+  352  sudo apt -y install nodejs
+  353  node -v
+  354  cat /etc/apt/sources.list.d/nodesource.list
+  355  curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
+  356  npm install -g meteor
+  357  sudo npm install -g meteor
+  358  mkdir ../backend
+  359  cd ..
+  360  source ../../.geox_env/bin/activate
+  361  django-admin 
+  362  django-admin startprojects apymind
+  363  django-admin startproject apymind
+  364  clear
+  365  code .
+  366  venv 
+  367  python3 -m venv .env
+  368  ionic serve
+  369  touch data_extraction_rules.xml
+  370  echo fs.inotify.max_user_watches= 131070 | sudo tee -a /etc/sysctl.conf && sudo sysctl -
+  371  ionic serve
+  372  sudo sysctl fs.inotify.max_user_watches=131070
+  373  ionic serve
+  374  ionic cap add android
+  375  ionic build
+  376  npx cap sync
+  377  ionic build
+  378  npx cap sync
+  379  source ../.geox_env/bin/activate
+  380  django-admin startproject vsus_backend
+  381  cd vsus_backend/
+  382  code .
+  383  python3 manage.py startapp app
+  384  source ../.geox_env/bin/activate
+  385  source ../../.geox_env/bin/activate
+  386  python3 manage.py startapp app
+  387  source ../../.geox_env/bin/activate
+  388  python3 manage.py runserver 0.0.0.0:8080
+  389  code .
+  390  python3 manage.py runserver 0.0.0.0:8080
+  391  clear
+  392  source ../../.geox_env/bin/activate
+  393  python3 manage.py runserver 0.0.0.0:8080
+  394  pip install channels
+  395  python3 manage.py runserver 0.0.0.0:8080
+  396  python3 manage.py rumigrate
+  397  python3 manage.py migrate
+  398  python3 manage.py makemigrations
+  399  python3 manage.py migrate
+  400  python3 manage.py runserver 0.0.0.0:8080
+  401  python3 manage.py migrate
+  402  python3 manage.py runserver 0.0.0.0:8080
+  403  python3 manage.py createsuperuser
+  404  python3 manage.py runserver 0.0.0.0:8080
+  405  python3 manage.py runserver 0.0.0.0:8081
+  406  python3 manage.py runserver 0.0.0.0:8080
+  407  ionic serve --host 0.0.0.0 --port 8101
+  408  npm install axios
+  409  code .
+  410  python3 -m http.server 8000
+  411  ionic serve
+  412  ionic serve --host 0.0
+  413  ionic serve --host 0.0.0.0 
+  414  ionic serve --host 0.0.0.0
+  415  ionic serve
+  416  ionic serve --host 0.0.0.0
+  417  ionic serve
+  418  ionic serve --host 0.0.0.0
+  419  mkdir PerfectLov
+  420  ionic serve --host 0.0.0.0
+  421  code .
+  422  code .
+  423  clear
+  424  ionic serve --host 0.0.0.0
+  425  npm i --save @types/hammerjs
+  426  ionic serve --host 0.0.0.0
+  427  npm i --save @types/hammerjs
+  428  npm i --save hammerjs
+  429  ionic serve --host 0.0.0.0
+  430  ionic serve --host 0.0.0.0 
+  431  sudo snap install vlc
+  432  code .
+  433  source ../../../../.geox_env/bin/activate
+  434  python3 manage.py runserver 0.0.0.0
+  435  python3 manage.py runserver 0.0.0.0:8080
+  436  python3 manage.py makemigrations
+  437  python3 manage.py migrate
+  438  python3 manage.py runserver 0.0.0.0:8080
+  439  ionic serve --host 0.0.0.0 
+  440  essentials = self.scope['user'].get_essentials()
+  441  /bin/python3
+  442  sudo systemctl status redis
+  443  sudo apt install redis
+  444  sudo systemctl status redis
+  445  source ../../../../.geox_env/bin/activate
+  446  ionic serve --host 0.0.0.0 
+  447  sudo snap install vlc
+  448  ionic serve --host 0.0.0.0 
+  449  code .
+  450  source ../../../../.geox_env/bin/activate
+  451  ionic serve --host 0.0.0.0 
+  452  python3 manage.py runserver 0.0.0.0:8080
+  453  source ../../../../.geox_env/bin/activate
+  454  python3 manage.py runserver 0.0.0.0:8080
+  455  deactivate
+  456  ionic serve --host 0.0.0.0 
+  457  source ../../../../.geox_env/bin/activate
+  458  ionic serve --host 0.0.0.0 
+  459  python3 manage.py runserver 0.0.0.0:8080
+  460  source ../../../../.geox_env/bin/activate
+  461  python3 manage.py runserver 0.0.0.0:8080
+  462  deactivate
+  463  ionic serve --host 0.0.0.0 
+  464  source ../../../../.geox_env/bin/activate
+  465  python3 manage.py runserver 0.0.0.0:8080
+  466  ionic serve --host 0.0.0.0 
+  467  npm i capacitor-voice-recorder
+  468  npm i --save  capacitor-voice-recorder
+  469  source ../../../../.geox_env/bin/activate
+  470  python3 manage.py runserver 0.0.0.0:8080
+  471  ionic serve --host 0.0.0.0 
+  472  source ../../../../.geox_env/bin/activate
+  473  python3 manage.py runserver 0.0.0.0:8080
+  474  /bin/python3
+  475  source ../../../../.geox_env/bin/activate
+  476  python3 manage.py runserver 0.0.0.0:8080
+  477  python3 manage.py makemigrations
+  478  python3 manage.py migrate
+  479  python3 manage.py runserver 0.0.0.0:8080
+  480  /bin/python3
+  481  ionic serve --host 0.0.0.0 
+  482  source ../../../../.geox_env/bin/activate
+  483  source ../../.geox_env/bin/activate
+  484  python3 manage.py runserver 0.0.0.0:8000
+  485  python3 manage.py createsuperuser
+  486  python3 manage.py runserver 0.0.0.0:8000
+  487  source ../../../../.geox_env/bin/activate
+  488  python3 manage.py runserver 0.0.0.0:8080
+  489  python3 manage.py shell
+  490  python3 manage.py runserver 0.0.0.0:8080
+  491  python3 manage.py shell
+  492  python3 manage.py runserver 0.0.0.0:8080
+  493  python3 manage.py shell
+  494  python3 manage.py runserver 0.0.0.0:8080
+  495  python3 manage.py shell
+  496  python3 manage.py runserver 0.0.0.0:8080
+  497  python3 manage.py shell
+  498  python3 manage.py runserver 0.0.0.0:8080
+  499  python3 manage.py shell
+  500  python3 manage.py runserver 0.0.0.0:8080
+  501  source ../../../../.geox_env/bin/activate
+  502  python3 manage.py runserver 0.0.0.0:8080
+  503  ionic serve --host 0.0.0.0 
+  504  postgres
+  505  psql
+  506  [200~sudo apt install postgresql
+  507  ~
+  508  sudo apt install postgresql
+  509  sudo systemctl status postgresql
+  510  psql
+  511  sudo -u postgres psql
+  512  sudo psql
+  513  sudo -u georis psql
+  514  psql
+  515  sudo -u postgres psql
+  516  sudo psql
+  517  sudo -u postgres psql
+  518  sudo psql
+  519  sudo -u georis  psql
+  520  sudo psql
+  521  psql
+  522  psql postgres
+  523  sudo -u postgres psql
+  524  sudo -u georis psql
+  525  sudo -u postgres psql
+  526  psql -U geo  -d dating
+  527  sudo -u postgres psql
+  528  source ../../../../.geox_env/bin/activate
+  529  python3 manage.py runserver 0.0.0.0:8080
+  530  ionic serve --host 0.0.0.0 
+  531  source ../../../../.geox_env/bin/activate
+  532  python3 manage.py runserver 0.0.0.0:8080
+  533  source ../../../../.geox_env/bin/activate
+  534  ionic serve --host 0.0.0.0 
+  535  python3 manage.py runserver 0.0.0.0:8080
+  536  ionic serve --host 0.0.0.0 
+  537  source ../../../../.geox_env/bin/activate
+  538  python3 manage.py runserver 0.0.0.0:8080
+  539  ionic serve --host 0.0.0.0 
+  540  source ../../../../.geox_env/bin/activate
+  541  python3 manage.py runserver 0.0.0.0:8080
+  542  source ../../../../.geox_env/bin/activate
+  543  python3 manage.py runserver 0.0.0.0:8080
+  544  ionic serve --host 0.0.0.0 
+  545  source ../../../../.geox_env/bin/activate
+  546  python3 manage.py runserver 0.0.0.0:8080
+  547  source ../../../../.geox_env/bin/activate
+  548  python3 manage.py runserver 0.0.0.0:8080
+  549  python3 manage.py makemigrations
+  550  python3 manage.py migrate
+  551  python3 manage.py runserver 0.0.0.0:8080
+  552  ionic serve --host 0.0.0.0 
+  553  source ../../../../.geox_env/bin/activate
+  554  python3 manage.py runserver 0.0.0.0:8080
+  555  source ../../../../.geox_env/bin/activate
+  556  python3 manage.py runserver 0.0.0.0:8080
+  557  ionic serve --host 0.0.0.0 
+  558  sudo apt-get install vlc
+  559  ionic serve --host 0.0.0.0 
+  560  source ../../../../.geox_env/bin/activate
+  561  python3 manage.py runserver 0.0.0.0:8080
+  562  /bin/python3
+  563  npm install @capacitor/push-notifications
+  564  source ../../../../.geox_env/bin/activate
+  565  python3 manage.py makemigrations
+  566  python3 manage.py mikgrate
+  567  python3 manage.py migrate
+  568  source ../../../../.geox_env/bin/activate
+  569  python3 manage.py runserver 0.0.0.0:8080
+  570  source ../../../../.geox_env/bin/activate
+  571  deactivate
+  572  ionic serve --host 0.0.0.0 
+  573  source ../../../../.geox_env/bin/activate
+  574  python3 manage.py shell
+  575  source ../../../../.geox_env/bin/activate
+  576  python3 manage.py runserver 0.0.0.0:8080
+  577  source ../../../../.geox_env/bin/activate
+  578  python3 manage.py runserver 0.0.0.0:8080
+  579  source ../../../../.geox_env/bin/activate
+  580  python3 manage.py shell
+  581  source ../../../../.geox_env/bin/activate
+  582  python3 manage.py shell
+  583  source ../../../../.geox_env/bin/activate
+  584  python3 manage.py shell
+  585  source ../../../../.geox_env/bin/activate
+  586  python3 manage.py shell
+  587  source ../../../../.geox_env/bin/activate
+  588  deactivate
+  589  ionic serve --host 0.0.0.0 
+  590  source ../../../../.geox_env/bin/activate
+  591  python3 manage.py runserver 0.0.0.0:8080
+  592  source ../../../../.geox_env/bin/activate
+  593  python3 manage.py runserver 0.0.0.0:8080
+  594  ionic serve --host 0.0.0.0 
+  595  source ../../../../.geox_env/bin/activate
+  596  cd perfectlov/
+  597  source ../../../../.geox_env/bin/activate
+  598  python3 manage.py runserver 0.0.0.0:8080
+  599  ionic serve --host 0.0.0.0 
+  600  cd perfectlov/
+  601  source ../../../../.geox_env/bin/activate
+  602  python3 manage.py runserver 0.0.0.0:8080
+  603  source ../../../../.geox_env/bin/activate
+  604  deactivate
+  605  ionic build
+  606  ionic cap add android
+  607  npm i
+  608  ionic serve --host 0.0.0.0 
+  609  npm i
+  610  ionic serve --host 0.0.0.0 
+  611  npm i
+  612  ionic serve --host 0.0.0.0 
+  613  ionic cap add android
+  614  history | grep cordova_res
+  615  grep
+  616* 
+  617  history | grep cordova_res*
+  618  history | cordova_res
+  619  history grep  cordova_res
+  620  history | grep 'cordova_re'
+  621  history > h.txt
