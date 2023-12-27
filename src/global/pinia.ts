@@ -508,13 +508,13 @@ export const useUserStore = defineStore('user', () => {
     set_all()
 
     const check_first_come = async () => {
-
+	
         const come_first_ = await get_obj('come_first')
-        if(!come_first_) come_first.value = true    
+        if(!come_first_ && !is_blocked.value) come_first.value = true    
     }
 
     const here_first = computed(() => {
-        return come_first.value && estDansLaPlagePermise()
+        return come_first.value
     })
 
     const last_message = (room: Room) => {

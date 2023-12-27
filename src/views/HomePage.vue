@@ -1195,6 +1195,7 @@ const get_profils = async () => {
         const is_new = full_imgs.value.length == 0
         const results = (resp.data['result'] as Profil[])
         is_blocked.value = !resp.data['allowed']
+        check_first_come()
         //console.log(results)
         number_default.value = resp.data['other'] as number
         seuil.value = !seuil.value ? Math.floor(1 / 2 * number_default.value) : seuil.value + number_default.value
@@ -1287,7 +1288,7 @@ const get_next = () => {
         i++;
         if (img.pk == current_img[3].pk) break
     }
-    if ((i + 1) > seuil.value) {
+    if (full_imgs.value.length - (i + 1) <= 4 ) {
         console.log('recharg...')
         if (!charging.value) get_profils()
     }
@@ -1372,6 +1373,7 @@ const simulate_swipe = (is_love: Boolean) => {
             current_img = current_img.filter(e => e.pk != current_img[0].pk)
             color_b.value = current_img[0].color
             cont.removeChild(fcard)
+            
         } else {
 
             scard?.classList.remove('card1')
@@ -1439,9 +1441,13 @@ const enable_swipe = () => {
                 scard?.classList.add('card1')
                 tcard?.classList.add('card2')
                 ocard?.classList.add('card3')
-
-                cont.removeChild(fcard)
-
+		
+		try {
+            		cont.removeChild(fcard)
+		} catch(e) {
+		    	console.log(e)
+		}
+		
                 if (current_img[current_img.length - 1].pk) {
                     const nextObj = get_next()
                     const next = document.createElement('div')
@@ -1724,8 +1730,6 @@ const set_user_from_login = () => {
     }
 }
 set_user_from_login()
-
-check_first_come()
 
 
 

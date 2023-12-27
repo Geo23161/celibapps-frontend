@@ -109,6 +109,11 @@ Pi<template>
     IonAvatar,
     IonCheckbox,
     IonSearchbar,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonButton
   } from "@ionic/vue";
   import { location } from "ionicons/icons";
   import axios from "axios";
@@ -118,9 +123,20 @@ Pi<template>
       isOpen: Boolean,
     },
     components: {
-      IonSearchbar,
-      IonCheckbox,
-      IonAvatar,
+      IonList,
+    IonItem,
+    IonLabel,
+    IonInput,
+    IonModal,
+    IonIcon,
+    IonAvatar,
+    IonCheckbox,
+    IonSearchbar,
+    IonHeader,
+    IonToolbar,
+    IonTitle,
+    IonButtons,
+    IonButton
     },
     setup(prop, { emit }) {
       const country = ref();

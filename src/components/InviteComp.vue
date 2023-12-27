@@ -16,7 +16,7 @@
                             blac :  !(user?.cur_abn?.verif),
                             pric : user?.cur_abn?.verif
                         }" >
-                            {{ user?.cur_abn.verif ? 'Terminer' : 'Ignorer'}}
+                            {{ 'Terminer' }}
                         </button>
                     </div>
                     <div class="mbody">
