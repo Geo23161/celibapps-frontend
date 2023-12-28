@@ -101,7 +101,7 @@
                         Celibapps
                     </div>
                     <div class="title_mess4">
-                        Donnez au moins 02 qualités de votre partenaire de rêve
+                        Donnez toutes les qualités que vous recherchez chez quelqu'un
                     </div>
                     <div class="forms">
                         <div class="minput">
@@ -109,6 +109,18 @@
                                 <ion-icon :icon="heartHalf" style="position: relative; top: 0.05rem;" />
                             </div>
                             <input v-model="searching" class="rinput" type="text"
+                                placeholder="Sens de l'humour, Ambition, Soutien, affection" />
+                        </div>
+                    </div>
+                    <div class="title_mess4">
+                        Donnez toutes les qualités que vous pensez avoir
+                    </div>
+                    <div class="forms">
+                        <div class="minput">
+                            <div class="icon_f">
+                                <ion-icon :icon="heartHalf" style="position: relative; top: 0.05rem;" />
+                            </div>
+                            <input v-model="searching_w" class="rinput" type="text"
                                 placeholder="Sens de l'humour, Ambition, Soutien, affection" />
                         </div>
                     </div>
@@ -205,6 +217,7 @@
 .txt {
   font-weight: bold;
   color: rgb(41, 41, 44);
+  font-size : 2vh;
 }
 .select:active {
   background: #969696;
@@ -425,12 +438,12 @@
 }
 
 .forms {
-    padding-top : 4vh;
+    padding-top : 1vh;
 }
 
 .title_mess4 {
-    padding-top: 0.8rem;
-    font-size: 3.2vh;
+    padding-top: 2.5vh;
+    font-size: 2.8vh;
     color: rgb(41, 41, 41);
     font-weight: bold;
 }
@@ -494,7 +507,7 @@ import router from "@/router";
 import { IonPage, IonContent, IonIcon, IonRippleEffect, IonDatetime, isPlatform } from "@ionic/vue"
 import { arrowForward, camera, caretBack, caretBackOutline, caretDown, chevronBackOutline, close, closeCircle, closeCircleOutline, eye, eyeOff, femaleOutline, heartHalf, imageOutline, location, lockClosed, mail, maleOutline, personCircle, search } from "ionicons/icons";
 import { computed, ref, watch } from "vue";
-import { show_alert, showLoading, store_obj, access_tok, get_obj, format_all, show_warn } from "@/global/utils"
+import { show_alert, showLoading, store_obj, access_tok, get_obj, format_all, show_warn, calculerAge } from "@/global/utils"
 import axios from "axios";
 import { Geolocation } from "@capacitor/geolocation"
 import InterestComp from "@/components/InterestComp.vue";
@@ -508,6 +521,7 @@ const img_url = ref('')
 const img_pk = ref(0)
 const birth = ref('')
 const searching = ref("")
+const searching_w = ref("")
 const prenom = ref('')
 const email = ref('')
 const password = ref('')
@@ -518,7 +532,10 @@ const log_e = (e: any) => {
 const check_stp2 = () => {
     if (sex.value == '') return show_alert('Impossible de continuer', "Veuillez indiquer votre genre avant de continuer.")
     if (birth.value == "") return show_alert("Impossible de continuer", "Veuillez choisir votre date de naissance avant de continuer")
-    stp.value++;
+    show_warn('Verification requise', "Selon la date entrée, vous avez maintenant " + calculerAge(birth.value) + "ans. Est-ce correct?", "Oui", (som : any) => {
+        stp.value++;
+    }, undefined, "Non")
+    
 }
 
 const submit_img = async (file: File) => {
@@ -624,6 +641,7 @@ const connect = async () => {
 
 const register_user = async () => {
     if (searching.value == "") return show_alert('Impossible de continuer', "Veuillez entrer au moins 02 qualités de votre partenaire de rêve.")
+    if (searching_w.value == "") return show_alert('Impossible de continuer', "Veuillez entrer au moins 02 qualités que vous pensez avoir.")
     if(!pquart.value) return show_alert('Impossible de continuer', "Veuillez sélectionner votre ville ou votre quartier.")
     if(!cats.value.length) return show_alert('Impossible de continuer', "Veuillez choisir au moins un centre d'intérêt.")
     const load = await showLoading('Inscription...')
@@ -636,7 +654,7 @@ const register_user = async () => {
             birth: birth.value,
             sex: sex.value,
             img_pk: img_pk.value,
-            searching: searching.value,
+            searching: JSON.stringify([searching.value, searching_w.value]),
             quart: JSON.stringify(quart.value),
             pquart : JSON.stringify(pquart.value),
             cats : JSON.stringify(cats.value)

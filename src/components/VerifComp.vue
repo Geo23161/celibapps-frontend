@@ -389,7 +389,7 @@ const set_verif = async () => {
             load.dismiss()
             user.value.cur_abn.verif = resp.data['result']
         } else if (!resp.data['done']) {
-            await show_alert('Reservé aux abonnés', "Vous devez disposez au moins de l'abonnement Silver pour faire verifier votre profil.")
+            await show_alert('Reservé aux abonnés', "Vous devez disposez au moins du ticket Silver pour faire verifier votre profil.")
             load.dismiss()
         }
     } catch (e) {

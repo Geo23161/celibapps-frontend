@@ -56,7 +56,7 @@
       <div id="abn" class="list">
         <ion-list mode="ios">
           <ion-list-header>
-            <ion-label>Abonnement et Avantages</ion-label>
+            <ion-label>Ticket et Avantages</ion-label>
           </ion-list-header>
           <ion-item @click="vOpen = true" button>
             <ion-icon :icon="checkmarkCircle" slot="start" />
@@ -64,11 +64,11 @@
           </ion-item>
           <ion-item @click="aOpen = true" button>
             <ion-icon :icon="ribbon" slot="start" />
-            <ion-label>Abonnement actuel </ion-label>
+            <ion-label>Ticket actuel </ion-label>
           </ion-item>
           <ion-item @click="mOpen = true" button>
             <ion-icon :icon="trendingUp" slot="start" />
-            <ion-label>Mettre à jour mon abonnement </ion-label>
+            <ion-label>Changer mon Ticket </ion-label>
           </ion-item>
 
         </ion-list>

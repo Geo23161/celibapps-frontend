@@ -181,14 +181,14 @@
                     <div @click="() => {
                         if (!user?.cur_abn) {
                             hide_menu();
-                            ltext = `Votre abonnement actuel ne vous permet pas d'acceder a cette fonctionnalité.`
+                            ltext = `Votre ticket actuel ne vous permet pas d'acceder a cette fonctionnalité.`
                             lOpen = true;
                             return;
                         }
                         if (user?.cur_abn.get_typ.features?.includes('likes_me')) router.push('/loves')
                         else {
                             hide_menu();
-                            ltext = `Votre abonnement actuel ne vous permet pas d'acceder a cette fonctionnalité.`
+                            ltext = `Votre ticket actuel ne vous permet pas d'acceder a cette fonctionnalité.`
                             lOpen = true;
 
                         }

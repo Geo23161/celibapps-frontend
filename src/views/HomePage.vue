@@ -59,8 +59,8 @@
                                 }">
                                     <span :class="{
                                         not_vip: p.status != 'vip'
-                                    }">{{ p.name }}</span> <user-badge :status="p.status" :width="'3.1vh'"
-                                        :height="'3.1vh'" :size="p.status == 'vip' ? '1.7vh' : '2.1vh'" />
+                                    }">{{ p.name + (p.get_age ? `, ${p.get_age}` : '') }}</span> <user-badge :status="p.status" :width="'3.1vh'"  
+                                    :height="'3.1vh'" :size="p.status == 'vip' ? '1.7vh' : '2.1vh'" />
                                 </div>
                                 <div v-if="is_online(toDate(profils.filter(e => e.id == p.pk)[0].last as string).getTime())"
                                     class="online_of">
@@ -334,7 +334,7 @@
                 }">
                     <span :class="{
                         not_vip: img.status != 'vip'
-                    }">{{ img.name }}</span> <user-badge :status="img.status" :width="'3.1vh'" :height="'3.1vh'"
+                    }">{{ img.name + (img.get_age ? `, ${img.get_age}` : '') }}</span> <user-badge :status="img.status" :width="'3.1vh'" :height="'3.1vh'"
                         :size="img.status == 'vip' ? '1.7vh' : '2.1vh'" />
                 </div>
                 <div v-for="img in full_imgs" :key="img.pk" :id="`onli:${img.pk}`"
@@ -707,7 +707,7 @@
     position: absolute;
     bottom: 1.4vh;
     left: 3vh;
-    font-size: 4.3vh;
+    font-size: 3.9vh;
     font-weight: bolder;
     color: white;
 }
@@ -1215,7 +1215,8 @@ const get_profils = async () => {
                     name: '',
                     sign: '',
                     status: '',
-                    photos: 0
+                    photos: 0,
+                    get_age : '25'
                 })
             }
             global_load.value = false

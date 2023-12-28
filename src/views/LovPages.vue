@@ -165,7 +165,7 @@
       </div>
     </div>
     <abon-limited
-      @close="lOpen = false, ltext = 'Pour voir ceux qui ont kiffé votre profil vous devez avoir au moins un abonnement Silver Plus.'"
+      @close="lOpen = false, ltext = 'Pour voir ceux qui ont kiffé votre profil vous devez avoir au moins un ticket Silver Plus.'"
       :text="ltext" :is-open="lOpen" :redirect="'/home'" />
   </ion-page>
 </template>
@@ -580,7 +580,7 @@ onIonViewDidEnter(() => {
   set_bar()
 })
 
-const ltext = ref('Pour voir ceux qui ont kiffé votre profil vous devez avoir au moins un abonnement Silver Plus.')
+const ltext = ref('Pour voir ceux qui ont kiffé votre profil vous devez avoir au moins un ticket Silver Plus.')
 const lOpen = ref(false)
 
 const chat_with = (id: number) => {
@@ -607,7 +607,7 @@ const can_see = computed(() => {
 })
 
 const handle_cant_see = () => {
-  ltext.value = `Votre abonnement actuel ne vous permet pas d'acceder a cette fonctionnalité.`
+  ltext.value = `Votre ticket actuel ne vous permet pas d'acceder a cette fonctionnalité.`
   lOpen.value = true;
 }
 

@@ -265,7 +265,7 @@
                 :message="'Pour vérifier si un message est vu ou lu, vous pouvez cliquer dessus.'"
                 layout="stacked"></ion-toast>
             <deleted-room v-if="room" :is-open="dOpen" @close="dOpen = false" :you="get_room_you(room)"></deleted-room>
-            <abon-limited :is-open="bOpen" @close="bOpen = false, limited_text = 'Vous avez atteint la limite de discussion par jour offerte par votre abonnement. Vous ne pouvez entamer une autre discussion.'"
+            <abon-limited :is-open="bOpen" @close="bOpen = false, limited_text = 'Vous avez atteint la limite de discussion par jour offerte par votre ticket. Vous ne pouvez entamer une autre discussion.'"
                 :text="limited_text"></abon-limited>
             <only-verified v-if="room" :is-open="oOpen" @close="oOpen = false" :you="get_room_you(room)"></only-verified>
 
@@ -905,7 +905,7 @@ import UserBadge from "@/components/UserBadge.vue";
 import { StatusBar } from "@capacitor/status-bar";
 import { Keyboard } from "@capacitor/keyboard"
 
-const limited_text = ref('Vous avez atteint la limite de discussion par jour offerte par votre abonnement. Vous ne pouvez entamer une autre discussion.')
+const limited_text = ref('Vous avez atteint la limite de discussion par jour offerte par votre ticket. Vous ne pouvez entamer une autre discussion.')
 const dOpen = ref(false)
 const oOpen = ref(false)
 const bOpen = ref(false)

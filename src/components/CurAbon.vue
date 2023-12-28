@@ -4,7 +4,7 @@
             <div class="body" >
                 <div v-if="abn" class="sbody" >
                     <div class="header" >
-                        Mon Abonnement
+                        Mon Ticket
                     </div>
                     <div  class="i_tem" >
                         <div class="i_name" >
@@ -44,7 +44,7 @@
                             Ref ID
                         </div>
                         <div class="i_body" >
-                            N° ABON{{ abn.id }}
+                            N° CTCK{{ abn.id }}
                         </div>
                     </div>
                 </div>

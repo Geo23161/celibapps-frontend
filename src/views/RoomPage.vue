@@ -435,7 +435,7 @@
                     layout="stacked"></ion-toast>
                 <deleted-room v-if="room" :is-open="dOpen" @close="dOpen = false" :you="get_room_you(room)"></deleted-room>
                 <abon-limited :is-open="bOpen" @close="bOpen = false"
-                    :text="'Vous avez atteint la limite de discussion par jour offerte par votre abonnement. Vous ne pouvez entamer une autre discussion.'"></abon-limited>
+                    :text="'Vous avez atteint la limite de discussion par jour offerte par votre ticket. Vous ne pouvez entamer une autre discussion.'"></abon-limited>
                 <only-verified v-if="room" :is-open="oOpen" @close="oOpen = false"
                     :you="get_room_you(room)"></only-verified>
 

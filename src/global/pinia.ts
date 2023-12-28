@@ -9,8 +9,8 @@ import writer_blob from "capacitor-blob-writer"
 import { Capacitor } from "@capacitor/core"
 import axios from 'axios';
 import router from '@/router';
-const socket_url = "wss://celibapps.statusmax.site/chat/?token="
-//const socket_url = "ws://localhost:8080/chat/?token="
+//const socket_url = "wss://celibapps.statusmax.site/chat/?token="
+const socket_url = "ws://localhost:8080/chat/?token="
 
 interface AudioComp {
     is_playing: boolean,
@@ -359,7 +359,7 @@ export const useUserStore = defineStore('user', () => {
         if (!user.value.cur_abn) return 0
         return user.value.cur_abn.get_typ.limit
     })
-
+	
     const can_swipe = computed(() => {
         if ((!user.value?.cur_abn) || !user.value.cur_abn.is_on) {
             if(!all_swipe.value[day_string.value]) all_swipe.value[day_string.value] = 0;
@@ -430,7 +430,8 @@ export const useUserStore = defineStore('user', () => {
             sign: profil.get_sign,
             pk: profil.id,
             status : profil.get_status,
-            photos : profil.photos.length
+            photos : profil.photos.length,
+            get_age : profil.get_age as string
         }
         urlToPk.value[`card:${card.pk}`] = pk
         return card
@@ -719,7 +720,7 @@ export const useUserStore = defineStore('user', () => {
         transactionId: string,
         state: string
     }) => {
-        const load = await showLoading('Abonnement en cours...')
+        const load = await showLoading('Activation du ticket...')
         try {
             const resp = await axios.post('api/set_abon/', {
                 transactionId: pay.transactionId,
@@ -733,14 +734,14 @@ export const useUserStore = defineStore('user', () => {
                 user.value = resp.data['result']
                 payment.value = null
                 if(pay.state != 'free') all_swipe.value[day_string.value] = 0
-                presentToast('top', 'Abonnement mis à jour avec succès', "success", 5000)
+                presentToast('top', 'Ticket mis à jour avec succès', "success", 5000)
             } else {
                 show_alert('Paiement invalide', "L'identifiant de paiement est incorrecte. Veuillez reéssayer.")
             }
             load.dismiss()
         } catch (e) {
             load.dismiss()
-            show_alert('Erreur inattendue', "Une erreur est survenue lors de la mise à jour de votre abonnement, veuillez reéssayer.")
+            show_alert('Erreur inattendue', "Une erreur est survenue lors de la mise à jour de votre ticket, veuillez reéssayer.")
         }
 
     }

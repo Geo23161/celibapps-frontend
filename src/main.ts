@@ -29,9 +29,9 @@ import '@ionic/vue/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-const base_url = "https://celibapps.statusmax.site/"
+//const base_url = "https://celibapps.statusmax.site/"
 //const base_url = "http://192.168.44.4:8080/"
-//const base_url = "http://localhost:8080/"
+const base_url = "http://localhost:8080/"
 axios.defaults.baseURL = base_url
 
 const pinia = createPinia()

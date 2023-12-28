@@ -64,7 +64,9 @@ export interface Profil {
     get_profil: Photo,
     get_sign: string,
     get_status : string,
-    last? : string
+    last? : string,
+    get_age? : string,
+    get_des? : string[]
 }
 
 export interface Card {
@@ -74,7 +76,8 @@ export interface Card {
     sign: string,
     pk: number,
     status : string,
-    photos : number
+    photos : number,
+    get_age : string
 }
 
 export interface ProfilSeen {

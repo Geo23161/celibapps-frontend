@@ -9,7 +9,7 @@
                         </div>
                         <div>
                             <div style="font-weight: bold; font-size: 1.1rem">
-                                Abonnement
+                                Mon ticket
                             </div>
                         </div>
                     </div>
@@ -200,7 +200,7 @@
                     <div v-else>
                         <div v-if="state.status != 'waiting'" class="mbody">
                             <div class="mtitle">
-                                Entrez votre code d'invitation et gagnez gratuitement un abonnement
+                                Entrez votre code d'invitation et gagnez gratuitement un ticket
                             </div>
                             <div class="no_img">
                                 <img style="width: 30vw" :src="'../../imgs/code.svg'" />
@@ -236,7 +236,7 @@
 
             </div>
             <ion-toast :isOpen="!has_come" :mode="'ios'" :buttons="toats_buts"
-                :message="`Si vous avez un code, veuillez cliquez sur CODE D'INVITATION pour activer l'abonnement. `"
+                :message="`Si vous avez un code, veuillez cliquez sur CODE D'INVITATION pour activer votre ticket. `"
                 layout="stacked"></ion-toast>
         </ion-content>
     </ion-modal>
@@ -597,7 +597,7 @@ const send_code = async () => {
             if (resp.data['result']['usercode']['status'] == 'done') {
                 user.value = resp.data['result']['user']
                 done(resp.data['result']['for_abon'])
-                presentToast("bottom", "Abonnement activé avec succès.", "success", 5000)
+                presentToast("bottom", "Votre ticket a été activé avec succès.", "success", 5000)
             } else {
                 state.value = resp.data['result']['usercode']
             }

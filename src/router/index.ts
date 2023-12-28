@@ -53,7 +53,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path : '/profil/:id',
-    component : () => import('@/views/ProfilPage.vue')
+    component : () => import('@/views/NProfilPage.vue')
   },
   {
     path : '/room/:id',

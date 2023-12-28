@@ -151,13 +151,13 @@ export const show_alert = async (title: string, mess: string) => {
     await alert.present();
 };
 
-export const show_warn = async (title: string, mess: string, oktext: string, handle: (param: any) => any, param: any) => {
+export const show_warn = async (title: string, mess: string, oktext: string, handle: (param: any) => any, param: any, notext = "Cancel") => {
     const alert = await alertController.create({
         header: title,
         message: mess,
         buttons: [
             {
-                text: 'Cancel',
+                text: notext,
                 role: 'cancel',
             },
             {
@@ -520,4 +520,23 @@ export function getDurationSince(date: Date): string {
     } else {
         return `Depuis ${days} ${days === 1 ? 'jour' : 'jours'}`;
     }
+}
+
+export function calculerAge(dateNaissanceStr: string): number {
+    // Convertir la chaîne de caractères en objet Date
+    const dateNaissance = new Date(dateNaissanceStr);
+
+    // Obtenir la date actuelle
+    const dateActuelle = new Date();
+
+    // Calculer la différence entre les deux dates en millisecondes
+    const differenceEnMillisecondes = dateActuelle.getTime() - dateNaissance.getTime();
+
+    // Convertir la différence en années
+    const ageEnAnnees = differenceEnMillisecondes / (1000 * 60 * 60 * 24 * 365.25);
+
+    // Arrondir à l'entier le plus proche
+    const ageArrondi = Math.floor(ageEnAnnees);
+
+    return ageArrondi;
 }
