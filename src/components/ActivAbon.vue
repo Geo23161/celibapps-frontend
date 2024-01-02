@@ -27,7 +27,7 @@
                         
                         <div v-if="abons.length" class="mbody">
                             <div class="mtitle">
-                                Choississez votre ticket du mois pour encore plus de fun
+                                Choississez votre ticket du mois pour débloquer plus
                             </div>
                             <div v-if="get_abon('free')" class="abon">
                                 <div class="atitle">

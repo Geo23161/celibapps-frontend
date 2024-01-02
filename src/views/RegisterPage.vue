@@ -101,19 +101,19 @@
                         Celibapps
                     </div>
                     <div class="title_mess4">
-                        Donnez toutes les qualités que vous recherchez chez quelqu'un
+                        Ecrivez un truc intéressant sur vous
                     </div>
                     <div class="forms">
                         <div class="minput">
                             <div class="icon_f">
-                                <ion-icon :icon="heartHalf" style="position: relative; top: 0.05rem;" />
+                                <ion-icon :icon="person" style="position: relative; top: 0.05rem;" />
                             </div>
                             <input v-model="searching" class="rinput" type="text"
-                                placeholder="Sens de l'humour, Ambition, Soutien, affection" />
+                                placeholder="J'aime ..." />
                         </div>
                     </div>
                     <div class="title_mess4">
-                        Donnez toutes les qualités que vous pensez avoir
+                        Votre surnom pour les discussions anonymes
                     </div>
                     <div class="forms">
                         <div class="minput">
@@ -121,7 +121,7 @@
                                 <ion-icon :icon="heartHalf" style="position: relative; top: 0.05rem;" />
                             </div>
                             <input v-model="searching_w" class="rinput" type="text"
-                                placeholder="Sens de l'humour, Ambition, Soutien, affection" />
+                                placeholder="Ex: L'irresistible ou le timide..." />
                         </div>
                     </div>
                     <div class="sep">
@@ -443,9 +443,9 @@
 
 .title_mess4 {
     padding-top: 2.5vh;
-    font-size: 2.8vh;
+    font-size: 2.4vh;
     color: rgb(41, 41, 41);
-    font-weight: bold;
+    font-weight: 600;
 }
 
 .title_mess {
@@ -505,7 +505,7 @@
 <script setup lang="ts" >
 import router from "@/router";
 import { IonPage, IonContent, IonIcon, IonRippleEffect, IonDatetime, isPlatform } from "@ionic/vue"
-import { arrowForward, camera, caretBack, caretBackOutline, caretDown, chevronBackOutline, close, closeCircle, closeCircleOutline, eye, eyeOff, femaleOutline, heartHalf, imageOutline, location, lockClosed, mail, maleOutline, personCircle, search } from "ionicons/icons";
+import { arrowForward, camera, caretBack, caretBackOutline, caretDown, chevronBackOutline, close, closeCircle, closeCircleOutline, eye, eyeOff, femaleOutline, heartHalf, imageOutline, location, lockClosed, mail, maleOutline, personCircle, search, person } from "ionicons/icons";
 import { computed, ref, watch } from "vue";
 import { show_alert, showLoading, store_obj, access_tok, get_obj, format_all, show_warn, calculerAge } from "@/global/utils"
 import axios from "axios";

@@ -60,6 +60,33 @@
                             </div>
                         </div>
                     </div>
+                    <div>
+                        <div class="title_mess4">
+                            Ecrivez un truc intéressant sur vous
+                        </div>
+                        <div class="forms">
+                            <div class="minput">
+                                <div class="icon_f">
+                                    <ion-icon :icon="person" style="position: relative; top: 0.05rem;" />
+                                </div>
+                                <input v-model="searching" class="rinput" type="text" placeholder="J'aime ..." />
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="title_mess4">
+                            Votre surnom pour les discussions anonymes
+                        </div>
+                        <div class="forms">
+                            <div class="minput">
+                                <div class="icon_f">
+                                    <ion-icon :icon="heartHalf" style="position: relative; top: 0.05rem;" />
+                                </div>
+                                <input v-model="searching_w" class="rinput" type="text"
+                                    placeholder="Ex: L'irresistible ou le timide..." />
+                            </div>
+                        </div>
+                    </div>
                     <div class="butt">
                         <button type="submit" class="mbut">
                             Sauvegarder
@@ -72,6 +99,10 @@
 </template>
 
 <style scoped >
+.forms {
+    padding-top: 1vh;
+}
+
 .mbut:active {
     background-color: #fa84a3;
 }
@@ -102,6 +133,7 @@
 .butt {
     padding-top: 5vh;
 }
+
 .profil_cont {
     padding-top: 2.5vh;
     display: flex;
@@ -244,7 +276,7 @@
 <script setup lang="ts" >
 import { useUserStore } from "@/global/pinia";
 import { IonModal, IonContent, IonIcon, IonRippleEffect } from "@ionic/vue"
-import { chevronBackOutline, femaleOutline, mail, maleOutline, personCircle } from "ionicons/icons";
+import { chevronBackOutline, femaleOutline, mail, maleOutline, personCircle, person, heartHalf } from "ionicons/icons";
 import { storeToRefs } from "pinia";
 import { computed, ref, watch } from "vue";
 
@@ -264,6 +296,10 @@ watch(popen, (newp, oldp) => {
         email.value = user.value?.email as string
         prenom.value = user.value?.prenom as string
         sex.value = user.value?.sex as string
+        if(user.value?.get_des) {
+            searching.value = user.value.get_des[0]
+            searching_w.value = user.value.get_des[1]
+        }
     }, 60);
 })
 
@@ -274,9 +310,11 @@ const close_ = () => {
 const prenom = ref('')
 const sex = ref('Homme')
 const email = ref('')
+const searching = ref('')
+const searching_w = ref('')
 
 const done = () => {
-    emits('done', {email: email.value, prenom : prenom.value, sex : sex.value})
+    emits('done', { email: email.value, prenom: prenom.value, sex: sex.value, searching : [searching.value, searching_w.value] })
 }
 
 </script>

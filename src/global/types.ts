@@ -54,7 +54,14 @@ export interface User {
     sex : string,
     cats? : Cats[],
     only_verified : boolean,
-    get_status : string
+    get_status : string,
+    get_des? : string[]
+}
+
+export interface Reaction {
+    id : number,
+    get_emoji : string,
+    get_word : string
 }
 
 export interface Profil {
@@ -66,7 +73,13 @@ export interface Profil {
     get_status : string,
     last? : string,
     get_age? : string,
-    get_des? : string[]
+    get_des? : string[],
+    i_like : boolean,
+    commons : {
+        id : number,
+        name : string
+    }[],
+    reaction? : Reaction
 }
 
 export interface Card {
@@ -77,7 +90,13 @@ export interface Card {
     pk: number,
     status : string,
     photos : number,
-    get_age : string
+    get_age : string,
+    i_like : boolean,
+    commons : {
+        id : number,
+        name : string
+    }[],
+    reaction? : Reaction
 }
 
 export interface ProfilSeen {
@@ -108,7 +127,8 @@ export interface ChatProfil {
     get_picture: string,
     last: string,
     is_online: boolean,
-    get_status : string
+    get_status : string,
+    get_des : string[]
 }
 
 export interface AnonymousObj {

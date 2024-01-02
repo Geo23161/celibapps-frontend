@@ -18,12 +18,12 @@
                                     
                                 </div>
                             </div>
-                            <div>Anonyme</div>
+                            <div>{{ get_room_you(room).get_des[1] }}</div>
                         </div>
                     </div>
                 </div>
                 <div class="textop">
-                    Lancez vous dans une conversation anonyme avec {{  '...' }}
+                    Lancez vous dans une conversation anonyme avec {{   get_room_you(room).get_des[1] }}
                 </div>
                 <div style="display: flex; justify-content: center; padding-top: 3vh;">
                     <img style="width: 50vw;" :src="'../../imgs/mask.webp'" />

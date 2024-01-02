@@ -137,7 +137,7 @@
                             <div class="prof_bdy">
                                 <div class="prof_ti">
                                     <div class="name_ti">
-                                        {{ "Anonyme" }} <button v-if="!is_seen(room.id) && has_done"
+                                        {{ get_room_you(room).get_des[1] }} <button v-if="!is_seen(room.id) && has_done"
                                             class="liitle_new princ">new</button>
                                     </div>
                                     <div class="time_ti" :class="{ is_rose: not_seens(room).length }">

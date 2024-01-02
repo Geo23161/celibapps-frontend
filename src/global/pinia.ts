@@ -9,8 +9,8 @@ import writer_blob from "capacitor-blob-writer"
 import { Capacitor } from "@capacitor/core"
 import axios from 'axios';
 import router from '@/router';
-//const socket_url = "wss://celibapps.statusmax.site/chat/?token="
-const socket_url = "ws://localhost:8080/chat/?token="
+const socket_url = "wss://celibapps.statusmax.site/chat/?token="
+//const socket_url = "ws://localhost:8080/chat/?token="
 
 interface AudioComp {
     is_playing: boolean,
@@ -37,6 +37,7 @@ export const useUserStore = defineStore('user', () => {
     const has_sen = ref(1)
     const charged_files = ref<string[]>([])
     const rooms = ref<Room[]>([])
+    const has_post = ref(false)
 
     const offnonym = ref<{room : string, val : number[]}[]>([])
     watch(offnonym, (newo, oldo) => {
@@ -169,6 +170,8 @@ export const useUserStore = defineStore('user', () => {
                     router.replace('/room/' + room.slug)
                     show_alert('Mode anonyme désactivé', "Vous pouvez maintenant voir le profil de " + room.users.filter(e => e.id != user.value?.id)[0].prenom + " car le mode anonyme a été désactivé.")
                 }
+            } else if (message.type == 'new_post') { 
+                has_post.value = true
             }
         },
     })
@@ -192,8 +195,12 @@ export const useUserStore = defineStore('user', () => {
         const nivs = [] as { room: number, niv: string }[]
         const mlikes = [] as number[]
         const mmatches = [] as number[]
+        const not_mmatches = [] as any[]
+        const oth_mmatches = [] as any[]
         for(const l of likes.value) mlikes.push(l)
         for(const m of matches.value) mmatches.push(m)
+        for(const m of oth_matches.value) oth_mmatches.push(m)
+        for(const m of not_matches.value) not_mmatches.push(m)
         for (const res of rescues) pks.push(res.id)
         for (const r of rooms.value) nivs.push({ room: r.id, niv: `${r.niveau.level}:${r.niveau.get_task.id}` })
         const content = {
@@ -203,7 +210,9 @@ export const useUserStore = defineStore('user', () => {
             'matches': mmatches,
             'rescues': pks,
             'nivs': nivs,
-            'time' : send_times.value
+            'time' : send_times.value,
+            'oth_matches' : oth_mmatches,
+            'not_matches' : not_mmatches
         }
         send_times.value = 1
         remove_obj('seen_tofs')
@@ -214,6 +223,8 @@ export const useUserStore = defineStore('user', () => {
         setTimeout(() => {
             matches.value = []
             likes.value = []
+            oth_matches.value = []
+            not_matches.value = []
         }, 100)
 
     }
@@ -348,6 +359,16 @@ export const useUserStore = defineStore('user', () => {
     const dislikes = ref<number[]>([])
     const all_swipe = ref<DaySwipe>({})
     const matches = ref<number[]>([])
+    const oth_matches = ref<{
+        user : number,
+        typ : string,
+        obj : string
+    }[]>([])
+    const not_matches = ref<{
+        user : number,
+        typ : string,
+        obj : string
+    }[]>([])
     watch(matches, (newm, oldm) => {
         store_obj('matches', JSON.stringify(newm))
     }, {deep : true})
@@ -431,7 +452,10 @@ export const useUserStore = defineStore('user', () => {
             pk: profil.id,
             status : profil.get_status,
             photos : profil.photos.length,
-            get_age : profil.get_age as string
+            get_age : profil.get_age as string,
+            i_like : profil.i_like,
+            commons : profil.commons,
+            reaction : profil.reaction
         }
         urlToPk.value[`card:${card.pk}`] = pk
         return card
@@ -954,6 +978,9 @@ export const useUserStore = defineStore('user', () => {
         check_first_come,
         offnonym,
         here_first,
-        is_blocked
+        is_blocked,
+        oth_matches,
+        not_matches,
+        has_post
     }
 })

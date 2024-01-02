@@ -9,7 +9,7 @@
           Valider
         </button>
         <div v-if="all_cats.length">
-          <div class="heade">Choisissez vos centres d'intérêts</div>
+          <div class="heade">Choisissez les 02 sujets qui vous passionnent le plus</div>
           <div class="cats">
             <div v-for="c in all_cats" :key="c.id" @click="addOrRemoveCat(c.id)" class="item sep">
               <div class="cat">
@@ -292,7 +292,8 @@ const addOrRemoveCat = (id : number) => {
       if(cats.value.filter(e => e.id == id).length) {
         cats.value = cats.value.filter(e => e.id != id)
       } else {
-        cats.value.push(all_cats.value.filter(e => e.id == id)[0])
+        if(cats.value.length >= 2) return show_alert("Nombre maximum atteint", "Vous ne pouvez ajouter plus de trois passions.");
+        cats.value.push(all_cats.value.filter(e => e.id == id)[0]);
       }
 }
 

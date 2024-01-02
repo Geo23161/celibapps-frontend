@@ -306,6 +306,7 @@ const vOpen = ref(false)
 
 const set_info = async (obj: any) => {
   const load = await showLoading('Sauvegarde...')
+  obj.searching = JSON.stringify(obj.searching)
   try {
     const resp = await axios.post('api/set_info/', obj, {
       headers: {

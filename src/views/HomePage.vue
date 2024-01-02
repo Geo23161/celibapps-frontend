@@ -55,12 +55,13 @@
                                     </button>
                                 </div>
                                 <div :id="`name_of:${p.pk}:d`" class="name_of" :class="{
-                                    n_online: is_online(toDate(profils.filter(e => e.id == p.pk)[0].last as string).getTime()) 
+                                    n_online: is_online(toDate(profils.filter(e => e.id == p.pk)[0].last as string).getTime())
                                 }">
                                     <span :class="{
                                         not_vip: p.status != 'vip'
-                                    }">{{ p.name + (p.get_age ? `, ${p.get_age}` : '') }}</span> <user-badge :status="p.status" :width="'3.1vh'"  
-                                    :height="'3.1vh'" :size="p.status == 'vip' ? '1.7vh' : '2.1vh'" />
+                                    }">{{ p.name + (p.get_age ? `, ${p.get_age}` : '') }}</span> <user-badge
+                                        :status="p.status" :width="'3.1vh'" :height="'3.1vh'"
+                                        :size="p.status == 'vip' ? '1.7vh' : '2.1vh'" />
                                 </div>
                                 <div v-if="is_online(toDate(profils.filter(e => e.id == p.pk)[0].last as string).getTime())"
                                     class="online_of">
@@ -146,9 +147,9 @@
                         <ion-icon :icon="close" style="font-size: 1.3rem;" />
                     </button>
                     <div class="concent">
-                        <div>
+                        <div v-if="typ_match == 'mutual-lov'" >
                             <div class="concentric circle1">
-
+                                
                             </div>
                             <div class="concentric circle2">
 
@@ -178,17 +179,41 @@
                                 </button>
                             </div>
                         </div>
+                        <div v-else >
+                            <div class="concentric circle1">
+                                
+                            </div>
+                            <div class="concentric circle2">
+
+                            </div>
+                            <div class="concentric circle3">
+
+                            </div>
+                            <div class="concentric circle4">
+
+                            </div>
+                            <div class="alone" @click="router.push('/profil/' + current_match?.pk + '/')" :style="{
+                                backgroundImage: `url('${current_match?.url}')`
+                            }"> 
+                            </div>
+                        </div>
                     </div>
                     <div class="impoT animateM" id="impott">
-                        <div> C'est un match!</div>
+                        <div> {{ typ_match == 'mutual-lov' ? "C'est un match!" : "Vous pouvez matchez!" }}</div>
                         <div style="font-size: 2.2vh !important; font-weight: normal !important;">
-                            {{ current_match?.name }} vous kiffe aussi
+                            {{ typ_match == 'mutual-lov' ? (current_match?.name + " kiffe aussi votre photo.") : (typ_match
+                                == 'interest' ? ("Vous êtes tous les deux passionnés par " + match_obj.obj) : (
+                                current_match?.name + " vous trouve aussi " + match_obj.obj)) }}
                         </div>
                     </div>
                     <div class="inputM">
-                        <button @click="open_new_match()" class="sendMes princ">
+                        <button v-if="typ_match == 'mutual-lov'" @click="open_new_match()" class="sendMes princ">
                             <ion-icon :icon="chatbubbles" style="font-size: 3.3vh; " /> <span
                                 style="position: relative; bottom: 0.6vh;">Démarrez la conversation</span>
+                        </button>
+                        <button v-else-if="!is_writing" @click="is_writing = true" class="sendMes princ">
+                            <ion-icon :icon="paperPlane" style="font-size: 3.3vh; " /> <span
+                                style="position: relative; bottom: 0.6vh;">Ecrire à {{ current_match?.name }}</span>
                         </button>
                     </div>
                     <div v-if="false" class="continueM">
@@ -302,7 +327,7 @@
                     </div>
                 </div>
                 <div class="notthemom" v-show="is_blocked">
-                    <div style="display: flex; justify-content: space-around; padding-top: 30vh;" >
+                    <div style="display: flex; justify-content: space-around; padding-top: 30vh;">
                         <img style="width: 15vh; border-radius: 10px;" :src="'../../imgs/foreground.png'" />
                     </div>
                     <div
@@ -312,6 +337,26 @@
                     <div
                         style="text-align: center; padding-top: 1.6vh; font-size: 2.5vh; color: white; font-weight: bolder; padding-left: 2.5vh; padding-right: 2.5vh;">
                         🕒 Ouvert chaque vendredi à partir de 19h au Lundi à 00h.
+                    </div>
+                </div>
+                <div class="add_post" :class="{ hide_adding: !is_writing }">
+                    <div class="r_post">
+                        <div class="title_h">
+                            <div style="font-size: 2.3vh; ">
+                                Ecrire à {{ current_match?.name }}
+                            </div>
+                            <button @click="is_writing = false" class="close_as">
+                                <ion-icon :icon="close" style="color: white; font-size: 3vh;" />
+                            </button>
+                        </div>
+                        <div @input="set_text" class="my__in editable-div" contenteditable="true"
+                            data-placeholder="Ecrivez ici... (faites un compliment ou une remarque)">
+
+                        </div>
+                        <button @click="create_post()" class="send_aa"
+                            :class="{ is_upoo: text__a != ''  }">
+                            Envoyer
+                        </button>
                     </div>
                 </div>
             </div>
@@ -334,11 +379,10 @@
                 }">
                     <span :class="{
                         not_vip: img.status != 'vip'
-                    }">{{ img.name + (img.get_age ? `, ${img.get_age}` : '') }}</span> <user-badge :status="img.status" :width="'3.1vh'" :height="'3.1vh'"
-                        :size="img.status == 'vip' ? '1.7vh' : '2.1vh'" />
+                    }">{{ img.name + (img.get_age ? `, ${img.get_age}` : '') }}</span> <user-badge :status="img.status"
+                        :width="'3.1vh'" :height="'3.1vh'" :size="img.status == 'vip' ? '1.7vh' : '2.1vh'" />
                 </div>
-                <div v-for="img in full_imgs" :key="img.pk" :id="`onli:${img.pk}`"
-                    class="online_of">
+                <div v-for="img in full_imgs" :key="img.pk" :id="`onli:${img.pk}`" class="online_of">
                     <div class="inddid">
 
                     </div>
@@ -347,14 +391,128 @@
                     </div>
                 </div>
             </div>
-            <abon-limited @close="lOpen = false, ltext = 'Vous avez atteint votre limite de swipe pour aujourd\'hui.'" :text="ltext"
-                :is-open="lOpen" :redirect="'/home'" />
+            <abon-limited
+                @close="lOpen = false, ltext = (user?.cur_abn ? 'Vous avez atteint la limite de swipe quotidienne offerte par votre ticket.' : 'Vous avez atteint la limite de swipe quotidienne gratuite. Prenez un ticket pour continuer.')"
+                :text="ltext" :is-open="lOpen" :redirect="'/home'" />
         </div>
 
     </ion-page>
 </template>
 
 <style >
+.is_norm:active {
+   background-color: rgb(38, 38, 38);
+}
+
+.is_norm {
+    background-color: rgb(34, 34, 34);
+}
+
+.is_upoo {
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.336), transparent);
+    background-color: #fc1955 !important;
+}
+
+.send_aa {
+    display: block;
+    width: 100%;
+    padding: 1.8vh;
+    border-radius: 15px;
+    font-size: 2.2vh;
+    font-weight: bold;
+    margin-top: 2vh;
+    color: white;
+    background-color: rgb(34, 34, 34);
+}
+
+.imgg_a:active {
+    background-color: rgb(41, 41, 41);
+}
+
+.imgg_a {
+    width: 25vw;
+    height: 25vw;
+    background-color: rgb(34, 34, 34);
+    border-radius: 15px;
+
+}
+
+.img_as {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.6vh;
+}
+
+*:focus {
+    outline: none;
+}
+
+.editable-div:empty:before {
+    content: attr(data-placeholder);
+    color: #aaa;
+    position: absolute;
+    top: 2vh;
+    left: 2vh;
+    pointer-events: none;
+    font-size: 2.2vh;
+}
+
+.hide_adding {
+    transform: translateY(80vh);
+}
+
+.my__in {
+    width: 100%;
+    flex-grow: 1;
+    border-radius: 15px;
+    background-color: rgb(34, 34, 34);
+    margin-top: .6vh;
+    min-height: 50px;
+    position: relative;
+    padding: 2vh 2vh;
+    font-size: 2.2vh;
+}
+
+.close_as:active {
+    background-color: rgb(29, 29, 29);
+}
+
+.close_as {
+    width: 5vh;
+    height: 5vh;
+    border-radius: 100%;
+    background-color: transparent;
+}
+
+.title_h {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.r_post {
+    width: 90vw;
+    height: 30vh;
+    border-radius: 20px;
+    background-color: rgb(48, 48, 48);
+    padding: 1.5vh 2vh;
+    color: white;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.add_post {
+    position: absolute;
+    bottom: 0vh;
+    width: 100%;
+    height: 40vh;
+    padding-left: 5vw;
+    transition: all 1s ease-in-out;
+    z-index: 3000;
+}
+
 .text_inddid {
     font-size: 2.3vh;
     font-weight: bolder;
@@ -519,17 +677,18 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transform: translateY(calc(-241vw));
+    transform: translateY(calc(-200vw));
 }
 
 .transla {
-    transform: translateY(-247vw);
+    transform: translateY(-205vw);
 }
 
 .impoT {
     text-align: center;
-    font-size: 5vh;
+    font-size: 3.5vh;
     font-weight: bold;
+    padding: 2vh;
     color: white;
 }
 
@@ -560,6 +719,19 @@
     color: white;
     background: linear-gradient(to left, rgba(255, 255, 255, 0.459), transparent);
     background-color: #fb4073;
+}
+
+.alone {
+    width: calc(45vw - 5px);
+    height: calc(45vw - 5px);
+    border-color: beige;
+    border-width: 8px;
+    border-style: solid;
+    background-size: cover;
+    background-position: top center;
+    border-radius: 100%;
+    position: relative;
+    transform: translateY(-227.5vw) translateX(18vw);
 }
 
 .me_ {
@@ -1076,7 +1248,7 @@ import { Card, Profil } from "@/global/types";
 import { useUserStore } from "@/global/pinia";
 import { storeToRefs } from "pinia";
 import axios from "axios";
-import { access_tok, room_slug, show_alert, get_obj as getOb, remove_obj, showLoading, get_position, is_online, toDate, estDansLaPlagePermise } from "@/global/utils";
+import { access_tok, room_slug, show_alert, get_obj as getOb, remove_obj, showLoading, get_position, is_online, toDate, estDansLaPlagePermise, presentToast } from "@/global/utils";
 import AbonLimited from "@/components/AbonLimited.vue";
 import UserBadge from "@/components/UserBadge.vue";
 import { StatusBar } from "@capacitor/status-bar"
@@ -1095,6 +1267,12 @@ const load_audio = () => {
     NativeAudio.preload({
         assetId: "success",
         assetPath: "success.mp3",
+        audioChannelNum: 1,
+        isUrl: false
+    });
+    NativeAudio.preload({
+        assetId: "common",
+        assetPath: "common.mp3",
         audioChannelNum: 1,
         isUrl: false
     })
@@ -1156,7 +1334,7 @@ const set_location = async (newt: string) => {
 
 const _userStore = useUserStore()
 const userStore = storeToRefs(_userStore)
-const { excepts, plikes, can_swipe, matches, has_new, rooms, waiting_room, has_new_notifs, notifs, come_first, here_first, is_blocked } = userStore
+const { excepts, plikes, can_swipe, matches, has_new, rooms, waiting_room, has_new_notifs, notifs, come_first, here_first, is_blocked, oth_matches, not_matches } = userStore
 const { user } = userStore
 const { build_card, swipe_left, swipe_right, why_cant_swipe, force_room, initiate_chat, check_first_come } = _userStore
 const current_match = ref<Card>()
@@ -1164,14 +1342,44 @@ const ltext = ref('Vous avez atteint votre limite de swipe quotidien.')
 
 const swipe_right_ = (card: Card) => {
     swipe_right(card)
-    if (plikes.value.includes(card.pk)) launch_match(card)
+    if (card.i_like) {
+        match_obj.value = {
+            user: card.pk,
+            typ: "lov",
+            obj: ""
+        }
+        typ_match.value = 'mutual-lov'
+        launch_match(card)
+        return;
+    }
+    if (card.commons.length) {
+        match_obj.value = {
+            user: card.pk,
+            typ: 'interest',
+            obj: card.commons[Math.floor(Math.random() * card.commons.length)].name
+        }
+        typ_match.value = "interest"
+        launch_match(card)
+    }
 }
+
+const typ_match = ref('mutual-lov')
+const match_obj = ref<{
+    user: number,
+    typ: string,
+    obj: string
+}>({
+    user: 0,
+    typ: "",
+    obj: ""
+})
 
 const launch_match = (card: Card) => {
     current_match.value = card
     setTimeout(() => {
         isMacth.value = true
-        matches.value.push(card.pk)
+        if (typ_match.value == 'mutual-lov') matches.value.push(card.pk);
+        else not_matches.value.push(match_obj.value);
     }, 100)
 }
 
@@ -1184,7 +1392,7 @@ const get_profils = async () => {
     try {
         const resp = await axios.post('api/get_profils/' + typ_rang.value + '/', {
             excepts: JSON.stringify(excpt),
-            date_string : (new Date()).toISOString()
+            date_string: (new Date()).toISOString()
         }, {
             headers: {
                 Authorization: `Bearer ${await access_tok(router, undefined)}`
@@ -1196,11 +1404,10 @@ const get_profils = async () => {
         const results = (resp.data['result'] as Profil[])
         is_blocked.value = !resp.data['allowed']
         check_first_come()
-        //console.log(results)
         number_default.value = resp.data['other'] as number
         seuil.value = !seuil.value ? Math.floor(1 / 2 * number_default.value) : seuil.value + number_default.value
         results.forEach(element => {
-            if(element.get_profil) if (!full_imgs.value.filter(e => e.pk == element.id)[0]) full_imgs.value.push(build_card(element))
+            if (element.get_profil) if (!full_imgs.value.filter(e => e.pk == element.id)[0]) full_imgs.value.push(build_card(element))
         });
         if (is_new) {
             current_img = full_imgs.value.slice(0, 4)
@@ -1216,7 +1423,10 @@ const get_profils = async () => {
                     sign: '',
                     status: '',
                     photos: 0,
-                    get_age : '25'
+                    get_age: '25',
+                    i_like: false,
+                    commons: [],
+                    reaction: undefined
                 })
             }
             global_load.value = false
@@ -1289,7 +1499,7 @@ const get_next = () => {
         i++;
         if (img.pk == current_img[3].pk) break
     }
-    if (full_imgs.value.length - (i + 1) <= 4 ) {
+    if (full_imgs.value.length - (i + 1) <= 4) {
         console.log('recharg...')
         if (!charging.value) get_profils()
     }
@@ -1314,7 +1524,7 @@ const simulate_swipe = (is_love: Boolean) => {
     const tcard = document.getElementById(`card:${2 < current_img.length ? current_img[2].pk : -1}`) as HTMLElement
     const ocard = document.getElementById(`card:${3 < current_img.length ? current_img[3].pk : -1}`) as HTMLElement
     const cont = document.getElementById('card_co') as HTMLElement
-
+    if (!cont.contains(fcard)) return;
     const close_but = document.getElementById('close_but') as HTMLElement
     const love_but = document.getElementById('love_but') as HTMLElement
     if (!is_love)
@@ -1374,7 +1584,7 @@ const simulate_swipe = (is_love: Boolean) => {
             current_img = current_img.filter(e => e.pk != current_img[0].pk)
             color_b.value = current_img[0].color
             cont.removeChild(fcard)
-            
+
         } else {
 
             scard?.classList.remove('card1')
@@ -1412,6 +1622,7 @@ const enable_swipe = () => {
         const tcard = document.getElementById(`card:${2 < current_img.length ? current_img[2].pk : -1}`) as HTMLElement
         const ocard = document.getElementById(`card:${3 < current_img.length ? current_img[3].pk : -1}`) as HTMLElement
         const cont = document.getElementById('card_co') as HTMLElement
+        if (!cont.contains(fcard)) return;
         scard?.classList.remove('card2')
         scard?.classList.add('waiting1')
 
@@ -1442,13 +1653,13 @@ const enable_swipe = () => {
                 scard?.classList.add('card1')
                 tcard?.classList.add('card2')
                 ocard?.classList.add('card3')
-		
-		try {
-            		cont.removeChild(fcard)
-		} catch(e) {
-		    	console.log(e)
-		}
-		
+
+                try {
+                    cont.removeChild(fcard)
+                } catch (e) {
+                    console.log(e)
+                }
+
                 if (current_img[current_img.length - 1].pk) {
                     const nextObj = get_next()
                     const next = document.createElement('div')
@@ -1546,7 +1757,7 @@ const create_wrapper = (cardObj: any) => {
     name_of.innerText = cardObj.name */
     const name_of = document.getElementById(`name_of:${cardObj.pk}`)
     const onli_of = document.getElementById(`onli:${cardObj.pk}`)
-    
+
     const bdiv = document.createElement('div')
     bdiv.classList.add('indica')
     const but = document.createElement('button')
@@ -1562,7 +1773,7 @@ const create_wrapper = (cardObj: any) => {
 
     fdiv.appendChild(bdiv)
     if (name_of) fdiv.appendChild(name_of)
-    if(onli_of && is_online(toDate(profils.value.filter(e => e.id == cardObj.pk)[0].last as string).getTime())) fdiv.appendChild(onli_of)
+    if (onli_of && is_online(toDate(profils.value.filter(e => e.id == cardObj.pk)[0].last as string).getTime())) fdiv.appendChild(onli_of)
 
     return fdiv
 }
@@ -1577,12 +1788,11 @@ const enable_click = (id: number) => {
 const isMacth = ref(false)
 watch(isMacth, (newi, oldi) => {
     if (newi) {
-        play_swipe('success')
+        play_swipe( typ_match.value == 'mutual-lov' ? 'success' : 'common')
         setTimeout(() => {
             document.getElementById('impott')?.classList.add('transla')
         }, 200)
     }
-
 })
 const cpt = ref(0)
 
@@ -1732,6 +1942,62 @@ const set_user_from_login = () => {
 }
 set_user_from_login()
 
+const send_interest = async () => {
+    const load = await showLoading('Envoi...')
 
+    try {
+        const resp = await axios.post("api/send_interest/", {
+            match_obj: JSON.stringify(match_obj.value)
+        }, {
+            headers: {
+                Authorization: `Bearer ${await access_tok(router, load)}`
+            }
+        })
+        if (resp.data['done']) {
+            await presentToast("top", "Suggestion envoyée à " + current_match.value?.name + " avec succès.", "success")
+            isMacth.value = false, current_match.value = undefined;
+        }
+    } catch (e) {
+        console.log(e)
+        await show_alert("Erreur imprévue", "Une erreur est survenue, veuillez reéssayer.")
+    }
+    load.dismiss()
+}
+
+const is_writing = ref(false)
+const text__a = ref('')
+const set_text = (e : any) => {
+	text__a.value = e.target.innerText;
+}
+
+const create_post = async () => {
+    if(text__a.value == "" ) {
+        return show_alert('Impossible de continuer', "Veuillez écrire un message avant d'envoyer.")
+    }
+    if(text__a.value.length > 100) {
+    	return show_alert('Impossible de continuer', "Le message doit comporter moins de 100 caractères.")
+    }
+    const load = await showLoading('Envoi...')
+
+    try {
+        const resp = await axios.post('api/send_text_cat/', { text : text__a.value, match_obj: JSON.stringify(match_obj.value)}, {
+            headers: {
+                Authorization: `Bearer ${await access_tok(router, load)}`,
+                "Content-Type": "multipart/form-data"
+            },
+        })
+        if(resp.data['done']) {
+            await presentToast("top", "Message envoyée à " + current_match.value?.name + " avec succès.", "success");
+            isMacth.value = false, current_match.value = undefined;
+            is_writing.value = false;
+        }
+    } catch(e) {
+    	alert(e);
+        await show_alert('Erreur imprévue', "Une erreur est survenue lors de l'envoi de votre message, veuillez reéssayer.")
+    }
+
+    load.dismiss()
+
+}
 
 </script>

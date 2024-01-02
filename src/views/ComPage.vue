@@ -14,6 +14,9 @@
                             <ion-label>Moi</ion-label>
                         </ion-segment-button>
                     </ion-segment>
+                    <div v-if="oa_post" @click="section = 'all', starter(true)" style="width: 100%; padding: 1vh 3vh; text-align: center; color: white; font-size: 2vh; font-weight : 600; padding-top: .3vh !important; " class="is_upoo refress" >
+                        <ion-icon :icon="refreshCircle" style="font-size: 3vh; position: relative; top: .7vh;" /> Nouveaux posts
+                    </div>
                     <div v-if="r_posts.length || global_loading" id="containers" style="overflow: scroll; position: relative;">
                         <div>
                             <div v-for="p in r_posts" :key="p.id" class="post">
@@ -196,6 +199,10 @@
 
 .is_norm {
     background-color: rgb(34, 34, 34);
+}
+
+.refress:active {
+	background-color: rgb(34, 34, 34);
 }
 
 .is_upoo {
@@ -415,7 +422,7 @@ import { useUserStore } from "@/global/pinia";
 import { access_tok, getDurationSince, presentToast, showLoading, show_alert, toDate, findTime } from "@/global/utils";
 import { IonPage, IonContent, IonSegment, IonSegmentButton, IonIcon, IonActionSheet, ActionSheetButton, ActionSheetOptions } from "@ionic/vue"
 import axios from "axios";
-import { albums, chatbox, chatboxOutline, ellipseOutline, ellipsisVertical, ellipsisVerticalOutline, heartHalf, heartOutline, newspaper, settings, shareSocial, shareSocialOutline, heart, paperPlane, brush, pencil, close, add, open, exit, personRemove } from "ionicons/icons";
+import { albums, chatbox, chatboxOutline, ellipseOutline, ellipsisVertical, ellipsisVerticalOutline, heartHalf, heartOutline, newspaper, settings, shareSocial, shareSocialOutline, heart, paperPlane, brush, pencil, close, add, open, exit, personRemove, refreshCircle } from "ionicons/icons";
 import { storeToRefs } from "pinia";
 import { computed, ref, watch } from "vue";
 import { useRouter } from "vue-router"
@@ -425,7 +432,7 @@ const aOpen = ref(false)
 
 const _userStore = useUserStore()
 const userStore = storeToRefs(_userStore)
-const { user, has_new, has_new_notifs } = userStore
+const { user, has_new, has_new_notifs, has_post } = userStore
 
 const counter = ref(0)
 setInterval(() => {
@@ -497,12 +504,16 @@ const get_my_posts = async () => {
     }
     global_loading.value = false
 }
+const oa_post = ref(false)
 
+watch(has_post, (newh, oldh) => {
+    if(!blocking.value) oa_post.value = newh
+})
 
 const starter = async (is_new = false) => {
 if(is_new) posts.value = [], my_posts.value = [];
+    has_post.value = false
     section.value == 'all' ? (await get_posts()) : (await get_my_posts())
-    
 }
 starter()
 
@@ -616,17 +627,19 @@ const set_profil = (f: Blob) => {
 const click_id = (id: string) => {
     document.getElementById(id)?.click()
 }
-
+const blocking = ref(false)
 const create_post = async () => {
     if(text.value == "" && !image.value) {
         return show_alert('Impossible de continuer', "Veuillez ajouter un texte ou une image avant de continuer.")
     }
+           
     const load = await showLoading('Envoi...')
     const form = new FormData()
     if (text.value != "") form.append('text', text.value)
     if (image.value) form.append('image', image.value)
 
     try {
+    	blocking.value = true
         const resp = await axios.post('api/create_post/', form, {
             headers: {
                 Authorization: `Bearer ${await access_tok(router, load)}`,
@@ -639,6 +652,9 @@ const create_post = async () => {
             if(image) {
             	image.value = undefined
             }
+            setTimeout(() => {
+            	blocking.value = false
+            }, 3000)
         }
     } catch {
         await show_alert('Erreur imprévue', "Une erreur est survenue lors de l'envoi de votre post, veuillez reéssayer.")

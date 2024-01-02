@@ -24,8 +24,8 @@
                                 class="smessage_cont " :class="{
                                     not_seen : !seen_notifs.includes(n.id)
                                 }" >
-                                <div @click=" ['new_match', 'delete_room', 'new_like', 'expired_abon'].includes(n.typ) ? 0 : ( n.typ.includes('want_lov') ? send_lov(n) : router.push(n.get_urls[0]))" :id="'smessage:' + n.id" class="smessage">
-                                    <div v-if="n.typ == 'new_match' || n.typ.includes('want_lov')" class="simg" :style="{
+                                <div @click=" ['new_match', 'delete_room', 'new_like', 'expired_abon', 'send_inter'].includes(n.typ) ? 0 : ( n.typ.includes('want_lov') ? send_lov(n) : router.push(n.get_urls[0]))" :id="'smessage:' + n.id" class="smessage">
+                                    <div v-if="['new_match', 'send_inter'].includes(n.typ) || n.typ.includes('want_lov') " class="simg" :style="{
                                         'background-size': 'cover',
                                         'background-position': 'top center',
                                         'background-image': `url('${f_url(n.get_photo)}')`,
@@ -52,19 +52,23 @@
                                         {{ n.text }}
                                     </div>
                                 </div>
-                                <!-- <div v-if="notif.message" class="mess">
+                                <div v-if="n.typ == 'send_inter' && format_urls(n.get_urls[1])[1]" class="mess">
                                     <div>
                                         <div class="comp">
-                                            {{ notif.message }}
+                                            {{ format_urls(n.get_urls[1])[1] }}
                                         </div>
                                     </div>
-                                </div> -->
-                                <div v-if="n.typ == 'new_match'"  class="sbut_cont">
+                                </div>
+                                <div v-if="['new_match', 'send_inter'].includes(n.typ)"  class="sbut_cont">
                                     <button @click="router.push(n.get_urls[0])" class="sbut prof">
                                         <ion-icon :icon="eye" style="position: relative; top: 1px" />
                                         Profile
                                     </button>
-                                    <button @click="router.push(n.get_urls[1])" class="sbut write" style="margin-left: 1rem">
+                                    <button v-if="n.typ != 'send_inter'" @click=" router.push(n.get_urls[1])" class="sbut write" style="margin-left: 1rem">
+                                        <ion-icon :icon="chatbox" style="position: relative; top: 1px" />
+                                        Ecrire
+                                    </button>
+                                    <button v-else @click=" initiate_chat(format_urls(n.get_urls[1])[0])" class="sbut write" style="margin-left: 1rem">
                                         <ion-icon :icon="chatbox" style="position: relative; top: 1px" />
                                         Ecrire
                                     </button>
@@ -1102,7 +1106,7 @@ div .m_prev {
   
 <script setup lang="ts">
 import { IonPage, IonContent, IonIcon, onIonViewDidEnter } from "@ionic/vue"
-import { arrowBack, cash, chatbox, chatbubbles, closeCircle, eye, heartDislike, heartHalf } from "ionicons/icons";
+import { arrowBack, cash, chatbox, chatbubbles, checkbox, closeCircle, eye, heartDislike, heartHalf } from "ionicons/icons";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/global/pinia"
 import { storeToRefs } from "pinia";
@@ -1112,8 +1116,8 @@ import { StatusBar } from "@capacitor/status-bar"
 const router = useRouter()
 const userStore_ = useUserStore()
 const userStore = storeToRefs(userStore_)
-const { f_url } = userStore_
-const { notifs, seen_notifs, user, get_notifs } = userStore
+const { f_url, force_room } = userStore_
+const { notifs, seen_notifs, user, get_notifs, oth_matches } = userStore
 
 onIonViewDidEnter(() => {
     setTimeout(() =>  {
@@ -1138,4 +1142,13 @@ const send_lov = (n : Notif) => {
     })
 }
 
+const initiate_chat = (match_obj : string) => {
+    const obj = JSON.parse(match_obj)
+    oth_matches.value.push(obj)
+    force_room()
+}
+
+const format_urls = (txt : string) => {
+	return txt.split('[]')
+}
 </script>

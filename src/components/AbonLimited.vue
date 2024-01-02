@@ -17,7 +17,7 @@
             @click="router.push('/param?target=activ_abn' ), close()"
             class="butto upload"
           >
-            Mettre à jour <ion-icon :icon="arrowForward" />
+            Débloquer <ion-icon :icon="arrowForward" />
           </button>
         </div>
       </ion-content>

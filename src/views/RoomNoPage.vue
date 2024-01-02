@@ -18,7 +18,7 @@
                             </button>
                         </div>
                         <div class="namm">
-                            <div> {{ "Anonyme" }} <user-badge :class="{
+                            <div> {{  get_room_you(room).get_des[1] }} <user-badge :class="{
                                 is_vip: get_room_you(room).get_status == 'vip'
                             }" :status="get_room_you(room).get_status" :width="'4.416vw'" :height="'4.416vw'"
                                     :size="get_room_you(room).get_status == 'vip' ? '2.3920000000000003vw' : '3.128vw'" />
