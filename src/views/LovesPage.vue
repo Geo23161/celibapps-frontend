@@ -985,7 +985,6 @@ const get_profils = async () => {
                     i_like: false,
                     commons: [],
                     reaction: undefined
-                    
                 })
             }
             global_load.value = false
