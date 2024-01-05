@@ -980,7 +980,12 @@ const get_profils = async () => {
                     name: '',
                     sign: '',
                     status: '',
-                    photos: 0
+                    photos: 0,
+                    get_age: '25',
+                    i_like: false,
+                    commons: [],
+                    reaction: undefined
+                    
                 })
             }
             global_load.value = false

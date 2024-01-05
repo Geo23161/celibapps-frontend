@@ -64,11 +64,11 @@
             <div style="font-weight: 600; padding-bottom: .8vh">
               Un truc sur moi...
             </div>
-            <div style="font-size: 0.9rem">
-              {{ visitor.get_des[1] }}
+            <div v-if="visitor?.get_des" style="font-size: 0.9rem">
+              {{ visitor?.get_des[1] }}
             </div>
           </div>
-          <div v-if="visitor.get_des" class="eta">
+          <div v-if="visitor?.get_des" class="eta">
             <div style="font-weight: 600; padding-bottom: .8vh">
               Un truc sur moi...
             </div>
