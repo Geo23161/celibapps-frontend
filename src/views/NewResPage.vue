@@ -34,7 +34,7 @@
                                     </button>
                                 </div>
                                 <div v-if="p.text" class="p_text">
-                                    {{ get_text(p.text) }} <span v-if="p.text.length > 100"
+                                    {{ get_text(p.text, p) }} <span v-if="p.text.length > 100"
                                         style="font-weight: bold; color: #fc1955;"
                                         @click="court.includes(p.id) ? (court = court.filter(e => e != p.id)) : court.push(p.id)">Voir
                                         {{ court.includes(p.id) ? 'moins' : 'plus' }}</span>
@@ -103,7 +103,7 @@
                                     </button>
                                 </div>
                                 <div v-if="p.text" class="p_text">
-                                    {{ get_text(p.text) }} <span v-if="p.text.length > 100"
+                                    {{ get_text(p.text, p) }} <span v-if="p.text.length > 100"
                                         style="font-weight: bold; color: #fc1955;"
                                         @click="court.includes(p.id) ? (court = court.filter(e => e != p.id)) : court.push(p.id)">Voir
                                         {{ court.includes(p.id) ? 'moins' : 'plus' }}</span>
@@ -473,8 +473,8 @@ const global_loading = ref(false)
 
 const court = ref<number[]>([])
 
-const get_text = (text: string) => {
-    return text.length <= 100 ? text : (court.value.includes(1) ? text + " " : text.slice(0, 101) + '...')
+const get_text = (text: string, p : any) => {
+    return text.length <= 100 ? text: (court.value.includes(p.id) ? text + " " : text.slice(0, 101) + '...')
 }
 
 const excepts = computed(() => {
