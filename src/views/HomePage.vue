@@ -198,7 +198,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="impoT animateM" id="impott">
+                    <div class=" animateM" :class="{impoT :typ_match != 'mutual-lov', impoTr : typ_match == 'mutual-lov' }" id="impott">
                         <div> {{ typ_match == 'mutual-lov' ? "C'est un match!" : "Vous pouvez matchez!" }}</div>
                         <div style="font-size: 2.2vh !important; font-weight: normal !important;">
                             {{ typ_match == 'mutual-lov' ? (current_match?.name + " kiffe aussi votre photo.") : (typ_match
@@ -206,7 +206,7 @@
                                 current_match?.name + " vous trouve aussi " + match_obj.obj)) }}
                         </div>
                     </div>
-                    <div class="inputM">
+                    <div :class="{inputMr :typ_match != 'mutual-lov', inputMr : typ_match == 'mutual-lov' }" >
                         <button v-if="typ_match == 'mutual-lov'" @click="open_new_match()" class="sendMes princ">
                             <ion-icon :icon="chatbubbles" style="font-size: 3.3vh; " /> <span
                                 style="position: relative; bottom: 0.6vh;">Démarrez la conversation</span>
@@ -680,8 +680,28 @@
     transform: translateY(calc(-200vw));
 }
 
+.inputMr {
+    padding: 3vw 6vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transform: translateY(calc(-245vw));
+}
+
 .transla {
     transform: translateY(-205vw);
+}
+
+.translar {
+    transform: translateY(-245vw);
+}
+
+.impoTr {
+    text-align: center;
+    font-size: 5vh;
+    font-weight: bold;
+    padding: 2vh;
+    color: white;
 }
 
 .impoT {
@@ -1790,7 +1810,7 @@ watch(isMacth, (newi, oldi) => {
     if (newi) {
         play_swipe( typ_match.value == 'mutual-lov' ? 'success' : 'common')
         setTimeout(() => {
-            document.getElementById('impott')?.classList.add('transla')
+            document.getElementById('impott')?.classList.add( typ_match.value == 'mutual-lov' ? 'translar' : 'transla')
         }, 200)
     }
 })
