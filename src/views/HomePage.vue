@@ -206,7 +206,7 @@
                                 current_match?.name + " vous trouve aussi " + match_obj.obj)) }}
                         </div>
                     </div>
-                    <div :class="{inputMr :typ_match != 'mutual-lov', inputMr : typ_match == 'mutual-lov' }" >
+                    <div :class="{inputM :typ_match != 'mutual-lov', inputMr : typ_match == 'mutual-lov' }" >
                         <button v-if="typ_match == 'mutual-lov'" @click="open_new_match()" class="sendMes princ">
                             <ion-icon :icon="chatbubbles" style="font-size: 3.3vh; " /> <span
                                 style="position: relative; bottom: 0.6vh;">Démarrez la conversation</span>
