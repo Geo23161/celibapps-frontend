@@ -803,12 +803,12 @@
 }
 
 .text_all {
-    transform: translateY(-23.92vw);
+    transform: translateY(-25vw);
 }
 
 .text_m {
     text-align: center;
-    font-size: 8.648000000000001vw;
+    font-size: 8vw;
     font-weight: bold;
     color: #fc1955;
 }
