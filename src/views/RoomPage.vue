@@ -1037,12 +1037,12 @@
 
 .body_all {
     width: 100%;
-    height: 100vh;
-    min-height: 100vh;
+    height: 100%;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
     background-color: rgb(29, 29, 29);
-    font-family: 'PT Serif', serif;
+    font-family: 'Poppin', serif;
 }
 </style>
 
@@ -1127,7 +1127,7 @@ watch(messages, (newm, oldm) => {
 const room = ref<Room>()
 const router = useRouter()
 const hOpen = ref(false)
-const hidden = ref(false)
+const hidden = ref(true)
 watch(hidden, (newh, oldh) => {
     if (newh) store_obj('hidden:ai:' + slug.value, 'yes')
     else remove_obj('hidden:ai:' + slug.value)
