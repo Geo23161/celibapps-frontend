@@ -1042,7 +1042,7 @@
     display: flex;
     flex-direction: column;
     background-color: rgb(29, 29, 29);
-    font-family: 'Poppin', serif;
+    font-family: 'Poppins', serif;
 }
 </style>
 
