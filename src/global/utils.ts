@@ -252,7 +252,7 @@ export const findTime = (created: string) => {
 }
 
 function getMonthName(monthNumber: number) {
-    if (monthNumber < 1 || monthNumber > 12) {
+    if ( monthNumber > 12) {
         return "Invalid month number";
     }
 
