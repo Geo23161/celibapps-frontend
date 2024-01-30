@@ -2304,7 +2304,7 @@ const group_users = computed(() => {
 })
 
 const match_users = computed(() => {
-    return room.value?.get_groups?.length > 1 ? get_rooms_users(my_groups.value, room.value) : group.value.users
+    return (room.value?.get_groups?.length as number ) > 1 ? get_rooms_users(my_groups.value, room.value) : group.value.users
 })
 
 watch(recent_del, (newr, oldr) => {

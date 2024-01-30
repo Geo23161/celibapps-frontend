@@ -74,7 +74,7 @@
                             <div class="prof_bdy">
                                 <div class="prof_ti">
                                     <div class="name_ti">
-                                        {{ room.get_groups?.length == 1 ? "Entre nous" : mgrp_name(my_groups, room, user?.id) }}
+                                        {{ room.get_groups?.length == 1 ? "Entre nous" : mgrp_name(my_groups, room, user?.id as number) }}
                                     </div>
                                     <div class="time_ti" :class="{ is_rose: not_seens(room).length }">
                                         {{ findTime(last_message(room).created_at) }}
@@ -144,7 +144,7 @@
                             <div class="prof_bdy">
                                 <div class="prof_ti">
                                     <div class="name_ti">
-                                        {{ room.get_groups?.length == 1 ? "Entre nous" : mgrp_name(my_groups, room, user?.id) }}
+                                        {{ room.get_groups?.length == 1 ? "Entre nous" : mgrp_name(my_groups, room, user?.id as number) }}
                                     </div>
                                     <div class="time_ti" :class="{ is_rose: not_seens(room).length }">
                                         {{ findTime(last_message(room).created_at) }}
@@ -214,7 +214,7 @@
                             <div class="prof_bdy">
                                 <div class="prof_ti">
                                     <div class="name_ti">
-                                        {{ room.get_groups?.length == 1 ? "Entre nous" : mgrp_name(my_groups, room, user?.id) }}
+                                        {{ room.get_groups?.length == 1 ? "Entre nous" : mgrp_name(my_groups, room, user?.id as number) }}
                                     </div>
                                     <div class="time_ti" :class="{ is_rose: not_seens(room).length }">
                                         {{ findTime(last_message(room).created_at) }}
@@ -729,11 +729,11 @@ const entre_nous = computed(() => {
 })
 
 const sem_match = computed(() => {
-    return grp.value?.rooms.filter(e => !e.is_match).filter(e => e.get_groups.length != 1)
+    return grp.value?.rooms.filter(e => !e.is_match).filter(e => e.get_groups?.length != 1)
 })
 
 const rooms = computed(() => {
-    return grp.value?.rooms.filter(e => e.is_match).filter(e => e.get_groups.length != 1)
+    return grp.value?.rooms.filter(e => e.is_match).filter(e => e.get_groups?.length != 1)
 })
 
 const seen_del = ref(false)

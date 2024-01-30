@@ -619,7 +619,7 @@ export const mgrp_name_ = (grps : Group | Room, id : number) => {
 }
 
 export const get_rooms_users = ( groups : Group[], room : Room ) => {
-	const group = groups.filter(e => room.get_groups.includes(e.id))[0]
+	const group = groups.filter(e => room.get_groups?.includes(e.id))[0]
 	
 	return room.users.filter(e => !group.users.filter(el => el.id == e.id)[0])
 
