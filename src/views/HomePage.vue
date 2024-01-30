@@ -7,12 +7,12 @@
                 <div class="header">
                     <div class="buts">
                         <button @click="typ_rang = 'for_you'" class="fancybut"
-                            :class="{ princ: typ_rang == 'for_you', seco: typ_rang != 'for_you' }">
+                            :class="{ princ: propostyp != 'group', seco: propostyp == 'group' }">
                             Pour toi
                         </button>
-                        <button @click="change_rang('proximity')" class="fancybut"
-                            :class="{ princ: typ_rang != 'for_you', seco: typ_rang == 'for_you' }">
-                            A proximité
+                        <button @click="propostyp = 'group'" class="fancybut"
+                            :class="{ princ: propostyp == 'group', seco: propostyp != 'group' }">
+                            Groupes
                         </button>
                     </div>
                     <div>
@@ -34,7 +34,7 @@
                     </div>
                 </div>
                 <div class="profs">
-                    <div v-if="!global_load" class="card_cont" id="card_co">
+                    <div v-if="!global_load && propostyp != 'group'" class="card_cont" id="card_co">
                         <div v-for="p in imgs.slice(0, 4) " :key="p.pk" class="card transit"
                             :class="{ card1: get_index(p.pk) == 1, card2: get_index(p.pk) == 2, card3: get_index(p.pk) == 3, card4: get_index(p.pk) == 4 }"
                             :id="`card:${p.pk}`" :style="{
@@ -90,8 +90,97 @@
                             </div>
                         </div>
                     </div>
-                    <div v-else class="card_cont" id="card_not">
-                        <div class="card card1 transit is_white" :id="`card:${-10}`">
+                    <div v-else-if="!global_load && propostyp == 'group'" class="card_cont" id="card_co:gr">
+                        <div v-for="p in groups.slice(0, 4) " :key="p.id" class="card transit"
+                            :class="{ card1: get_index(p.id, true) == 1, card2: get_index(p.id, true) == 2, card3: get_index(p.id, true) == 3, card4: get_index(p.id, true) == 4 }"
+                            :id="`card:gr:${p.id}`">
+                            
+                            <div class="wrapper_card">
+                                <div
+                                    style="width: 100%; height: 100%; background-image: linear-gradient(to bottom, transparent 80%, rgba(0, 0, 0, 0.925)) ; position: absolute; top: 0%; border-radius: 20px;">
+
+                                </div>
+                                <div v-if="p.users.length == 2" class="group_two">
+                                    <div :style="{
+                                        backgroundImage: `url('${p.users[0].get_profil.get_picture}')`
+                                    }" class="img_all num1 num2">
+
+                                    </div>
+                                    <div :style="{
+                                        backgroundImage: `url('${p.users[1].get_profil.get_picture}')`
+                                    }" class="img_all num3 num4">
+
+                                    </div>
+                                </div>
+                                <div v-else-if="p.users.length == 3" class="group_two">
+                                    <div class="help_2" style="height: 85vh">
+                                        <div class="img_all num1" :style="{
+                                            backgroundImage: `url('${p.users[0].get_profil.get_picture}')`
+                                        }">
+
+                                        </div>
+                                        <div class="img_all num2" :style="{
+                                            backgroundImage: `url('${p.users[1].get_profil.get_picture}')`
+                                        }">
+
+                                        </div>
+                                    </div>
+                                    <div :style="{
+                                        backgroundImage: `url('${p.users[2].get_profil.get_picture}')`
+                                    }" class="img_all num3-4">
+
+                                    </div>
+                                </div>
+                                <div v-else class="group_two">
+                                    <div class="help_2">
+                                        <div class="img_all num1" :style="{
+                                            backgroundImage: `url('${p.users[0].get_profil.get_picture}')`
+                                        }">
+
+                                        </div>
+                                        <div class="img_all num2" :style="{
+                                            backgroundImage: `url('${p.users[1].get_profil.get_picture}')`
+                                        }">
+
+                                        </div>
+                                    </div>
+                                    <div class="help_2 num3">
+                                        <div class="img_all" :style="{
+                                            backgroundImage: `url('${p.users[2].get_profil.get_picture}')`
+                                        }">
+
+                                        </div>
+                                        <div class="img_all num4" :style="{
+                                            backgroundImage: `url('${p.users[3].get_profil.get_picture}')`
+                                        }">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div :id="`name_of:gr:${p.id}:d`" class="name_ofg">
+                                    <span>{{ p.get_name }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="grps.length < 4" class="card transit is_white"
+                            :class="{ card1: grps.length == 0, card2: grps.length == 1, card3: grps.length == 2, card4: grps.length == 3 }"
+                            :id="`card:gr:${0}`">
+                            <div class=" no_recom" id="no_recom">
+                                <div class="">
+                                    <div class="centt">
+                                        <img style="width: 40vw; margin: auto;" :src="'../../imgs/no_data.svg'" />
+                                    </div>
+
+                                    <div class="text_no">
+                                        Plus de groupes dans votre région
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else class="card_cont" id="card_not:gr">
+                        <div class="card card1 transit is_white" :id="`card:gr:${-10}`">
                             <div v-if="!connex_error" class=" no_recoms" id="no_recoms">
                                 <div class="">
                                     <ion-spinner color="primary" name="crescent"></ion-spinner>
@@ -104,7 +193,7 @@
                                         Erreur de connexion
                                     </div>
                                     <div style="display: flex; justify-content: space-around; ">
-                                        <button @click="connex_error = false, get_profils()" class="fancybut princ">
+                                        <button @click="connex_error = false, ( typ_rang == '' ? get_groups() : get_profils())" class="fancybut princ">
                                             Reéssayer
                                         </button>
                                     </div>
@@ -114,16 +203,36 @@
                     </div>
                 </div>
                 <div class="utils">
-                    <div class="boutons">
+                    <div v-show="propostyp != 'group'" class="boutons">
+                        <button @click="oOpen = true" v-if="total_swipe >= 4" class="icor_xm bounce anim" id="chatm_but">
+                            <ion-icon :icon="happy"
+                                style="font-size: 3vh; position: relative; font-weight: bold; top: .2vh; " />
+                        </button>
                         <button @click="simulate_swipe(false)" class="icor_x bounce anim" id="close_but">
                             <ion-icon :icon="close"
                                 style="font-size: 4vh; position: relative; top: 0.05rem; font-weight: bold;" />
                         </button>
-                        <button @click="chat_with()" class="icor_xc bounce anim" id="close_but">
+                        <button @click="chat_with()" class="icor_xc bounce anim" id="chatw_but">
                             <ion-icon :icon="chatbox"
                                 style="font-size: 2.3vh; position: relative; top: 0.125rem; font-weight: bold; right: 0.1vh;" />
                         </button>
                         <button @click="simulate_swipe(true)" class="icor bounce anim" id="love_but">
+                            <ion-icon :icon="heart" style="font-size: 3vh; position: relative; top: 0.05rem;" />
+                        </button>
+                        <button @click="can_handle_sl()" v-if="total_swipe >= 4" class="icor_xs bounce anim" id="chats_but">
+                            <ion-icon :icon="rose" style="font-size: 2.8vh; position: relative;  font-weight: bold; " />
+                        </button>
+                    </div>
+                    <div v-show="propostyp == 'group'" class="boutons">
+                        <button @click="simulate_swipegr(false)" class="icor_x bounce anim" id="close_but:gr">
+                            <ion-icon :icon="close"
+                                style="font-size: 4vh; position: relative; top: 0.05rem; font-weight: bold;" />
+                        </button>
+                        <button class="icor_xc bounce anim" id="chatw_but">
+                            <ion-icon :icon="chatbox"
+                                style="font-size: 2.3vh; position: relative; top: 0.125rem; font-weight: bold; right: 0.1vh;" />
+                        </button>
+                        <button @click="simulate_swipegr(true)" class="icor bounce anim" id="love_but:gr">
                             <ion-icon :icon="heart" style="font-size: 3vh; position: relative; top: 0.05rem;" />
                         </button>
                     </div>
@@ -139,17 +248,55 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="is_menu" @click="hide_menu()" class="blank_m">
-
+                <div v-if="show_but_step" class="blank_m">
+                    <div v-if="moody">
+                        <div style="padding-top: 30vh; display: flex; justify-content: space-around;">
+                            <button class="icor_xs bounce anim"
+                                style="display: block !important; width: 10vh; height: 10vh;" id="chats_but">
+                                <ion-icon :icon="rose" style="font-size: 5vh; position: relative;  font-weight: bold; " />
+                            </button>
+                        </div>
+                        <div
+                            style="margin: 3vh 3vh; padding: 2vh 2vh; background-color: rgb(255, 234, 43); color: rgb(49, 49, 49) ; font-size: 2.2vh; font-weight: bold; border-radius: 10px;">
+                            Cliquez ce bouton pour envoyez des super like aux profils qui vous plaisent beaucoup. Il verront
+                            votre profil premièrement
+                        </div>
+                        <div style="display: flex; justify-content: space-around;">
+                            <button @click="moody = false"
+                                style="font-size: 2.2vh; padding: 2vh 3vh; border-radius: 10px; font-weight: bold; ">
+                                J'ai compris
+                            </button>
+                        </div>
+                    </div>
+                    <div v-else>
+                        <div style="padding-top: 30vh; display: flex; justify-content: space-around;">
+                            <button class="icor_xm bounce anim"
+                                style="display: block !important; width: 10vh; height: 10vh;" id="chatm_but">
+                                <ion-icon :icon="happy"
+                                    style="font-size: 5.5vh; position: relative; font-weight: bold; top: .2vh; " />
+                            </button>
+                        </div>
+                        <div style="margin: 3vh 3vh; padding: 2vh 2vh; 
+    background-color: rgb(10, 216, 54);
+    color: rgb(255, 255, 255); font-size: 2.2vh; font-weight: bold; border-radius: 10px;">
+                            Choisissez votre mood (ce dont vous avez envie) afin de matcher avec ceux qui le partage.
+                        </div>
+                        <div style="display: flex; justify-content: space-around;">
+                            <button @click="show_but_step = false"
+                                style="font-size: 2.2vh; padding: 2vh 3vh; border-radius: 10px; font-weight: bold; ">
+                                J'ai compris
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="is_match" v-if="isMacth">
                     <button @click="isMacth = false, current_match = undefined" class="icorb is_up">
                         <ion-icon :icon="close" style="font-size: 1.3rem;" />
                     </button>
                     <div class="concent">
-                        <div v-if="typ_match == 'mutual-lov'" >
+                        <div v-if="typ_match == 'mutual-lov' || typ_match == 'day-match'">
                             <div class="concentric circle1">
-                                
+
                             </div>
                             <div class="concentric circle2">
 
@@ -179,9 +326,45 @@
                                 </button>
                             </div>
                         </div>
-                        <div v-else >
+                        <div v-else-if="typ_match == 'reaction'">
+                            <div class="concentric circle1" style="border-color: rgba(10, 216, 55, 0.479);">
+
+                            </div>
+                            <div class="concentric circle2" style="border-color: rgba(10, 216, 55, 0.74);">
+
+                            </div>
+                            <div class="concentric circle3" style="border-color: rgba(10, 216, 55, 0.884);">
+
+                            </div>
+                            <div class="concentric circle4" style="border-color: rgb(10, 216, 54);">
+
+                            </div>
+                            <div class="alone" @click="router.push('/profil/' + current_match?.pk + '/')" :style="{
+                                backgroundImage: `url('${current_match?.url}')`
+                            }">
+                            </div>
+                        </div>
+                        <div v-else-if="typ_match == 'super-likes'">
+                            <div class="concentric circle1" style="border-color: rgba(255, 234, 43, 0.479);">
+
+                            </div>
+                            <div class="concentric circle2" style="border-color: rgba(255, 234, 43, 0.74);">
+
+                            </div>
+                            <div class="concentric circle3" style="border-color: rgba(255, 234, 43, 0.884);">
+
+                            </div>
+                            <div class="concentric circle4" style="border-color: rgb(255, 234, 43);">
+
+                            </div>
+                            <div class="alone" @click="router.push('/profil/' + current_match?.pk + '/')" :style="{
+                                backgroundImage: `url('${current_match?.url}')`
+                            }">
+                            </div>
+                        </div>
+                        <div v-else>
                             <div class="concentric circle1">
-                                
+
                             </div>
                             <div class="concentric circle2">
 
@@ -194,11 +377,13 @@
                             </div>
                             <div class="alone" @click="router.push('/profil/' + current_match?.pk + '/')" :style="{
                                 backgroundImage: `url('${current_match?.url}')`
-                            }"> 
+                            }">
                             </div>
                         </div>
                     </div>
-                    <div class=" animateM" :class="{impoT :typ_match != 'mutual-lov', impoTr : typ_match == 'mutual-lov' }" id="impott">
+                    <div v-if="typ_match != 'super-likes' && typ_match != 'reaction' && typ_match != 'day-match'"
+                        class=" animateM" :class="{ impoT: typ_match != 'mutual-lov', impoTr: typ_match == 'mutual-lov' }"
+                        id="impott">
                         <div> {{ typ_match == 'mutual-lov' ? "C'est un match!" : "Vous pouvez matchez!" }}</div>
                         <div style="font-size: 2.2vh !important; font-weight: normal !important;">
                             {{ typ_match == 'mutual-lov' ? (current_match?.name + " kiffe aussi votre photo.") : (typ_match
@@ -206,22 +391,84 @@
                                 current_match?.name + " vous trouve aussi " + match_obj.obj)) }}
                         </div>
                     </div>
-                    <div :class="{inputM :typ_match != 'mutual-lov', inputMr : typ_match == 'mutual-lov' }" >
-                        <button v-if="typ_match == 'mutual-lov'" @click="open_new_match()" class="sendMes princ">
+                    <div v-else-if="typ_match == 'day-match'" class=" animateM impoTr" id="impott">
+                        <div style="font-size: 4vh;"> Match de la semaine </div>
+                        <div style="font-size: 2.3vh !important; font-weight: bold; padding: 1vh;">
+                            Nous pensons que vous êtes compatibles.
+                        </div>
+                    </div>
+                    <div v-else-if="typ_match == 'reaction'" class=" animateM impoT" id="impott">
+                        <div style="font-size: 3vh;"> Vous partagez le même mood </div>
+                        <div style="font-size: 2.7vh !important; color: rgb(10, 216, 54) ; ">
+                            &lt;&lt; {{ match_obj.obj }} >>
+                        </div>
+                    </div>
+                    <div v-else class=" animateM impoT" id="impott">
+                        <div> Vous avez envoyé un super like à {{ current_match?.name }} </div>
+                        <div style="font-size: 2.2vh !important; font-weight: normal !important;">
+                            {{ user?.sex == 'Homme' ? 'Elle' : 'Il' }} verra votre profil en premier
+                        </div>
+                    </div>
+                    <div v-if="typ_match != 'super-likes'"
+                        :class="{ inputM: typ_match != 'mutual-lov' && typ_match != 'day-match', inputMr: typ_match == 'mutual-lov' || typ_match == 'day-match' }">
+                        <button v-if="typ_match == 'mutual-lov' || typ_match == 'day-match'" @click="open_new_match()"
+                            class="sendMes princ">
                             <ion-icon :icon="chatbubbles" style="font-size: 3.3vh; " /> <span
                                 style="position: relative; bottom: 0.6vh;">Démarrez la conversation</span>
+                        </button>
+                        <button v-else-if="typ_match == 'reaction' && !is_writing" @click="is_writing = true"
+                            class="sendMes princ" style="background-color: rgb(10, 216, 54) ;">
+                            <ion-icon :icon="paperPlane" style="font-size: 3.3vh; " /> <span
+                                style="position: relative; bottom: 0.6vh;">Ecrire à {{ current_match?.name }}</span>
                         </button>
                         <button v-else-if="!is_writing" @click="is_writing = true" class="sendMes princ">
                             <ion-icon :icon="paperPlane" style="font-size: 3.3vh; " /> <span
                                 style="position: relative; bottom: 0.6vh;">Ecrire à {{ current_match?.name }}</span>
                         </button>
                     </div>
-                    <div v-if="false" class="continueM">
+                    <div v-else @click="isMacth = false, current_match = undefined, typ_match = ''" class="continueM">
                         <button class="contBut">
                             <ion-icon :icon="arrowBack" style="font-size: 1.8rem; " /> <span
                                 style="position: relative; bottom: 0.4rem;">Continuer</span>
                         </button>
                     </div>
+                </div>
+                <div class="is_match" v-if="isGrMacth">
+                    <button @click="isGrMacth = false, current_match = undefined, grmatch = undefined" class="icorb is_up">
+                        <ion-icon :icon="close" style="font-size: 1.3rem;" />
+                    </button>
+                    <div style="display: flex; justify-content: space-around; align-items: center; padding-top: 16vh;">
+                        <div style="display: flex; flex-direction: column; ">
+                            <div v-for="usr in grmatch?.author.users" :key="usr.id" class="imgtoop img_allo our_grp" :style="{
+                                backgroundImage: `url('${usr.get_picture}')`
+                            }">
+
+                            </div>
+                        </div>
+                        <div style="padding: 2vh;">
+                            <button class="icorb_gr animateM" :class="{ animating: cpt % 2 }">
+                                <ion-icon :icon="heart" style="font-size: 3.8vh;" />
+                            </button>
+                        </div>
+                        <div style="display: flex; flex-direction: column; ">
+                            <div v-for="usr in grmatch?.target.users" :key="usr.id" class="imgtoop img_allo their_grp" :style="{
+                                backgroundImage: `url('${usr?.get_profil.get_picture}')`
+                            }">
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class=" animateM impoTr" id="impott">
+                        <div style="font-size: 4.3vh;"> Match de groupe </div>
+                    </div>
+                    <div class="inputMg">
+                        <button @click="open_new_match()" class="sendMes princ">
+                            <ion-icon :icon="chatbubbles" style="font-size: 3.3vh; " /> <span
+                                style="position: relative; bottom: 0.6vh;">Démarrez la conversation</span>
+                        </button>
+                    </div>
+
                 </div>
                 <div class="menu_cont animate" style="transform: translateY(90vh);" id="menu">
 
@@ -350,11 +597,10 @@
                             </button>
                         </div>
                         <div @input="set_text" class="my__in editable-div" contenteditable="true"
-                            data-placeholder="Ecrivez ici... (faites un compliment ou une remarque)">
+                            data-placeholder="Ecrivez ici... ">
 
                         </div>
-                        <button @click="create_post()" class="send_aa"
-                            :class="{ is_upoo: text__a != ''  }">
+                        <button @click="create_post()" class="send_aa" :class="{ is_upoo: text__a != '' }">
                             Envoyer
                         </button>
                     </div>
@@ -374,6 +620,73 @@
                     <ion-icon style="font-size: 2.5vh; position: relative; top: .2vh;" :icon="camera"></ion-icon> <span
                         style="position: relative; bottom: .2vh;">{{ img.photos }}</span>
                 </button>
+                <div v-for="p in groups" :key="p.id" :id="`wrapper:gr:${p.id}`" class="wrapper_card">
+                    <div
+                        style="width: 100%; height: 100%; background-image: linear-gradient(to bottom, transparent 80%, rgba(0, 0, 0, 0.925)) ; position: absolute; top: 0%; border-radius: 20px;">
+
+                    </div>
+                    <div v-if="p.users.length == 2" class="group_two">
+                        <div :style="{
+                            backgroundImage: `url('${p.users[0].get_profil.get_picture}')`
+                        }" class="img_all num1 num2">
+
+                        </div>
+                        <div :style="{
+                            backgroundImage: `url('${p.users[1].get_profil.get_picture}')`
+                        }" class="img_all num3 num4">
+
+                        </div>
+                    </div>
+                    <div v-else-if="p.users.length == 3" class="group_two">
+                        <div class="help_2" style="height: 85vh">
+                            <div class="img_all num1" :style="{
+                                backgroundImage: `url('${p.users[0].get_profil.get_picture}')`
+                            }">
+
+                            </div>
+                            <div class="img_all num2" :style="{
+                                backgroundImage: `url('${p.users[1].get_profil.get_picture}')`
+                            }">
+
+                            </div>
+                        </div>
+                        <div :style="{
+                            backgroundImage: `url('${p.users[2].get_profil.get_picture}')`
+                        }" class="img_all num3-4">
+
+                        </div>
+                    </div>
+                    <div v-else class="group_two">
+                        <div class="help_2">
+                            <div class="img_all num1" :style="{
+                                backgroundImage: `url('${p.users[0].get_profil.get_picture}')`
+                            }">
+
+                            </div>
+                            <div class="img_all num2" :style="{
+                                backgroundImage: `url('${p.users[1].get_profil.get_picture}')`
+                            }">
+
+                            </div>
+                        </div>
+                        <div class="help_2 num3">
+                            <div class="img_all" :style="{
+                                backgroundImage: `url('${p.users[2].get_profil.get_picture}')`
+                            }">
+
+                            </div>
+                            <div class="img_all num4" :style="{
+                                backgroundImage: `url('${p.users[3].get_profil.get_picture}')`
+                            }">
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div :id="`name_of:gr:${p.id}:d`" class="name_ofg">
+                        <span>{{ p.get_name }}</span>
+                    </div>
+                </div>
                 <div v-for="img in full_imgs" :key="img.pk" :id="`name_of:${img.pk}`" class="name_of" :class="{
                     n_online: is_online(toDate(profils.filter(e => e.id == img.pk)[0].last as string).getTime())
                 }">
@@ -394,14 +707,74 @@
             <abon-limited
                 @close="lOpen = false, ltext = (user?.cur_abn ? 'Vous avez atteint la limite de swipe quotidienne offerte par votre ticket.' : 'Vous avez atteint la limite de swipe quotidienne gratuite. Prenez un ticket pour continuer.')"
                 :text="ltext" :is-open="lOpen" :redirect="'/home'" />
+
+            <mood-comp :is-open="oOpen" @close="oOpen = false" @done="e => my_mood = e" :actual="actual" />
+            <no-group :is-open="GOpen" @close="GOpen = false" />
         </div>
 
     </ion-page>
 </template>
 
 <style >
+.imgtoop {
+    width: 25vw;
+    height: 25vw;
+    border-radius: 100%;
+    margin: 2vh;
+}
+
+.num3-4 {
+    width: 100%;
+    height: 100%;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.num3 {
+    border-bottom-left-radius: 20px;
+}
+
+.num4 {
+    border-bottom-right-radius: 20px;
+}
+
+.num1 {
+    border-top-left-radius: 20px;
+}
+
+.num2 {
+    border-top-right-radius: 20px;
+}
+
+.help_2 {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+.img_allo {
+    background-position: top center;
+    background-size: cover;
+}
+
+.img_all {
+    background-position: top center;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+
+}
+
+.group_two {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    height: 100%
+}
+
 .is_norm:active {
-   background-color: rgb(38, 38, 38);
+    background-color: rgb(38, 38, 38);
 }
 
 .is_norm {
@@ -632,7 +1005,7 @@
     padding-bottom: 6vw;
     padding-left: 10vw;
     padding-right: 10vw;
-    transform: translateY(calc(-241vw));
+    transform: translateY(calc(-200vw));
     font-size: 3vw;
 }
 
@@ -670,6 +1043,14 @@
     border-style: solid;
     border-width: 3px;
     border-color: #fc1955;
+}
+
+.inputMg {
+    padding: 3vw 6vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
 }
 
 .inputM {
@@ -726,6 +1107,14 @@
     width: 45px !important;
 }
 
+.icorb_gr {
+    height: 18vw;
+    width: 18vw;
+    border-radius: 100%;
+    color: white;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.459), transparent);
+    background-color: #fb4073;
+}
 
 .icorb:active {
     background: linear-gradient(to left, rgba(255, 255, 255, 0.651), transparent);
@@ -806,6 +1195,7 @@
 .circle1 {
     border-color: #fc195569;
 }
+
 
 .concentric {
     width: 80vw;
@@ -895,6 +1285,15 @@
     bottom: 5.3vh !important;
 }
 
+.name_ofg {
+    position: absolute;
+    bottom: 1.4vh;
+    left: 3vh;
+    font-size: 2.5vh;
+    font-weight: bolder;
+    color: white;
+}
+
 .name_of {
     position: absolute;
     bottom: 1.4vh;
@@ -931,7 +1330,7 @@
     top: 0%;
     z-index: 50;
     background-color: transparent;
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(25px);
 }
 
 .animateM {
@@ -1098,6 +1497,50 @@
     transition: all 0.25s ease-in-out;
 }
 
+.their_grp {
+	border-color : rgb(255, 234, 43);
+	border-style : solid;
+	border-width: 6px;
+}
+
+.our_grp {
+	border-color : rgb(10, 216, 54);
+	border-style : solid;
+	border-width: 6px;
+}
+
+.icor_xm:active {
+    transform: scale(1.2);
+}
+
+.icor_xm {
+    top: 2vh;
+    left: 2vh;
+    height: 5.5vh;
+    width: 5.5vh;
+    border-radius: 100%;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.336), transparent);
+    margin-right: 0.6rem;
+    background-color: rgb(10, 216, 54);
+    color: rgb(255, 255, 255);
+}
+
+.icor_xs:active {
+    transform: scale(1.2);
+}
+
+.icor_xs {
+    top: 2vh;
+    left: 2vh;
+    height: 5.5vh;
+    width: 5.5vh;
+    border-radius: 100%;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.336), transparent);
+    background-color: rgb(255, 234, 43);
+    margin-right: 0.6rem;
+    color: rgb(49, 49, 49);
+}
+
 .icor_xc:active {
     transform: scale(1.2);
 }
@@ -1135,6 +1578,7 @@
     color: white;
     background: linear-gradient(to left, rgba(255, 255, 255, 0.336), transparent);
     background-color: #fc1955;
+    margin-right: 0.6rem;
 }
 
 .boutons {
@@ -1260,11 +1704,11 @@
 
 <script setup lang="ts" >
 import { IonPage, IonContent, IonIcon, IonRippleEffect, IonSpinner, onIonViewDidEnter, useBackButton } from "@ionic/vue"
-import { arrowBack, camera, car, card, chatbox, chatbubble, chatbubbles, close, ellipsisHorizontalOutline, heart, heartHalf, idCard, notifications, paperPlane, person, radioButtonOn, send, settings, text, homeOutline, home, albums, newspaper } from "ionicons/icons";
+import { arrowBack, camera, car, card, chatbox, chatbubble, chatbubbles, close, ellipsisHorizontalOutline, heart, heartHalf, idCard, notifications, paperPlane, person, radioButtonOn, send, settings, text, homeOutline, home, albums, newspaper, gift, happy, rose } from "ionicons/icons";
 import { computed, ref, watch } from "vue";
 import Hammer from "hammerjs";
 import { useRouter } from "vue-router";
-import { Card, Profil } from "@/global/types";
+import { Card, Profil, UserGroup, Group } from "@/global/types";
 import { useUserStore } from "@/global/pinia";
 import { storeToRefs } from "pinia";
 import axios from "axios";
@@ -1273,8 +1717,10 @@ import AbonLimited from "@/components/AbonLimited.vue";
 import UserBadge from "@/components/UserBadge.vue";
 import { StatusBar } from "@capacitor/status-bar"
 import { NativeAudio } from "@capacitor-community/native-audio"
+import MoodComp from "@/components/MoodComp.vue";
+import NoGroup from "@/components/NoGroup.vue";
 
-
+const oOpen = ref(false)
 const seuil = ref(0)
 
 const load_audio = () => {
@@ -1311,7 +1757,16 @@ const connex_error = ref(false)
 const profils = ref<Profil[]>([])
 const typ_rang = ref('for_you')
 const createdId = ref<string[]>([])
+const my_mood = ref({
+    id: 0,
+    name: "Aucune envie"
+})
+const actual = computed(() => {
+    return my_mood.value.id
+})
 watch(typ_rang, (newt, oldt) => {
+    if(newt == '') return ;
+    propostyp.value = 'person'
     remove_all_child('card_co')
     setTimeout(() => {
         full_imgs.value = []
@@ -1321,7 +1776,9 @@ watch(typ_rang, (newt, oldt) => {
         global_load.value = true
         get_profils()
     }, 20)
+    
 })
+
 const change_rang = async (newt: string) => {
     if (newt != 'for_you' && (!user.value?.quart || user.value.quart == '')) {
         await set_location(newt)
@@ -1354,14 +1811,16 @@ const set_location = async (newt: string) => {
 
 const _userStore = useUserStore()
 const userStore = storeToRefs(_userStore)
-const { excepts, plikes, can_swipe, matches, has_new, rooms, waiting_room, has_new_notifs, notifs, come_first, here_first, is_blocked, oth_matches, not_matches } = userStore
+const { excepts, plikes, can_swipe, matches, has_new, rooms, waiting_room, has_new_notifs, notifs, come_first, here_first, is_blocked, oth_matches, not_matches, total_swipe, can_sl, new_essentials, all_slikes, sem_string, cangr_swipe, why_cantgr_swipe, my_groups, gmatches, all_rooms } = userStore
 const { user } = userStore
-const { build_card, swipe_left, swipe_right, why_cant_swipe, force_room, initiate_chat, check_first_come } = _userStore
+const { build_card, swipe_left, swipe_right, why_cant_swipe, force_room, initiate_chat, check_first_come, swipe_rightgr, swipe_leftgr } = _userStore
 const current_match = ref<Card>()
 const ltext = ref('Vous avez atteint votre limite de swipe quotidien.')
 
+const has_dayma = ref(false)
 const swipe_right_ = (card: Card) => {
     swipe_right(card)
+    if (sls.value.includes(card.pk)) return;
     if (card.i_like) {
         match_obj.value = {
             user: card.pk,
@@ -1373,13 +1832,40 @@ const swipe_right_ = (card: Card) => {
         return;
     }
     if (card.commons.length) {
-        match_obj.value = {
-            user: card.pk,
-            typ: 'interest',
-            obj: card.commons[Math.floor(Math.random() * card.commons.length)].name
+        if (!rooms.value.filter(e => !e.is_proposed).length && !card.has_room && total_swipe.value > 7 && !has_dayma.value) {
+            match_obj.value = {
+                user: card.pk,
+                typ: "day-match",
+                obj: ""
+            }
+            typ_match.value = "day-match"
+            launch_match(card)
+            has_dayma.value = true
+            return;
         }
-        typ_match.value = "interest"
-        launch_match(card)
+        if(card.commons[0].id) {
+            match_obj.value = {
+                user: card.pk,
+                typ: 'interest',
+                obj: card.commons[Math.floor(Math.random() * card.commons.length)].name
+            }
+            typ_match.value = "interest"
+            launch_match(card)
+            return
+        }
+        
+    }
+    if (card.reaction) {
+        if (card.reaction.id && card.reaction.id == my_mood.value.id) {
+            match_obj.value = {
+                user: card.pk,
+                typ: 'reaction',
+                obj: card.reaction.name
+            }
+            typ_match.value = 'reaction'
+            launch_match(card)
+            return
+        }
     }
 }
 
@@ -1398,7 +1884,7 @@ const launch_match = (card: Card) => {
     current_match.value = card
     setTimeout(() => {
         isMacth.value = true
-        if (typ_match.value == 'mutual-lov') matches.value.push(card.pk);
+        if (typ_match.value == 'mutual-lov' || typ_match.value == 'day-match') matches.value.push(card.pk);
         else not_matches.value.push(match_obj.value);
     }, 100)
 }
@@ -1459,6 +1945,7 @@ const get_profils = async () => {
             }, 500)
         }
         charging.value = false
+        if (resp.data['mood'].id) my_mood.value = resp.data['mood']
     } catch (e) {
         console.error(e)
         connex_error.value = true
@@ -1466,9 +1953,9 @@ const get_profils = async () => {
 }
 const full_imgs = ref<Card[]>([])
 const imgs = ref<Card[]>([])
-const get_index = (pk: number) => {
+const get_index = (pk: number, is_group = false) => {
 
-    const index = imgs.value.findIndex(item => item.pk == pk)
+    const index = is_group ? grps.value.findIndex(item => item.id == pk) : imgs.value.findIndex(item => item.pk == pk)
     return index + 1
 }
 let current_img = [] as Card[]
@@ -1530,9 +2017,11 @@ const get_next = () => {
     } as Card
 }
 
+const GOpen = ref(false)
 const lOpen = ref(false)
 const handle_cant_swipe = (slug: string) => {
     if (slug == 'abon') return router.push('/after')
+    if (slug == "nogroup") return GOpen.value = true
     lOpen.value = true
 }
 
@@ -1808,9 +2297,9 @@ const enable_click = (id: number) => {
 const isMacth = ref(false)
 watch(isMacth, (newi, oldi) => {
     if (newi) {
-        play_swipe( typ_match.value == 'mutual-lov' ? 'success' : 'common')
+        play_swipe(typ_match.value == 'mutual-lov' ? 'success' : 'common')
         setTimeout(() => {
-            document.getElementById('impott')?.classList.add( typ_match.value == 'mutual-lov' ? 'translar' : 'transla')
+            document.getElementById('impott')?.classList.add(typ_match.value == 'mutual-lov' || typ_match.value == 'day-match' ? 'translar' : 'transla')
         }, 200)
     }
 })
@@ -1818,7 +2307,7 @@ const cpt = ref(0)
 
 const animate_match = () => {
     setInterval(() => {
-        if (isMacth.value) cpt.value++;
+        if (isMacth.value || isGrMacth.value) cpt.value++;
     }, 800)
 }
 animate_match()
@@ -1837,7 +2326,7 @@ const remove_all_child = (idcont: string) => {
     }
 }
 
-const create_no_recom = () => {
+const create_no_recom = (is_group = false) => {
     const main = document.createElement('div')
     main.classList.add('no_recom')
     main.id = "no_recom"
@@ -1851,7 +2340,7 @@ const create_no_recom = () => {
     img_par.appendChild(img)
     const div = document.createElement('div')
     div.classList.add('text_no')
-    div.innerText = 'Plus de profils dans votre region'
+    div.innerText = 'Plus de ' + (is_group ? 'groupes' : 'profils') + ' dans votre region'
     par.appendChild(img_par)
     par.appendChild(div)
     main.appendChild(par)
@@ -1893,7 +2382,7 @@ watch(waiting_room, (neww, oldw) => {
 })
 
 const open_new_match = async () => {
-    const room = rooms.value.filter(e => e.slug == room_slug(user.value?.id as number, current_match.value?.pk as number))[0]
+    const room = all_rooms.value.filter(e => e.slug == (isMacth.value ? room_slug(user.value?.id as number, current_match.value?.pk as number) : room_slug(grmatch.value?.author.id as number, grmatch.value?.target.id as number, true)))[0]
     if (room) router.push(`/room/${room.slug}`)
     else force_room()
 }
@@ -1986,38 +2475,407 @@ const send_interest = async () => {
 
 const is_writing = ref(false)
 const text__a = ref('')
-const set_text = (e : any) => {
-	text__a.value = e.target.innerText;
+const set_text = (e: any) => {
+    text__a.value = e.target.innerText;
 }
 
 const create_post = async () => {
-    if(text__a.value == "" ) {
+    if (text__a.value == "") {
         return show_alert('Impossible de continuer', "Veuillez écrire un message avant d'envoyer.")
     }
-    if(text__a.value.length > 100) {
-    	return show_alert('Impossible de continuer', "Le message doit comporter moins de 100 caractères.")
+    if (text__a.value.length > 100) {
+        return show_alert('Impossible de continuer', "Le message doit comporter moins de 100 caractères.")
     }
     const load = await showLoading('Envoi...')
 
     try {
-        const resp = await axios.post('api/send_text_cat/', { text : text__a.value, match_obj: JSON.stringify(match_obj.value)}, {
+        const resp = await axios.post('api/send_text_cat/', { text: text__a.value, match_obj: JSON.stringify(match_obj.value) }, {
             headers: {
                 Authorization: `Bearer ${await access_tok(router, load)}`,
                 "Content-Type": "multipart/form-data"
             },
         })
-        if(resp.data['done']) {
+        if (resp.data['done']) {
             await presentToast("top", "Message envoyée à " + current_match.value?.name + " avec succès.", "success");
             isMacth.value = false, current_match.value = undefined;
             is_writing.value = false;
         }
-    } catch(e) {
-    	alert(e);
+    } catch (e) {
+        alert(e);
         await show_alert('Erreur imprévue', "Une erreur est survenue lors de l'envoi de votre message, veuillez reéssayer.")
     }
 
     load.dismiss()
 
+}
+
+const moody = ref(true)
+const show_but_step = ref(false)
+watch(total_swipe, (newt, oldt) => {
+    if (newt == 4) {
+        setTimeout(() => {
+            show_but_step.value = true
+        }, 200)
+    }
+})
+
+const can_handle_sl = () => {
+    if (can_sl.value) handle_sl()
+    else {
+        lOpen.value = true
+        ltext.value = "Vous avez atteint la limite de super-likes de la semaine."
+    }
+}
+
+const sls = ref([0])
+
+const handle_sl = async () => {
+    const card = current_img[0]
+    const load = await showLoading('Patientez...')
+    try {
+        const resp = await axios.post('api/super_like/', {
+            pk: card.pk
+        }, {
+            headers: {
+                Authorization: `Bearer ${await access_tok(router, load)}`
+            }
+        })
+        if (resp.data['done']) {
+            sls.value.push(card.pk)
+            load.dismiss()
+            all_slikes.value[sem_string.value] += 1
+            new_essentials.value.all_slikes = all_slikes.value
+            current_match.value = card
+            typ_match.value = 'super-likes'
+            isMacth.value = true
+            play_swipe('common')
+            simulate_swipe(true)
+        }
+    } catch (e) {
+        load.dismiss()
+        await show_alert('Erreur de connexion', "Une erreur est survenue, veuillez vérifier votre connexion internet et reéssayer.")
+    }
+
+}
+
+const propostyp = ref('person')
+watch(propostyp, async (newp, oldp) => {
+    if (newp == 'group') {
+    	typ_rang.value = ''
+        if (!full_imgs.value.length) await get_profils()
+        if(!groups.value.length) {
+        	global_load.value = true
+        	connex_error.value = false
+        get_groups()
+        }
+    }
+})
+
+const groups = ref<UserGroup[]>([])
+const grps = ref<UserGroup[]>([])
+const isGrMacth = ref(false)
+let cur_groups = [] as UserGroup[]
+const excepts_gr = computed(() => {
+    const pks = []
+    for (const gr of groups.value) pks.push(gr.id)
+    return pks
+})
+
+const grmatch = ref<{
+    author: Group,
+    target: UserGroup
+}>()
+
+const swipe_right_gr = (group: UserGroup) => {
+    swipe_rightgr(group)
+    const l_group = my_groups.value.filter(e => group.like_us.includes(e.id))[0]
+    console.log('lgroup')
+    console.log(l_group)
+    if (l_group) {
+        grmatch.value = {
+            author: l_group,
+            target: group
+        }
+        isGrMacth.value = true
+        gmatches.value.push({
+            author: l_group.id,
+            target: group.id
+        })
+        animate_match()
+        play_swipe('success')
+    }
+}
+
+const enable_click_gr = (id: number) => {
+    document.getElementById(`card:gr:${id}`)?.addEventListener('click', (ev) => {
+        router.push(`/gprofil/${id}`)
+    })
+}
+
+const get_groups = async () => {
+    charging.value = true
+    try {
+        const resp = await axios.post('api/get_groups/', {
+            excepts: JSON.stringify(excepts_gr.value)
+        }, {
+            headers: {
+                Authorization: `Bearer ${await access_tok(router, undefined)}`
+            }
+        })
+        if (resp.data['done']) {
+            connex_error.value = true
+            const is_new = groups.value.length == 0
+            groups.value = groups.value.concat(resp.data['result'] as UserGroup[])
+            if (is_new) {
+                cur_groups = groups.value.slice(0, 4)
+                cur_groups.forEach(element => {
+                    grps.value.push(element)
+                });
+                if (cur_groups.length < 4) {
+                    cur_groups.push({
+                        id: 0,
+                        users: [profils.value[0]],
+                        get_creator: 0,
+                        get_name: "",
+                        like_us: []
+                    })
+                }
+                global_load.value = false
+                setTimeout(() => {
+                    enable_swipe_gr()
+                    grps.value.forEach(element => {
+                        enable_click_gr(element.id)
+                    });
+                    color_b.value = cur_groups[0].users[0].get_profil.color
+                }, 200)
+            }
+            charging.value = false
+            
+
+        }
+    } catch (e) {
+        console.error(e)
+        connex_error.value = true
+    }
+}
+
+const get_nextgr = () => {
+    let i = 0;
+    for (const img of groups.value) {
+        i++;
+        if (img.id == cur_groups[3].id) break
+    }
+    if (groups.value.length - (i + 1) <= 4) {
+        console.log('recharg...')
+        if (!charging.value) get_groups()
+    }
+    return i < groups.value.length ? groups.value[i] : {
+        id: 0,
+        users: [profils.value[0]],
+        get_creator: 0,
+        get_name: "",
+        like_us: []
+    } as UserGroup
+}
+
+const create_wrappergr = (g: UserGroup) => {
+    return document.getElementById(`wrapper:gr:${g.id}`);
+}
+
+const enable_swipe_gr = () => {
+    const fcard = document.getElementById(`card:gr:${cur_groups[0].id}`) as HTMLElement;
+    const swipeObj = new Hammer(fcard);
+    swipeObj.on('pan', (ev) => {
+        fcard.classList.remove('transit')
+        const dx = ev.deltaX
+        fcard.style.transform = 'translateX(' + dx + 'px' + ')' + ' rotateZ(' + Math.floor((dx / 620) * 45) + 'deg)'
+        const scard = document.getElementById(`card:gr:${1 < cur_groups.length ? cur_groups[1].id : -1}`) as HTMLElement
+        const tcard = document.getElementById(`card:gr:${2 < cur_groups.length ? cur_groups[2].id : -1}`) as HTMLElement
+        const ocard = document.getElementById(`card:gr:${3 < cur_groups.length ? cur_groups[3].id : -1}`) as HTMLElement
+        const cont = document.getElementById('card_co:gr') as HTMLElement
+        if (!cont.contains(fcard)) return;
+        scard?.classList.remove('card2')
+        scard?.classList.add('waiting1')
+
+        tcard?.classList.remove('card3')
+        tcard?.classList.add('waiting2')
+
+        const close_but = document.getElementById('close_but:gr') as HTMLElement
+        const love_but = document.getElementById('love_but:gr') as HTMLElement
+
+        close_but.classList.remove('bounce')
+        love_but.classList.remove('bounce')
+
+        if (ev.deltaX < 0)
+            close_but.style.transform = 'scale(' + (1 + 0.8 * Math.abs(ev.deltaX / 150)) + ')'
+        else
+            love_but.style.transform = 'scale(' + (1 + 0.8 * Math.abs(ev.deltaX / 150)) + ')'
+        if (ev.isFinal) {
+            fcard.classList.add('transit')
+            if (Math.abs(ev.deltaX) > 180 && cur_groups[0].id && cangr_swipe.value) {
+                play_swipe('swipe')
+                fcard.style.transform = 'translateX(' + (dx / Math.abs(dx)) * 600 + 'px' + ')' + ' rotateZ(' + 40 + 'deg)';
+                if (cur_groups[0].id)
+                    (dx > 0) ? swipe_right_gr(cur_groups[0]) : swipe_leftgr(cur_groups[0])
+                scard?.classList.remove('waiting1')
+                tcard?.classList.remove('waiting2')
+                ocard?.classList.remove('card4')
+
+                scard?.classList.add('card1')
+                tcard?.classList.add('card2')
+                ocard?.classList.add('card3')
+
+                try {
+                    cont.removeChild(fcard)
+                } catch (e) {
+                    console.log(e)
+                }
+
+                if (cur_groups[cur_groups.length - 1].id) {
+                    const nextObj = get_nextgr()
+                    const next = document.createElement('div')
+                    next.classList.add('card')
+                    next.classList.add('card4')
+                    next.classList.add('transit')
+                    next.id = `card:gr:${nextObj.id}`
+                    createdId.value.push(next.id)
+                    if (nextObj.id) {
+                        const wrapper = create_wrappergr(nextObj)
+                        next.appendChild(wrapper as HTMLElement)
+                        setTimeout(() => {
+                            enable_click_gr(nextObj.id)
+                        }, 500)
+                    }
+                    else {
+                        next.classList.add('is_white')
+                        next.appendChild(create_no_recom())
+                    }
+                    cur_groups.push(nextObj)
+                    cont.appendChild(next)
+
+                }
+                cur_groups = cur_groups.filter(e => e.id != cur_groups[0].id)
+                color_b.value = cur_groups[0].users[0].get_profil.color
+                enable_swipe_gr()
+
+            } else {
+                fcard.style.transform = 'translateX(' + 0 + 'px' + ')' + ' rotateZ(' + 0 + 'deg)'
+
+                scard?.classList.remove('waiting1')
+                tcard?.classList.remove('waiting2')
+
+                scard?.classList.add('card2')
+                tcard?.classList.add('card3')
+
+                if (cur_groups[0].id && Math.abs(ev.deltaX) > 190) {
+                    const why = why_cantgr_swipe.value
+                    setTimeout(() => {
+                        handle_cant_swipe(why)
+                    }, 500)
+                }
+
+            }
+
+            close_but.style.transform = 'scale(1)'
+            love_but.style.transform = 'scale(1)'
+
+            close_but.classList.add('bounce')
+            love_but.classList.add('bounce')
+        }
+    })
+}
+
+const simulate_swipegr = (is_love: Boolean) => {
+
+    const fcard = document.getElementById(`card:gr:${cur_groups[0].id}`) as HTMLElement;
+
+    const scard = document.getElementById(`card:gr:${1 < cur_groups.length ? cur_groups[1].id : -1}`) as HTMLElement
+    const tcard = document.getElementById(`card:gr:${2 < cur_groups.length ? cur_groups[2].id : -1}`) as HTMLElement
+    const ocard = document.getElementById(`card:gr:${3 < cur_groups.length ? cur_groups[3].id : -1}`) as HTMLElement
+    const cont = document.getElementById('card_co:gr') as HTMLElement
+    if (!cont.contains(fcard)) return;
+    const close_but = document.getElementById('close_but:gr') as HTMLElement
+    const love_but = document.getElementById('love_but:gr') as HTMLElement
+    if (!is_love)
+        close_but.style.transform = 'scale(1.4)'
+    else
+        love_but.style.transform = 'scale(1.4)'
+
+    fcard.classList.add('transito')
+
+    fcard.style.transform = 'translateX(' + (is_love ? 1 : -1) * 600 + 'px' + ')' + ' rotateZ(' + ((is_love ? 1 : -1) * 40) + 'deg)';
+    if (cur_groups[0].id)
+        is_love ? swipe_right_gr(cur_groups[0]) : swipe_leftgr(cur_groups[0])
+    scard?.classList.remove('card2')
+    scard?.classList.add('waiting1')
+
+    tcard?.classList.remove('card3')
+    tcard?.classList.add('waiting2')
+    setTimeout(() => {
+        scard?.classList.remove('waiting1')
+        tcard?.classList.remove('waiting2')
+        ocard?.classList.remove('card4')
+
+        scard?.classList.add('card1')
+        tcard?.classList.add('card2')
+        ocard?.classList.add('card3')
+
+        if (cur_groups[current_img.length - 1].id) {
+            const nextObj = get_nextgr()
+            const next = document.createElement('div')
+            next.classList.add('card')
+            next.classList.add('card4')
+            next.classList.add('transit')
+            next.id = `card:gr:${nextObj.id}`
+            createdId.value.push(next.id)
+            if (nextObj.id) {
+                const wrapper = create_wrappergr(nextObj)
+                next.appendChild(wrapper as HTMLElement)
+                setTimeout(() => {
+                    enable_click_gr(nextObj.id)
+                }, 500)
+            }
+            else {
+                next.classList.add('is_white')
+                next.appendChild(create_no_recom())
+            }
+            cur_groups.push(nextObj)
+            cont.appendChild(next)
+        }
+        if (cur_groups[0].id && cangr_swipe.value) {
+            play_swipe('swipe')
+            cur_groups = cur_groups.filter(e => e.id != cur_groups[0].id)
+            color_b.value = cur_groups[0].users[0].get_profil.color
+            cont.removeChild(fcard)
+
+        } else {
+
+            scard?.classList.remove('card1')
+            tcard?.classList.remove('card2')
+            ocard?.classList.remove('card3')
+            scard?.classList.add('card2')
+            tcard?.classList.add('card3')
+            ocard?.classList.add('card4')
+            fcard.style.transform = 'translateX(' + 0 + 'px' + ')' + ' rotateZ(' + 0 + 'deg)'
+            if (current_img[0].pk) {
+                const why = why_cantgr_swipe.value
+                setTimeout(() => {
+                    handle_cant_swipe(why)
+                }, 500)
+            }
+        }
+        fcard.classList.remove('transito')
+        enable_swipe_gr()
+    }, 500)
+
+    setTimeout(() => {
+        close_but.style.transform = 'scale(1)'
+        love_but.style.transform = 'scale(1)'
+    }, 200)
+}
+
+const log = (p : any) => {
+	console.log(p)
 }
 
 </script>

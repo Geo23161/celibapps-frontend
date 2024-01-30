@@ -635,7 +635,7 @@
 
 .text_m {
     text-align: center;
-    font-size: 8vw;
+    font-size: 8.648000000000001vw;
     font-weight: bold;
     color: #fc1955;
 }
@@ -868,12 +868,12 @@
 
 .body_all {
     width: 100%;
-    height: 100%;
-    min-height: 100%;
+    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     background-color: rgb(29, 29, 29);
-    font-family: 'Poppins', serif;
+    font-family: 'PT Serif', serif;
 }
 </style>
 
@@ -924,8 +924,8 @@ watch(lvl, (newl, oldl) => {
 const route = useRoute()
 const _userStore = useUserStore()
 const userStore = storeToRefs(_userStore)
-const { get_room_messages, get_room_, delete_room, next_niveau, add_store, send, delete_message, find_next, f_url } = _userStore
-const { user, storeFs, all_mess, charged_files, audios, launchers, l_accepted, l_refused, has_sen, state_obj, only_verified, day_discuss, day_mess, can_anonym, offnonym} = userStore
+const { get_room_messages, get_room_, delete_room, next_niveau, add_store, send, delete_message, find_next, f_url, send_state } = _userStore
+const { user, storeFs, all_mess, charged_files, audios, launchers, l_accepted, l_refused, has_sen, state_obj, only_verified, day_discuss, day_mess, can_anonym, offnonym, rooms} = userStore
 const new_but = ref(false)
 const oldM = ref<Message>()
 const messages = ref<Message[]>([])
@@ -956,10 +956,13 @@ watch(messages, (newm, oldm) => {
     }
     oldM.value = newm[newm.length - 1]
 }, { deep: true })
-const room = ref<Room>()
+const room_ = ref<Room>()
+const room = computed(() => {
+    return rooms.value.filter(e => e.slug == slug.value)[0]
+})
 const router = useRouter()
 const hOpen = ref(false)
-const hidden = ref(true)
+const hidden = ref(false)
 watch(hidden, (newh, oldh) => {
     if (newh) store_obj('hidden:ai:' + slug.value, 'yes')
     else remove_obj('hidden:ai:' + slug.value)
@@ -1169,7 +1172,6 @@ nextTick(() => {
 
 set_slug()
 set_messages()
-room.value = get_room_(slug.value as string)
 
 const warn_delete = () => {
     show_warn('Confirmer la suppression', "Voulez-vous vraiment supprimer cette discussion. Cette action est irréversible", "Oui", delete_room, room.value?.id)
@@ -1408,6 +1410,12 @@ const send_message = async (typ: string, m: Message, blob?: Blob, preview?: Blob
 }
 
 const create_message = async (text?: string, blob?: Blob, typ?: string, preview?: Blob, tim?: string) => {
+    
+    const state = send_state(undefined, room.value?.slug as string)
+    if(state == 'limited') {
+        return bOpen.value = true
+    }
+    
     const load = typ == 'txt' ? undefined : (await showLoading('Enregistrement...'))
     const old_pk = Math.floor(generateNegativeRandomNumber(10000000000))
     const message: Message = {

@@ -24,8 +24,11 @@
                                 class="smessage_cont " :class="{
                                     not_seen : !seen_notifs.includes(n.id)
                                 }" >
-                                <div @click=" ['new_match', 'delete_room', 'new_like', 'expired_abon', 'send_inter'].includes(n.typ) ? 0 : ( n.typ.includes('want_lov') ? send_lov(n) : router.push(n.get_urls[0]))" :id="'smessage:' + n.id" class="smessage">
-                                    <div v-if="['new_match', 'send_inter'].includes(n.typ) || n.typ.includes('want_lov') " class="simg" :style="{
+                                <div @click=" ['new_match', 'delete_room', 'new_like', 'expired_abon', 'send_inter'].includes(n.typ) ? 0 : ( n.typ.includes('want_lov') ? send_lov(n) : router.push(n.get_urls[0]))" :id="'smessage:' + n.id" :class="{
+                                        smessage : n.typ != 'send_sl',
+                                        sl_mess : n.typ == 'send_sl'
+                                    }">
+                                    <div v-if="['new_match', 'send_inter', 'send_sl'].includes(n.typ) || n.typ.includes('want_lov') " class="simg" :style="{
                                         'background-size': 'cover',
                                         'background-position': 'top center',
                                         'background-image': `url('${f_url(n.get_photo)}')`,
@@ -45,10 +48,13 @@
                                     <button v-else-if="n.typ == 'expired_abon'" class="butfor princ" >
                                         <ion-icon :icon="closeCircle" style="position: relative; top: .1vh; font-size: 5vh;" ></ion-icon>
                                     </button>
+                                    <button v-else-if="n.typ == 'new_gmatch'" class="butfor princ" >
+                                        <ion-icon :icon="people" style="position: relative; top: .1vh; font-size: 5vh;" ></ion-icon>
+                                    </button>
                                     <div v-else-if="n.typ == 'new_anonym'" class=""  >
-                                        <img style="width: 8vh;" :src="'../../imgs/mask.webp'" />
+                                        <img style="width: 25vw;" :src="'../../imgs/mask.webp'" />
                                     </div>
-                                    <div class="mess_body">
+                                    <div class="mess_body" :class="{ is_slv :  n.typ == 'send_sl'  }" >
                                         {{ n.text }}
                                     </div>
                                 </div>
@@ -59,12 +65,12 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div v-if="['new_match', 'send_inter'].includes(n.typ)"  class="sbut_cont">
+                                <div v-if="['new_match', 'send_inter', 'send_sl'].includes(n.typ)"  class="sbut_cont">
                                     <button @click="router.push(n.get_urls[0])" class="sbut prof">
                                         <ion-icon :icon="eye" style="position: relative; top: 1px" />
                                         Profile
                                     </button>
-                                    <button v-if="n.typ != 'send_inter'" @click=" router.push(n.get_urls[1])" class="sbut write" style="margin-left: 1rem">
+                                    <button v-if="n.typ != 'send_inter' && n.typ != 'send_sl'" @click=" router.push(n.get_urls[1])" class="sbut write" style="margin-left: 1rem">
                                         <ion-icon :icon="chatbox" style="position: relative; top: 1px" />
                                         Ecrire
                                     </button>
@@ -90,6 +96,10 @@
 </template>
   
 <style scoped>
+.is_slv {
+ color : rgb(49, 49, 49) !important;
+}
+
 .not_seen {
     background-color: #201844;
 }
@@ -341,6 +351,18 @@
 .is_ad {
     border-radius: 0px !important;
     background: #100b26 !important;
+}
+
+.sl_mess {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    border-style: solid;
+    border-width: 0px;
+    border-color: rgb(255, 234, 43);
+    border-radius: 35px;
+    background: rgb(255, 234, 43); 
+    color: rgb(49, 49, 49);
 }
 
 .smessage:active{
@@ -1106,18 +1128,20 @@ div .m_prev {
   
 <script setup lang="ts">
 import { IonPage, IonContent, IonIcon, onIonViewDidEnter } from "@ionic/vue"
-import { arrowBack, cash, chatbox, chatbubbles, checkbox, closeCircle, eye, heartDislike, heartHalf } from "ionicons/icons";
+import { arrowBack, cash, chatbox, chatbubbles, checkbox, closeCircle, eye, heartDislike, heartHalf, people } from "ionicons/icons";
 import { useRouter } from "vue-router";
 import { useUserStore } from "@/global/pinia"
 import { storeToRefs } from "pinia";
 import { Notif } from "@/global/types";
 import { StatusBar } from "@capacitor/status-bar"
+import { room_slug } from "@/global/utils";
+
 
 const router = useRouter()
 const userStore_ = useUserStore()
 const userStore = storeToRefs(userStore_)
 const { f_url, force_room } = userStore_
-const { notifs, seen_notifs, user, get_notifs, oth_matches } = userStore
+const { notifs, seen_notifs, user, get_notifs, oth_matches, rooms } = userStore
 
 onIonViewDidEnter(() => {
     setTimeout(() =>  {
@@ -1145,10 +1169,13 @@ const send_lov = (n : Notif) => {
 const initiate_chat = (match_obj : string) => {
     const obj = JSON.parse(match_obj)
     oth_matches.value.push(obj)
-    force_room()
+    const room = rooms.value.filter(e => e.slug == room_slug(user.value?.id as number, obj['user']))[0]
+    if (room) router.push(`/room/${room.slug}`)
+    else force_room()
 }
 
 const format_urls = (txt : string) => {
 	return txt.split('[]')
 }
+
 </script>

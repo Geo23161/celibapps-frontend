@@ -8,16 +8,16 @@
     >
       <ion-content>
         <div class="body">
-          <div class="btit">Limite atteinte</div>
+          <div class="btit">Créez un groupe</div>
           <div class="img_cont">
-            <img :src="'../../imgs/sad.svg'" style="width: 60%" />
+            <img :src="'../../imgs/fun.svg'" style="width: 60%" />
           </div>
-          <div class="btext" v-html="text"></div>
+          <div class="btext" > Vous devez appartenir à au moins un groupe avant de continuer </div>
           <button
-            @click="router.push('/param?target=activ_abn' ), close()"
+            @click="router.push('/quiz-builder' ), close()"
             class="butto upload"
           >
-            Débloquer <ion-icon :icon="arrowForward" />
+            Démarrer <ion-icon :icon="arrowForward" />
           </button>
         </div>
       </ion-content>
@@ -76,7 +76,6 @@
   </style>
   
   <script lang="ts">
-
   import { defineComponent, defineEmits } from "vue";
   import { IonModal, IonContent } from "@ionic/vue";
   import { arrowForward } from "ionicons/icons";
@@ -89,8 +88,6 @@
     },
     props: {
       isOpen: Boolean,
-      redirect: String,
-      text: String,
     },
     setup(props, ctx) {
       const emits = defineEmits(["close"]);

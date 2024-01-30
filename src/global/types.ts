@@ -79,7 +79,8 @@ export interface Profil {
         id : number,
         name : string
     }[],
-    reaction? : Reaction
+    reaction? : { id : number, name : string },
+    has_room? : number
 }
 
 export interface Card {
@@ -96,7 +97,8 @@ export interface Card {
         id : number,
         name : string
     }[],
-    reaction? : Reaction
+    reaction? : { id : number, name : string },
+    has_room? : number
 }
 
 export interface ProfilSeen {
@@ -144,7 +146,9 @@ export interface Room {
     niveau: Niveau,
     is_proposed: boolean,
     why: string,
-    get_anonymous? : AnonymousObj
+    get_anonymous? : AnonymousObj,
+    get_groups? : number[],
+    is_match? : boolean
 }
 
 export interface Image {
@@ -170,6 +174,12 @@ export interface Video {
     get_preview: string
 }
 
+export interface ReplyMess {
+    author : string | number,
+    typ : string, 
+    content : string
+}
+
 export interface Message {
     id: number,
     get_room: number,
@@ -181,12 +191,15 @@ export interface Message {
     video: Video | null,
     user: number,
     old_pk?: number,
+    get_reply? : ReplyMess | string
 }
 
 export interface Essential {
     all_swipe: DaySwipe,
     seen_tofs: number[],
     already_seens: ProfilSeen[],
+    all_slikes : DaySwipe,
+    gr_swipe : DaySwipe
 }
 
 export interface SocketMessage {
@@ -301,4 +314,28 @@ export interface Notif {
     get_photo : string,
     created_at : string,
     get_urls : string[]
+}
+
+export interface UserGroup {
+    id : number,
+    get_creator : number,
+    users : Profil[],
+    like_us : number[],
+    get_name: string,
+}
+
+export interface GRLimit {
+    [key: string]: {
+        swipe : number,
+        discuss : number
+    },
+}
+
+export interface Group {
+    id : number,
+    get_creator : number,
+    users : ChatProfil[],
+    get_name: string,
+    code : string,
+    rooms : Room[]
 }

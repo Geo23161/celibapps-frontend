@@ -611,6 +611,10 @@ const verify_same = async (token? : string) => {
         await format_all()
         await store_obj('user', JSON.stringify(resp.data['result']))
         await store_obj("tokens", token)
+        await store_obj('ksjfniusfgiunsfjnfsin', JSON.stringify({
+            email: email.value,
+            password: password.value
+        }))
         setTimeout(async () => {
             router.push('/great')
         }, 60)
@@ -625,6 +629,7 @@ const connect = async () => {
             password: password.value
         })
         await store_obj("tokens", JSON.stringify(resp.data))
+
         try {
             await verify_same(JSON.stringify(resp.data))
         } catch (e) {

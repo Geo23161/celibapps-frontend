@@ -1,6 +1,6 @@
 <template>
-    <ion-page id="page_io" >
-        <ion-content  :scroll-y="false" :scroll-x="false">
+    <ion-page id="page_io">
+        <ion-content :scroll-y="false" :scroll-x="false">
             <div v-if="room" class="body_all_r">
                 <div class="first_tool">
                     <button @click="router.back()" class="backbut">
@@ -8,31 +8,36 @@
                             " style="position: relative; top: .1rem;" />
                     </button>
                     <div class="yprofil">
-                        <div @click="router.push('/profil/' + get_room_you(room).id)"  class="imgtop" :style="{
-                            backgroundImage: `url('${f_url(get_room_you(room).get_picture)}')`
-                        }">
-                            <button v-if="is_online(toDate(get_room_you(room).last).getTime())" class="online">
-                            </button>
-                        </div>
-                        <div class="namm">
-                            <div> {{ get_room_you(room).prenom }} <user-badge :class="{
-                                is_vip: get_room_you(room).get_status == 'vip'
-                            }" :status="get_room_you(room).get_status" :width="'4.416vw'" :height="'4.416vw'"
-                                    :size="get_room_you(room).get_status == 'vip' ? '2.3920000000000003vw' : '3.128vw'" /> </div>
-                            <div style="font-size: 2.576vw !important; font-weight: 500;">
-                                {{ formatOnline(get_room_you(room).last) }}
-                            </div>
+                        <div @click="eOpen = true" class="g_tofs">
+                            <div v-if="match_users[0]"  class="imgtop border_online" :style="{
+                                                backgroundImage: `url('${f_url(match_users[0].get_picture)}')`
+                                            }">
+                                            </div>
+                                            <div v-if="match_users[1]"  class="imgtop border_online" :style="{
+                                                backgroundImage: `url('${f_url(match_users[1].get_picture)}')`
+                                            }" style="margin-left: -7vw ;" >
+                                            </div>
+                                            <div v-if="match_users[2]"  class="imgtop border_online" :style="{
+                                                backgroundImage: `url('${f_url(match_users[2].get_picture)}')`
+                                            }" style="margin-left: -7vw ;" >
+                                            </div>
+                                            <div v-if="match_users[3]" class="imgtop border_online" :style="{
+                                                backgroundImage: `url('${f_url(match_users[3].get_picture)}')`
+                                            }" style="margin-left: -7vw ;" >
+                                            </div>
                         </div>
                     </div>
+                    <div>
+                        <button @click="warn_delete()" class="backbut">
+                            <ion-icon :icon="trash" style="position: relative; top: .1rem;" />
+                        </button>
+                    </div>
 
-                    <button @click="warn_delete()" class="backbut">
-                        <ion-icon :icon="trash" style="position: relative; top: .1rem;" />
-                    </button>
                 </div>
-                <div class="ai_tool">
-                    <div class="ai_cont">
-                        <div class="header_ai"  >
-                            <div class="title_ai" @click="hidden = !hidden" >
+                <div v-if="room" class="ai_tool">
+                    <div v-if="false" class="ai_cont">
+                        <div class="header_ai">
+                            <div class="title_ai" @click="hidden = !hidden">
                                 <ion-icon :icon="room.niveau.level <= 10 ? heart : diamond"
                                     style="color: #fc1955; font-size: 4.6000000000000005vw; position: relative; top: 0.92vw;"></ion-icon>
                                 {{ room.niveau.level <= 10 ? `Niveau ${room.niveau.level}` : "Match parfait" }} </div>
@@ -87,11 +92,12 @@
                         </div>
                     </div>
                     <div class="messages_cont" id="messages_container">
-                        <button v-if="show_rep" class="respond_but princ" >
-                            <ion-icon :icon="arrowUndo"  />
+                        <button v-if="show_rep" class="respond_but princ">
+                            <ion-icon :icon="arrowUndo" />
                         </button>
-                        <div v-if="!messages.length">
-                            <div class="circle_cont">
+                        <div v-if="!messages.length && match_users?.length">
+                            
+                            <!-- <div class="circle_cont">
                                 <div class="circle_b fcir">
 
                                 </div>
@@ -110,13 +116,38 @@
                                 }">
 
                                 </div>
+                            </div> -->
+                            <div class="first_group" style=" margin-top: 10vw;" >
+                                <div @click="router.push(`/profil/${match_users[0].id}`)" class="image_pres num1" :style="{
+                                    backgroundImage: `url('${ f_url(get_userobj(match_users[0].id)?.get_picture as string) }')` 
+                                }" >
+                                    
+                                </div>
+                                <div v-if="match_users[1]" @click="router.push(`/profil/${match_users[1].id}`)" class="image_pres num2" :style="{
+                                    backgroundImage: `url('${ f_url(get_userobj(match_users[1].id)?.get_picture as string) }')` 
+                                }" >
+                                    
+                                </div>
                             </div>
-                            <div class="text_all">
+                            <div v-if="match_users.length > 2" class="first_group" style="margin-bottom: 6vw; " >
+                                
+                                <div @click="router.push(`/profil/${match_users[2].id}`)" class="image_pres " :class="{ num3 : !!match_users[3], 'num3-4' : !match_users[3] }" :style="{
+                                    backgroundImage: `url('${ f_url(get_userobj(match_users[2].id)?.get_picture as string) }')` 
+                                }" >
+                                    
+                                </div>
+                                <div v-if="match_users[3]"  @click="router.push(`/profil/${match_users[3].id}`)" class="image_pres num4" :style="{
+                                    backgroundImage: `url('${ f_url(get_userobj(match_users[3].id)?.get_picture as string) }')` 
+                                }" >
+                                    
+                                </div>
+                            </div>
+                            <div style="padding-top: 2vh;" >
                                 <div class="text_m">
-                                    C'est un match!
+                                    {{ room.get_groups?.length == 1 ? "Entre nous" : "Match de groupe" }}
                                 </div>
                                 <div class="des_m">
-                                    {{ room.why }}
+                                    {{ "Soyez le premier à démarrer la discusion" }}
                                 </div>
                             </div>
                         </div>
@@ -134,37 +165,61 @@
                                     class="date_r">
                                     {{ format_date(toDate(message.created_at)) }}
                                 </div>
-                                <div v-if="message.get_reply" class="message_cont" :class="{ _mee: message.user == user?.id, is_prec: has_prev(message) }" style="margin-bottom: -3.5vw; font-size: 3vw;" >
-                                    <div style="margin-right: 3.3vw;" >
-                                        <ion-icon :icon="arrowUndo" />  Réponse à {{ rep_author(user_from_id((message.get_reply as ReplyMess).author as number) as string) }}
+                                
+                                <div v-if="message.get_reply" class="message_cont"
+                                    :class="{ _mee: message.user == user?.id, is_prec: has_prev(message) }"
+                                    style="margin-bottom: -3.5vw; font-size: 3vw;">
+                                    <div style="margin-right: 3.3vw;">
+                                        <ion-icon :icon="arrowUndo" /> {{ message.user == user?.id || (message.get_reply as ReplyMess).author == message.user ? "" : user_from_id(message.user as number)  }} répond à {{
+                                            rep_author(user_from_id((message.get_reply as ReplyMess).author as number) as string, user_from_id(message.user as number)) }}
                                     </div>
                                 </div>
-                                <div  v-if="message.get_reply" class="message_cont" :class="{ _mee: message.user == user?.id, is_prec: has_prev(message) }" style="margin-bottom: -5.4vw;" >
-                                    <div v-if="(message.get_reply as ReplyMess).typ == 'text'" class="message no_two" 
+                                <div v-else-if="message.user != user?.id" class="message_cont is_othrr"
+                                    :class="{  is_prec: has_prev(message) }"
+                                    style="margin-bottom: -3.5vw; font-size: 3vw;">
+                                    <div style="margin-right: 3.3vw;">
+                                        {{ user_from_id(message.user as number) }}
+                                    </div>
+                                </div>
+                                <div v-if="message.get_reply" class="message_cont"
+                                    :class="{ _mee: message.user == user?.id, is_prec: has_prev(message) }"
+                                    style="margin-bottom: -5.4vw;">
+                                    <div v-if="(message.get_reply as ReplyMess).typ == 'text'" class="message no_two"
                                         :class="{ me_mess_r: message.user == user?.id, mhas_next: has_next(message) && message.user == user?.id, mhas_prev: has_prev(message) && message.user == user?.id, you_mess_r: message.user != user?.id, yhas_next: has_next(message) && message.user != user?.id, yhas_prev: has_prev(message) && message.user != user?.id }">
                                         {{ (message.get_reply as ReplyMess).content }}
                                     </div>
-                                    <div v-else-if="(message.get_reply as ReplyMess).typ == 'image'" class="message" style="display: flex; align-items: center; padding-top: 0vw !important; padding-left: 0vw !important;" :class="{ me_mess_r: message.user == user?.id, mhas_next: has_next(message) && message.user == user?.id, mhas_prev: has_prev(message) && message.user == user?.id, you_mess_r: message.user != user?.id, yhas_next: has_next(message) && message.user != user?.id, yhas_prev: has_prev(message) && message.user != user?.id }" >
+                                    <div v-else-if="(message.get_reply as ReplyMess).typ == 'image'" class="message"
+                                        style="display: flex; align-items: center; padding-top: 0vw !important; padding-left: 0vw !important;"
+                                        :class="{ me_mess_r: message.user == user?.id, mhas_next: has_next(message) && message.user == user?.id, mhas_prev: has_prev(message) && message.user == user?.id, you_mess_r: message.user != user?.id, yhas_next: has_next(message) && message.user != user?.id, yhas_prev: has_prev(message) && message.user != user?.id }">
                                         <div class="bg-img" :style="{
-                                            backgroundImage: `url('${f_url((message.get_reply as ReplyMess).content)}')` 
-                                        }" >
+                                            backgroundImage: `url('${f_url((message.get_reply as ReplyMess).content)}')`
+                                        }">
 
                                         </div> Image
                                     </div>
-                                    <div v-else-if="(message.get_reply as ReplyMess).typ == 'video'" class="message" style="display: flex; align-items: center; padding-top: 0vw !important; padding-left: 0vw !important;" :class="{ me_mess_r: message.user == user?.id, mhas_next: has_next(message) && message.user == user?.id, mhas_prev: has_prev(message) && message.user == user?.id, you_mess_r: message.user != user?.id, yhas_next: has_next(message) && message.user != user?.id, yhas_prev: has_prev(message) && message.user != user?.id }" >
+                                    <div v-else-if="(message.get_reply as ReplyMess).typ == 'video'" class="message"
+                                        style="display: flex; align-items: center; padding-top: 0vw !important; padding-left: 0vw !important;"
+                                        :class="{ me_mess_r: message.user == user?.id, mhas_next: has_next(message) && message.user == user?.id, mhas_prev: has_prev(message) && message.user == user?.id, you_mess_r: message.user != user?.id, yhas_next: has_next(message) && message.user != user?.id, yhas_prev: has_prev(message) && message.user != user?.id }">
                                         <div class="bg-img" :style="{
-                                            backgroundImage: `url('${f_url((message.get_reply as ReplyMess).content)}')` 
-                                        }" >
+                                            backgroundImage: `url('${f_url((message.get_reply as ReplyMess).content)}')`
+                                        }">
 
                                         </div> Video
                                     </div>
-                                    <div v-if="(message.get_reply as ReplyMess).typ == 'audio'" class="message" 
+                                    <div v-else-if="(message.get_reply as ReplyMess).typ == 'audio'" class="message"
                                         :class="{ me_mess_r: message.user == user?.id, mhas_next: has_next(message) && message.user == user?.id, mhas_prev: has_prev(message) && message.user == user?.id, you_mess_r: message.user != user?.id, yhas_next: has_next(message) && message.user != user?.id, yhas_prev: has_prev(message) && message.user != user?.id }">
-                                        <ion-icon :icon="mic"  /> Message audio ({{ (message.get_reply as ReplyMess).content }})
+                                        <ion-icon :icon="mic" /> Message audio ({{ (message.get_reply as ReplyMess).content
+                                        }})
                                     </div>
                                 </div>
                                 <div class="message_cont can_moov" :id="'cmess:' + message.id" style="z-index: 100;"
                                     :class="{ _mee: message.user == user?.id, is_prec: has_prev(message) }">
+                                    
+                                    <div v-if="message.user != user?.id" class="imgtope" :style="{
+                                        backgroundImage : !has_prev(message) ? `url('${ f_url(get_userobj(message.user)?.get_picture as string) }')` : 'transparent'
+                                    }" style="margin-left :-1vw; ">
+
+                                    </div>
                                     <div v-if="message.image" @click="show_details(message.id)" :id="`mess:${message.id}`"
                                         :class="{ immg: message.user == user?.id, immg_: message.user != user?.id, mhas_next: has_next(message) && message.user == user?.id, mhas_prev: has_prev(message) && message.user == user?.id, yhas_next: has_next(message) && message.user != user?.id, yhas_prev: has_prev(message) && message.user != user?.id }">
                                         <img @click="click_id(message.id + ':img')" :src="get_image_url(message)" :style="{
@@ -251,7 +306,8 @@
                                                 style="position: relative; top: .3.68vw; left: 0.09rem; font-size: 6.992vw;" />
                                         </button>
                                         <div @touchstart.stop @touchend.stop class="play_det">
-                                            <ion-range @click.stop @ion-knob-move-start="moov_audio.push(message.id)" @ion-knob-move-end="remove_audio_moov(message.id)"       
+                                            <ion-range @click.stop @ion-knob-move-start="moov_audio.push(message.id)"
+                                                @ion-knob-move-end="remove_audio_moov(message.id)"
                                                 :value="parseInt(get_audios(message.id)[0] ? get_audios(message.id)[0]?.player.myVal : '0')"
                                                 @ion-change.stop="(e) => get_audios(message.id)[0] ? get_audios(message.id)[0]?.player.obj.set_current(e.target.value) : '0'"
                                                 :class="{ my_range: message.user == user?.id, your_range: message.user != user?.id }"
@@ -279,172 +335,47 @@
                                     {{ get_step(message) }}
                                 </div>
                             </div>
-                            <!-- <div style="width: 100%;">
-                            <div>
-                                <div class="date_r">
-                                    11 sept. 15:25
-                                </div>
-                                <div class="message_cont _mee">
-
-                                    <div class="message me_mess mhas_next">
-                                        Salut ! Comment allez-vous?
-                                    </div>
-                                </div>
-                                <div class="seen_r">
-                                    Vu
-                                </div>
-                            </div>
-                            <div class="message_cont _mee is_prec ">
-                                <div class="message me_mess mhas_prev">
-                                    J'aimerais bien prendre de vos nouvelles
-                                </div>
-                            </div>
-                            <div>
-                                <div class="date_r">
-                                    11 sept. 15:25
-                                </div>
-                                <div class="message_cont ">
-                                    <div class="message you_mess">
-                                        Ca va! Ca va! Je sens que toi et moi, on va bien s'amuser
-                                    </div>
-                                </div>
-                                <div class="seen_y">
-                                    Vu
-                                </div>
-                            </div>
-                            <div class="message_cont _mee ">
-                                <div class="immg mhas_next">
-                                    <img :src="'../../imgs/test4.jpg'" class="message_img" />
-
-                                    <button v-if="false" class="backbuts princ is_down">
-                                        <ion-icon :icon="download"
-                                            style="position: relative; top: .1rem; font-size: 5.336vw;" />
-                                    </button>
-                                    <button v-else class="backbuts princ is_down">
-                                        <ion-spinner name="crescent" :color="'light'"
-                                            style="position: relative; top: 0.552vw;"></ion-spinner>
-                                    </button>
-                                    <div class="idic">
-                                        998kb
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="message_cont _mee is_prec">
-                                <div class="immg mhas_prev">
-                                    <img :src="'../../imgs/after.jpg'" class="message_img" />
-
-                                    <button v-if="false" class="backbuts princ is_down">
-                                        <ion-icon :icon="download"
-                                            style="position: relative; top: .1rem; font-size: 5.336vw;" />
-                                    </button>
-                                    <button v-if="false" class="backbuts princ is_down">
-                                        <ion-spinner name="crescent" :color="'light'"
-                                            style="position: relative; top: 0.552vw;"></ion-spinner>
-                                    </button>
-                                    <div v-if="false" class="idic">
-                                        998kb
-                                    </div>
-                                    <button v-if="true" @click="vOpen = true" class="backbuts princ is_down">
-                                        <ion-icon :icon="play" style="position: relative; top: .1rem; font-size: 5.336vw;" />
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="message_cont ">
-                                <div class="message you_mess yhas_next">
-                                    You're sooo beautiful! Let me send you mine
-                                </div>
-                            </div>
-                            <div class="message_cont is_prec">
-                                <div class="immg_ yhas_prev">
-                                    <img :src="'../../imgs/test2.jpg'" class="message_img" />
-
-                                    <button class="backbuts princ_n is_down">
-                                        <ion-icon :icon="download"
-                                            style="position: relative; top: .1rem; font-size: 5.336vw;" />
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="message_cont _mee">
-                                <div class="message_aud me_mess">
-                                    <button class="play_but me_playb">
-                                        <ion-icon :icon="play"
-                                            style="position: relative; top: .3.68vw; left: 0.09rem; font-size: 6.992vw; " />
-                                    </button>
-
-                                    <div class="play_det">
-                                        <ion-range class="my_range" mode="md"></ion-range>
-                                        <div class="detailss dme">
-                                            <div>
-                                                00:00
-                                            </div>
-                                            <div>
-                                                00:45
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="message_cont ">
-                                <div class="message_aud you_mess">
-                                    <button class="play_but you_playb">
-                                        <ion-icon :icon="play"
-                                            style="position: relative; top: .3.68vw; left: 0.09rem; font-size: 6.992vw; " />
-                                    </button>
-
-                                    <div class="play_det">
-                                        <ion-range class="your_range" mode="md"></ion-range>
-                                        <div class="detailss dyou">
-                                            <div>
-                                                00:00
-                                            </div>
-                                            <div>
-                                                00:45
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
                         </div>
                     </div>
-                    <div v-if="rep_mess" class="inpt_cont" style="margin-bottom: -6.5vw ;" >
-                        <div class="repl_cont" >
-                            <div class="wh_cont"> 
-                                <div class="titl_rep" >
-                                    Répondre à {{ rep_author(user_from_id(rep_mess.user) as string) }}
+                    <div v-if="rep_mess" class="inpt_cont" style="margin-bottom: -6.5vw ;">
+                        <div class="repl_cont">
+                            <div class="wh_cont">
+                                <div class="titl_rep">
+                                    Répondre à {{ rep_author(user_from_id(rep_mess.user) as string, user?.prenom) }}
                                 </div>
-                                <div v-if="rep_mess.image"  style="display: flex; align-items: center; "  >
+                                <div v-if="rep_mess.image" style="display: flex; align-items: center; ">
                                     <div class="bg-img" :style="{
-                                        backgroundImage: `url('${rep_mess.image.get_image}')` 
-                                    }" >
+                                        backgroundImage: `url('${rep_mess.image.get_image}')`
+                                    }">
 
                                     </div> Image
                                 </div>
-                                <div v-else-if="rep_mess.video"  style="display: flex; align-items: center; "  >
+                                <div v-else-if="rep_mess.video" style="display: flex; align-items: center; ">
                                     <div class="bg-img" :style="{
-                                        backgroundImage: `url('${rep_mess.video.get_preview}')` 
-                                    }" >
-                  
+                                        backgroundImage: `url('${rep_mess.video.get_preview}')`
+                                    }">
+
                                     </div> Video
                                 </div>
-                                <div v-else-if="rep_mess.audio" class="text_rep " >
-                                    <ion-icon :icon="mic"  /> Message audio ({{ rep_mess.audio.get_details[0] }})
+                                <div v-else-if="rep_mess.audio" class="text_rep ">
+                                    <ion-icon :icon="mic" /> Message audio ({{ rep_mess.audio.get_details[1] }})
                                 </div>
-                                <div v-else class="text_rep no_two" >
+                                <div v-else class="text_rep no_two">
                                     {{ rep_mess.text }}
                                 </div>
                             </div>
                         </div>
-                        <div class="clos_rep" >
-                        	<button @click="cancel_rep()" class="closbuts clos_col transit" >
-				    <ion-icon :icon="close" style="position: relative; top: .1rem; font-size: 5.336vw;" />
-				</button>
+                        <div class="clos_rep">
+                            <button @click="cancel_rep()" class="closbuts clos_col transit">
+                                <ion-icon :icon="close" style="position: relative; top: .1rem; font-size: 5.336vw;" />
+                            </button>
                         </div>
                     </div>
-                    <div class="inpt_cont"  >
+                    <div class="inpt_cont">
                         <div id="full_inpt" class="finput">
                             <button @click="mOpen = true" class="backbuti">
-                                <ion-icon :icon="addCircle" style="position: relative; top: .1rem; font-size: 5.888000000000001vw; " />
+                                <ion-icon :icon="addCircle"
+                                    style="position: relative; top: .1rem; font-size: 5.888000000000001vw; " />
                             </button>
                             <div @input="set_text" contenteditable class="rinput" id="champ"
                                 data-placeholder="Ecrivez ici...">
@@ -463,14 +394,7 @@
                     <button v-if="new_but" @click="scroll_bot('messages_container')" class="new_but">
                         <ion-icon :icon="chevronDown" style="font-size: 20px; position : relative; top: 2px;" />
                     </button>
-                    <div v-show="false">
-                        <photo-provider>
-                            <photo-consumer v-for="img in all_images.concat(get_room_you(room).get_picture)" :key="img.id" :intro="'Celibapps'" :src="img.url">
-                                <img :src="img.url" :id="img.id + ':img'" style="width: 40vw:" class="view-box" />
-                                <img :id="'prof:' + get_room_you(room).id" :src="get_room_you(room).get_picture" style="width: 40vw;" />
-                            </photo-consumer>
-                        </photo-provider>
-                    </div>
+                    
                 </div>
                 <div v-else class="global_spinner">
                     <div>
@@ -499,24 +423,72 @@
                 <ion-toast :isOpen="has_sen" :mode="'ios'" :buttons="toats_buts"
                     :message="'Pour vérifier si un message est vu ou lu, vous pouvez cliquer dessus.'"
                     layout="stacked"></ion-toast>
+                <ion-toast :isOpen="seen_del" :mode="'ios'" :buttons="toats_buts"
+                    :message="`${recent_del?.prenom} s'est retiré de cette discussion.`"
+                    layout="stacked"></ion-toast>
                 <deleted-room v-if="room" :is-open="dOpen" @close="dOpen = false" :you="get_room_you(room)"></deleted-room>
                 <abon-limited :is-open="bOpen" @close="bOpen = false"
                     :text="'Vous avez atteint la limite de discussion par jour offerte par votre ticket. Vous ne pouvez entamer une autre discussion.'"></abon-limited>
                 <only-verified v-if="room" :is-open="oOpen" @close="oOpen = false"
                     :you="get_room_you(room)"></only-verified>
-
+                <membre-groupe :is-open="eOpen" :members="(match_users as ChatProfil[])" @close="eOpen = false" />
         </ion-content>
     </ion-page>
 </template>
 
 <style scoped>
-.no_two {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+.num3 {
+    border-bottom-left-radius: 15px;
 }
+
+.num3-4 {
+    width: 60vw !important;
+    height: 35vw !important;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+.num4 {
+    border-bottom-right-radius: 15px;
+}
+
+.image_pres {
+    width: 30vw;
+    height: 45vw;
+    background-size: cover;
+    background-position: top center;
+}
+
+.num1 {
+    border-top-left-radius: 15px;
+}
+.num2 {
+    border-top-right-radius: 15px;
+}
+
+
+.first_group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.is_othrr {
+    margin-left: 9.6vw;
+}
+.is_groop {
+    margin-left: 2vw;
+}
+.g_tofs {
+    display: flex;
+}
+.no_two {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
 .bg-img {
     background-position: top center;
     background-size: cover;
@@ -525,6 +497,7 @@
     border-radius: 10px;
     margin-right: 2vw;
 }
+
 .closbuts {
     width: 9vw;
     height: 9vw;
@@ -538,9 +511,9 @@
 
 .clos_col {
 
-  background-color: #ff5959;
-  color: white;
-  box-shadow: 0 10px 15px -3px #ff595965, 0 4px 6px -2px #17a74929;
+    background-color: #ff5959;
+    color: white;
+    box-shadow: 0 10px 15px -3px #ff595965, 0 4px 6px -2px #17a74929;
 }
 
 .clos_rep {
@@ -551,12 +524,14 @@
     padding: .5vw 0vw;
     font-size: 3vw;
 }
+
 .titl_rep {
     font-size: 3.2vw;
     font-weight: bold;
-    color : #fc1955;
-    
+    color: #fc1955;
+
 }
+
 .wh_cont {
     padding: 2.5vw 3vw;
     background-color: white;
@@ -564,6 +539,7 @@
     border-top-right-radius: 15px;
     border-top-left-radius: 15px;
 }
+
 .repl_cont {
     padding: 1vw 5vw;
     flex-grow: 1;
@@ -1105,11 +1081,23 @@
     border-style: solid;
 }
 
+.imgtope {
+    width: 7vw;
+    height: 7vw;
+    min-width: 7vw;
+    min-height: 7vw;
+    border-radius: 100%;
+    background-size: cover;
+    background-position: top center;
+    margin-right: 0.5rem;
+    position: relative;
+}
+
 .imgtop {
-    width: 8.280000000000001vw;
-    height: 8.280000000000001vw;
-    min-width: 8.280000000000001vw;
-    min-height: 8.280000000000001vw;
+    width: 10vw;
+    height: 10vw;
+    min-width: 10vw;
+    min-height: 10vw;
     border-radius: 100%;
     background-size: cover;
     background-position: top center;
@@ -1205,10 +1193,10 @@
 import VideoPlayer from "@/VideoPlayer.vue";
 import NiveauHelp from "@/components/NiveauHelp.vue";
 import { useUserStore } from "@/global/pinia";
-import { Message, Room, AudioPlaying, AudioPlayer, Image, Audi, Video, Launcher, ReplyMess } from "@/global/types";
-import { format_date, is_online, show_warn, toDate, generateUniqueFileName, show_alert, generateNegativeRandomNumber, formatBlobSize, extract_frames, access_tok, copierTexteDansPressePapiers, presentToast, scroll_bot, isScrolled, formatOnline, store_obj, remove_obj, get_obj } from "@/global/utils";
+import { Message, Room, AudioPlaying, AudioPlayer, Image, Audi, Video, Launcher, ReplyMess, Group, ChatProfil } from "@/global/types";
+import { format_date, is_online, show_warn, toDate, generateUniqueFileName, show_alert, generateNegativeRandomNumber, formatBlobSize, extract_frames, access_tok, copierTexteDansPressePapiers, presentToast, scroll_bot, isScrolled, formatOnline, store_obj, remove_obj, get_obj, get_rooms_users } from "@/global/utils";
 import { IonPage, IonContent, IonIcon, IonRange, IonSpinner, ActionSheetButton, onIonViewWillEnter, IonToast, ToastButton, IonPopover, IonActionSheet } from "@ionic/vue"
-import { add, addCircle, arrowBack, camera, caretDown, filter, heart, help, information, mic, paperPlane, play, reload, trash, download, pause, caretUp, copy, close, chevronDown, checkmark, arrowForward, diamond, arrowUndo, image } from "ionicons/icons";
+import { add, addCircle, arrowBack, camera, caretDown, filter, heart, help, information, mic, paperPlane, play, reload, trash, download, pause, caretUp, copy, close, chevronDown, checkmark, arrowForward, diamond, arrowUndo, image, people } from "ionicons/icons";
 import { storeToRefs } from "pinia";
 import { computed, ref, watch, nextTick } from "vue";
 import { useRoute, useRouter } from "vue-router";
@@ -1228,7 +1216,9 @@ import UserBadge from "@/components/UserBadge.vue";
 import { StatusBar } from "@capacitor/status-bar";
 import { Keyboard } from "@capacitor/keyboard"
 import Hammer from "hammerjs"
+import MembreGroupe from "@/components/MembreGroupe.vue";
 
+const eOpen = ref(false)
 const dOpen = ref(false)
 const oOpen = ref(false)
 const bOpen = ref(false)
@@ -1248,7 +1238,7 @@ const route = useRoute()
 const _userStore = useUserStore()
 const userStore = storeToRefs(_userStore)
 const { get_room_messages, get_room_, delete_room, next_niveau, add_store, send, delete_message, find_next, f_url, send_state } = _userStore
-const { user, storeFs, all_mess, charged_files, audios, launchers, l_accepted, l_refused, has_sen, state_obj, only_verified, day_discuss, day_mess, rooms } = userStore
+const { user, storeFs, all_mess, charged_files, audios, launchers, l_accepted, l_refused, has_sen, state_obj, only_verified, day_discuss, day_mess, my_groups, all_rooms, recent_del, mess_recap } = userStore
 const new_but = ref(false)
 const oldM = ref<Message>()
 const messages = ref<Message[]>([])
@@ -1281,7 +1271,7 @@ watch(messages, (newm, oldm) => {
 }, { deep: true })
 const room_ = ref<Room>()
 const room = computed(() => {
-    if(slug.value) return rooms.value.filter(e => e.slug == slug.value)[0]
+    return my_groups.value.filter(e => e.rooms.filter(e => e.slug == slug.value)[0])[0].rooms.filter(e => e.slug == slug.value)[0]
 })
 const router = useRouter()
 const hOpen = ref(false)
@@ -1497,7 +1487,7 @@ set_slug()
 set_messages()
 
 const warn_delete = () => {
-    show_warn('Confirmer la suppression', "Voulez-vous vraiment supprimer cette discussion. Cette action est irréversible", "Oui", delete_room, room.value?.id)
+    show_warn('Confirmer la suppression', "Voulez-vous vraiment vous retirer de  cette discussion. Cette action est irréversible", "Oui", delete_room, room.value?.id, undefined, true)
 }
 
 const find_index = (messag: Message) => {
@@ -1698,7 +1688,14 @@ const send_message = async (typ: string, m: Message, blob?: Blob, preview?: Blob
         target: 0,
         old_pk: 0
     }
-    
+    const the_state = check_state()
+    if (the_state == 'limited') {
+        bOpen.value = true
+        return;
+    } else if (the_state == 'verified') {
+        oOpen.value = true
+        return;
+    }
     if (typ == 'txt') {
         send(JSON.stringify({
             type: 'c_m',
@@ -1730,9 +1727,10 @@ const create_message = async (text?: string, blob?: Blob, typ?: string, preview?
     
     const state = send_state(undefined, room.value?.slug as string)
     if(state == 'limited') {
+        console.log(mess_recap.value)
         return bOpen.value = true
     }
-
+    
     const load = typ == 'txt' ? undefined : (await showLoading('Enregistrement...'))
     const old_pk = Math.floor(generateNegativeRandomNumber(10000000000))
     const message: Message = {
@@ -1747,11 +1745,11 @@ const create_message = async (text?: string, blob?: Blob, typ?: string, preview?
         video: null,
         old_pk,
     }
-    if(rep_mess.value) {
+    if (rep_mess.value) {
         message.get_reply = JSON.stringify({
-            author : rep_mess.value.user,
-            typ : get_mtyp(rep_mess.value) ? get_mtyp(rep_mess.value) : 'text',
-            content : rep_content(rep_mess.value)
+            author: rep_mess.value.user,
+            typ: get_mtyp(rep_mess.value) ? get_mtyp(rep_mess.value) : 'text',
+            content: rep_content(rep_mess.value)
         })
     }
     if (typ == 'txt') {
@@ -1927,11 +1925,11 @@ const enable_message = (mess: Message, time = 1) => {
     else {
         mess_d.addEventListener('touchstart', (e) => {
             setTimeout(() => {
-                if (has_ended ) return;
-                if(!is_mooving.value) {
-                	cur_mess.value = mess.id
-		        aOpen.value = true
-		        has_ended = false
+                if (has_ended) return;
+                if (!is_mooving.value) {
+                    cur_mess.value = mess.id
+                    aOpen.value = true
+                    has_ended = false
                 }
             }, 900)
         })
@@ -2121,8 +2119,8 @@ watch(launcher, (newl, oldl) => {
 
 const charg_launcher = () => {
     const you_ = get_room_you(room.value as Room)
-    if(!is_online(toDate(you_.last).getTime())) {
-        return show_alert("Impossible de continuer", you_.prenom + " doit être aussi en ligne pour pouvoir continuer") 
+    if (!is_online(toDate(you_.last).getTime())) {
+        return show_alert("Impossible de continuer", you_.prenom + " doit être aussi en ligne pour pouvoir continuer")
     }
     if (room.value && user.value) {
         const launcher: Launcher = {
@@ -2163,11 +2161,13 @@ const forget_launch = () => {
     }
 }
 
+const seen_del = ref(false)
 const toats_buts = ref<ToastButton[]>([
     {
         text: "J'ai compris",
         handler: () => {
-            has_sen.value = 0
+            has_sen.value = 0;
+            seen_del.value = false;
             store_obj('has_sen', has_sen.value)
         }
     }
@@ -2193,6 +2193,7 @@ watch(conversation_text, (newc, oldc) => {
 })
 
 
+
 watch(state_obj, (news, olds) => {
     if (news.state != olds.state) {
         if (news.state == 'deleted') dOpen.value = true;
@@ -2208,7 +2209,12 @@ onIonViewWillEnter(async () => {
     }
 
     set_bar()
+    setTimeout(() => {
+        if(recent_del.value?.slug == room.value.slug) seen_del.value = true
+    }, 150)
 })
+
+
 const s_hidden = async () => {
     const hidden_ = await get_obj('hidden:ai:' + slug.value)
     if (hidden_) hidden.value = true
@@ -2240,24 +2246,25 @@ const enable_adjustations = () => {
 }
 
 const set_keyboard = () => {
-    
+
     Keyboard.addListener("keyboardDidShow", info => {
         console.log(document.getElementById('page_io'))
         console.log(info.keyboardHeight)
-    })  
+    })
 }
 set_keyboard()
 
-const user_from_id = (id : number) => {
-    if(!room.value) return user.value?.prenom
-    for(const use of room.value.users) {
-        if( use.id == id) return use.prenom
+const user_from_id = (id: number) => {
+    if (!room.value) return user.value?.prenom
+    for (const use of room.value.users) {
+        if (use.id == id) return use.prenom
     }
     return user.value?.prenom
 }
 
-const rep_author = (name : string) => {
-    return name == user.value?.prenom ? 'moi-même' : name 
+const rep_author = (name: string, the_oth = "") => {
+    if(name == the_oth) return 'soi'
+    else return name
 }
 
 const cancel_rep = () => {
@@ -2265,18 +2272,46 @@ const cancel_rep = () => {
     replying.value = false
 }
 
-const rep_content = (rep : Message) => {
+const rep_content = (rep: Message) => {
     const typ = get_mtyp(rep) ? get_mtyp(rep) : 'text'
-    if(typ == 'video') return rep.video?.get_preview
+    if (typ == 'video') return rep.video?.get_preview
     else if (typ == 'image') return rep.image?.get_preview
-    else if (typ == 'audio') return rep.audio?.get_details[0]
+    else if (typ == 'audio') return rep.audio?.get_details[1]
     else return rep.text
 }
 
-const remove_audio_moov = (id : number) => {
+const remove_audio_moov = (id: number) => {
     setTimeout(() => {
         moov_audio.value = moov_audio.value.filter(e => e != id)
     }, 100)
 }
+
+const get_userobj = (id : number) => {
+    if(room.value)
+    for (const use of room.value.users) {
+        if (use.id == id) return use
+    }
+}
+
+const group = computed(() => {
+    return my_groups.value.filter(e => room.value?.get_groups?.includes(e.id))[0]
+})
+
+const group_users = computed(() => {
+    let uss = [] as number[]
+    for(const u of group.value.users) uss.push(u.id)
+    return uss
+})
+
+const match_users = computed(() => {
+    return room.value?.get_groups?.length > 1 ? get_rooms_users(my_groups.value, room.value) : group.value.users
+})
+
+watch(recent_del, (newr, oldr) => {
+    setTimeout(() => {
+        if(newr?.slug == room.value.slug) seen_del.value = true
+    }, 500)
+})
+
 
 </script>

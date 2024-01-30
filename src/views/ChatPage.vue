@@ -93,23 +93,38 @@
                     </div>
                 </div>
 
-                <div v-if="!is_searching" class="messages_cont" style="padding-top: 1vh !important;" >
-                    <div style="margin-left: -1vh;" >
-                        
-                        <ion-chip :outline="true" :color=" section == 'match' ? 'primary' : ''" @click="section = 'match'" >
-                            <ion-avatar>
-                                <img :src="'../../imgs/before.jpg'" />
-                            </ion-avatar>
-                            <ion-label>Matchs</ion-label>
-                        </ion-chip >
-                        <ion-chip :outline="true" :color=" section == 'anonym' ? 'primary' : ''" @click="section = 'anonym'" >
-                            <ion-avatar>
-                                <img 
-                                    :src="'../../imgs/mask.webp'" />
-                            </ion-avatar>
-                            <ion-label>Anonymes</ion-label>
-                            <ion-icon v-if="has_nonyms" :icon="notificationsCircle" :color=" (has_nonyms && counter % 2) ? 'primary' : ''" ></ion-icon>
-                        </ion-chip>
+                <div v-if="!is_searching" class="messages_cont"
+                    style="padding-top: 1vh !important; width: 100%; overflow-x: hidden !important; ">
+                    <div style="width: 100vw; overflow-x: auto; margin-left: -2vw; padding-left: 2vw;">
+                        <div
+                            style="margin-left: -1vh; display: flex; align-items: center; overflow-x: scroll; width: 120vw; ">
+
+                            <ion-chip :outline="true" :color="section == 'match' ? 'primary' : ''"
+                                @click="section = 'match'">
+                                <ion-avatar>
+                                    <img :src="'../../imgs/before.jpg'" />
+                                </ion-avatar>
+                                <ion-label>Matchs</ion-label>
+                            </ion-chip>
+                            <ion-chip :outline="true" :color="section == 'group' ? 'primary' : ''"
+                                @click="section = 'group'">
+                                <ion-avatar>
+                                    <img :src="'../../imgs/fun.svg'" />
+                                </ion-avatar>
+                                <ion-label>Groupes</ion-label>
+                                <ion-icon v-if="see_groups" :icon="notificationsCircle"
+                                    :color="(see_groups && counter % 2) ? 'primary' : ''"></ion-icon>
+                            </ion-chip>
+                            <ion-chip :outline="true" :color="section == 'anonym' ? 'primary' : ''"
+                                @click="section = 'anonym'">
+                                <ion-avatar>
+                                    <img :src="'../../imgs/mask.webp'" />
+                                </ion-avatar>
+                                <ion-label>Anonymes</ion-label>
+                                <ion-icon v-if="has_nonyms" :icon="notificationsCircle"
+                                    :color="(has_nonyms && counter % 2) ? 'primary' : ''"></ion-icon>
+                            </ion-chip>
+                        </div>
                     </div>
                     <div v-if="section == 'anonym'">
                         <div v-show="false" class="titles" style="display: flex; align-items: center;">
@@ -183,7 +198,7 @@
                         </div>
                     </div>
                     <div v-if="section == 'match'">
-                        <div v-show="false" class="titles" style="display: flex; align-items: center; padding-top: 2vh;">
+                        <div v-if="false" class="titles" style="display: flex; align-items: center; padding-top: 2vh;">
                             <div>
                                 <img :src="'../../imgs/before.jpg'"
                                     style="width: 8vw; position: relative; top: 0.25vh; border-radius: 100%; " />
@@ -238,7 +253,220 @@
                         </div>
 
                     </div>
-                    <div v-if="!relativ_rooms.length">
+                    <div v-if="section == 'group'">
+                        <div v-if="ordered_groups.length == 0">
+                            <div style="display: flex; justify-content: space-around; padding-top: 10.24vw;">
+                                <img :src="'../../imgs/fun.svg'" style="width: 50vw;" />
+                            </div>
+                            <div style="text-align: center;padding-top: 1.77vw; font-size: 5.2vw; font-weight: bold;">
+                                Démarrez l'aventure en groupe.
+                            </div>
+                            <div style="padding: 1.3vw 0vw; font-size: 4.2vw; text-align: center;">
+                                Formez des groupes entre ami(es) et allez à la conquête d'autres groupes. 
+                            </div>
+                            <div style="display: flex; justify-content: space-around; padding: 3vh 4vh;">
+                                <button @click="router.push('/quiz-builder')" class="al_but">
+                                    Rejoindre un groupe
+                                </button>
+                            </div>
+                        </div>
+                        <div v-else>
+                            <div v-for="grp in ordered_groups" :key="grp.id">
+                                <div v-if="grp.users.length > 1" class="groupp">
+                                    <div @click="$router.push('/group/' + grp.id)" class="g_header ripple_parent ion-activatable">
+                                        <ion-ripple-effect></ion-ripple-effect>
+                                        <div class="g_tofs">
+                                            <div v-if="grp.users[0]"  class="imgtop border_online" :style="{
+                                                backgroundImage: `url('${f_url(grp.users[0].get_picture)}')`
+                                            }">
+                                            </div>
+                                            <div v-if="grp.users[1]"  class="imgtop border_online" :style="{
+                                                backgroundImage: `url('${f_url(grp.users[1].get_picture)}')`
+                                            }" style="margin-left: -7vw ;" >
+                                            </div>
+                                            <div v-if="grp.users[2]"  class="imgtop border_online" :style="{
+                                                backgroundImage: `url('${f_url(grp.users[2].get_picture)}')`
+                                            }" style="margin-left: -7vw ;" >
+                                            </div>
+                                            <div v-if="grp.users[3]" class="imgtop border_online" :style="{
+                                                backgroundImage: `url('${f_url(grp.users[3].get_picture)}')`
+                                            }" style="margin-left: -7vw ;" >
+                                            </div>
+                                        </div>
+                                        <div style="font-size: 3.8vw; font-weight: bold;">
+                                            {{ `${mgrp_name_(grp, user?.id as number)} et moi` }}
+                                        </div>
+                                    </div>
+                                    <div v-for="room in get_grooms(grp).slice(0, 2)"
+                                        class="profs_i ripple_parent ion-activatable" @click="router.push('/groom/' + room.slug)" >
+                                        <ion-ripple-effect></ion-ripple-effect>
+                                        <button v-if="room.get_groups?.length == 1" class="g_flag"
+                                            style="margin-right: .7rem;">
+                                            <ion-icon :icon="people" />
+                                        </button>
+                                        <div v-else class="g_tofs">
+                                            <div v-if="get_rooms_users(my_groups, room)[0]"  class="imgtop border_online" :style="{
+                                                backgroundImage: `url('${f_url(get_rooms_users(my_groups, room)[0].get_picture)}')`
+                                            }">
+                                            </div>
+                                            <div v-if="get_rooms_users(my_groups, room)[1]"  class="imgtop border_online" :style="{
+                                                backgroundImage: `url('${f_url(get_rooms_users(my_groups, room)[1].get_picture)}')`
+                                            }" style="margin-left: -7vw ;" >
+                                            </div>
+                                            <div v-if="get_rooms_users(my_groups, room)[2]"  class="imgtop border_online" :style="{
+                                                backgroundImage: `url('${f_url(get_rooms_users(my_groups, room)[2].get_picture)}')`
+                                            }" style="margin-left: -7vw ;" >
+                                            </div>
+                                            <div v-if="get_rooms_users(my_groups, room)[3]" class="imgtop border_online" :style="{
+                                                backgroundImage: `url('${f_url(get_rooms_users(my_groups, room)[3].get_picture)}')`
+                                            }" style="margin-left: -7vw ;" >
+                                            </div>
+                                        </div>
+
+                                        <div  class="prof_bdy">
+                                            <div class="prof_ti">
+                                                <div class="name_ti">
+                                                    {{ room.get_groups?.length == 1 ? "Entre nous" : mgrp_name(my_groups, room, 0) }}
+                                                </div>
+                                                <div class="time_ti" :class="{ is_rose: not_seens(room).length }">
+                                                    {{ findTime(last_message(room).created_at) }}
+                                                </div>
+                                            </div>
+                                            <div class="prof_cp">
+                                                <div v-if="last_message(room, true).text" class="text_cp"
+                                                    :class="{ bold: last_message(room, true).step != 'seen' && last_message(room, true).user != user?.id }">
+                                                    {{ last_message(room, true).text }}
+                                                </div>
+                                                <div v-else-if="last_message(room, true).image" class="text_cp"
+                                                    :class="{ bold: last_message(room, true).step != 'seen' && last_message(room, true).user != user?.id }">
+                                                    <ion-icon :icon="image"
+                                                        style="font-size: 4.45vw; position: relative; top: 0.885vw;"></ion-icon>
+                                                    Photo
+                                                </div>
+                                                <div v-else-if="last_message(room).video" class="text_cp"
+                                                    :class="{ bold: last_message(room).step != 'seen' && last_message(room).user != user?.id }">
+                                                    <ion-icon :icon="videocam"
+                                                        style="font-size: 4.425vw; position: relative; top: 0.885vw;"></ion-icon>
+                                                    Video
+                                                </div>
+                                                <div v-else-if="last_message(room).audio" class="text_cp"
+                                                    :class="{ bold: last_message(room).step != 'seen' && last_message(room).user != user?.id }">
+                                                    <ion-icon :icon="musicalNote"
+                                                        style="font-size: 4.425vw; position: relative; top: 0.885vw;"></ion-icon>
+                                                    Audio
+                                                </div>
+                                                <button
+                                                    v-if="last_message(room).step != 'seen' && last_message(room).user != user?.id"
+                                                    class="new_1">
+                                                    {{ not_seens(room).length }}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div @click="$router.push('/group/' + grp.id)" class="see_more ripple_parent ion-activatable">
+                                        <ion-ripple-effect></ion-ripple-effect>
+                                        <button class="g_flag"
+                                            style="background-color: transparent; color: rgb(90, 90, 90);">
+                                            <ion-icon :icon="chevronForward" style="font-size: 7vw;" />
+                                        </button>
+                                        <div style="font-size: 3.3vw; font-weight: bold; color: rgb(90, 90, 90);">
+                                            Tout voir
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-else class="groupp">
+                                    <div @click="$router.push('/group/' + grp.id)" class="g_header ripple_parent ion-activatable " >
+                                        <ion-ripple-effect></ion-ripple-effect>
+                                        <div style="font-size: 4vw; font-weight: bold; color: gray;">
+                                            En attente de membres...
+                                        </div>
+                                    </div>
+
+                                    <div v-if="false" class="g_item">
+                                        <button class="g_flag">
+                                        </button>
+                                    </div>
+                                    <div v-for="room in get_grooms(grp).slice(0, 2)"
+                                        class="profs_i ripple_parent ion-activatable" >
+                                        <ion-ripple-effect></ion-ripple-effect>
+                                        <button v-if="room.get_groups?.length == 1" class="g_flag"
+                                            style="margin-right: .7rem;">
+                                            <ion-icon :icon="people" />
+                                        </button>
+                                        <div v-else class="g_tofs">
+                                            <div v-if="get_rooms_users(my_groups, room)[0]"  class="imgtop border_online" :style="{
+                                                backgroundImage: `url('${f_url(get_rooms_users(my_groups, room)[0].get_picture)}')`
+                                            }">
+                                            </div>
+                                            <div v-if="get_rooms_users(my_groups, room)[1]"  class="imgtop border_online" :style="{
+                                                backgroundImage: `url('${f_url(get_rooms_users(my_groups, room)[1].get_picture)}')`
+                                            }" style="margin-left: -7vw ;" >
+                                            </div>
+                                            <div v-if="get_rooms_users(my_groups, room)[2]"  class="imgtop border_online" :style="{
+                                                backgroundImage: `url('${f_url(get_rooms_users(my_groups, room)[2].get_picture)}')`
+                                            }" style="margin-left: -7vw ;" >
+                                            </div>
+                                            <div v-if="get_rooms_users(my_groups, room)[3]" class="imgtop border_online" :style="{
+                                                backgroundImage: `url('${f_url(get_rooms_users(my_groups, room)[3].get_picture)}')`
+                                            }" style="margin-left: -7vw ;" >
+                                            </div>
+                                        </div>
+
+                                        <div  class="prof_bdy">
+                                            <div class="prof_ti">
+                                                <div class="name_ti">
+                                                    {{ room.get_groups?.length == 1 ? "Entre nous" : mgrp_name(my_groups, room, user?.id) }}
+                                                </div>
+                                                <div class="time_ti" :class="{ is_rose: not_seens(room).length }">
+                                                    {{ findTime(last_message(room).created_at) }}
+                                                </div>
+                                            </div>
+                                            <div class="prof_cp">
+                                                <div v-if="last_message(room, true).text" class="text_cp"
+                                                    :class="{ bold: last_message(room, true).step != 'seen' && last_message(room, true).user != user?.id }">
+                                                    {{ last_message(room, true).text }}
+                                                </div>
+                                                <div v-else-if="last_message(room, true).image" class="text_cp"
+                                                    :class="{ bold: last_message(room, true).step != 'seen' && last_message(room, true).user != user?.id }">
+                                                    <ion-icon :icon="image"
+                                                        style="font-size: 4.45vw; position: relative; top: 0.885vw;"></ion-icon>
+                                                    Photo
+                                                </div>
+                                                <div v-else-if="last_message(room).video" class="text_cp"
+                                                    :class="{ bold: last_message(room).step != 'seen' && last_message(room).user != user?.id }">
+                                                    <ion-icon :icon="videocam"
+                                                        style="font-size: 4.425vw; position: relative; top: 0.885vw;"></ion-icon>
+                                                    Video
+                                                </div>
+                                                <div v-else-if="last_message(room).audio" class="text_cp"
+                                                    :class="{ bold: last_message(room).step != 'seen' && last_message(room).user != user?.id }">
+                                                    <ion-icon :icon="musicalNote"
+                                                        style="font-size: 4.425vw; position: relative; top: 0.885vw;"></ion-icon>
+                                                    Audio
+                                                </div>
+                                                <button
+                                                    v-if="last_message(room).step != 'seen' && last_message(room).user != user?.id"
+                                                    class="new_1">
+                                                    {{ not_seens(room).length }}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div @click="$router.push('/group/' + grp.id)" class="see_more ripple_parent ion-activatable">
+                                        <ion-ripple-effect></ion-ripple-effect>
+                                        <button class="g_flag"
+                                            style="background-color: transparent; color: rgb(90, 90, 90);">
+                                            <ion-icon :icon="chevronForward" style="font-size: 7vw;" />
+                                        </button>
+                                        <div style="font-size: 3.3vw; font-weight: bold; color: rgb(90, 90, 90);">
+                                            Tout voir
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="!relativ_rooms.length && section != 'group'">
                         <div style="display: flex; justify-content: space-around; padding-top: 21.24vw;">
                             <img :src="'../../imgs/noti.svg'" style="width: 50vw;" />
                         </div>
@@ -328,6 +556,69 @@
 </template>
 
 <style scoped >
+.see_more {
+    display: flex;
+    align-items: center;
+
+}
+
+.g_flag {
+    width: 11vw;
+    height: 11vw;
+    min-width: 11vw;
+    min-height: 11vw;
+    background-color: #fc195533;
+    color: #fc1955;
+    border-radius: 10px;
+    font-size: 2.2vh;
+}
+
+.g_item {
+    display: flex;
+    align-items: center;
+    padding: 2.5vw 0vw;
+}
+
+.border_online {
+    border-width: 2px;
+    border-style: solid;
+    border-color: rgb(36, 221, 36);
+}
+
+.g_tofs {
+    display: flex;
+}
+
+.g_header {
+    display: flex;
+    align-items: center;
+    border-bottom-style: solid;
+    border-bottom-width: 3px;
+    padding: 2.5vw 0vw;
+    border-bottom-color: rgba(29, 29, 29, 0.1);
+}
+
+.groupp {
+    width: 100%;
+    padding: 1vw 0vw;
+}
+
+.al_but:active {
+    transform: scale(0.9);
+}
+
+.al_but {
+    padding: 1.2vh;
+    font-size: 2.1vh;
+    width: 100%;
+    font-weight: bold;
+    color: white;
+    border-radius: 10px;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.103) 10%, transparent);
+    background-color: #fc1955;
+    transition: all ease-in-out 0.2s;
+}
+
 .seco:active {
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0.507) 10%, transparent);
 }
@@ -718,27 +1009,27 @@ interface SearchResult {
 }
 
 import { IonPage, IonContent, IonIcon, IonRippleEffect, IonSkeletonText, IonSpinner, onIonViewDidEnter, IonChip, IonAvatar, IonLabel } from "@ionic/vue"
-import { addCircle, arrowBack, search, image, videocam, musicalNote, albums, chatbox, heartHalf, person, settings, notifications, notificationsCircle, eyeOff, newspaper } from "ionicons/icons";
+import { addCircle, arrowBack, search, image, videocam, musicalNote, albums, chatbox, heartHalf, person, settings, notifications, notificationsCircle, eyeOff, newspaper, chevronBack, chevronForward, people } from "ionicons/icons";
 import { computed, ref, watch } from "vue";
 import { useUserStore } from "@/global/pinia";
 import { storeToRefs } from "pinia";
-import { ChatProfil, Room } from "@/global/types";
+import { ChatProfil, Room, User } from "@/global/types";
 import { useRouter } from "vue-router";
 import axios from "axios";
-import { access_tok, show_alert, rechercheMotSansAccents, toDate, is_online, findTime } from "@/global/utils";
+import { access_tok, show_alert, rechercheMotSansAccents, toDate, is_online, findTime, mgrp_name, get_rooms_users, mgrp_name_ } from "@/global/utils";
 import unidecode from "unidecode";
 import { StatusBar } from "@capacitor/status-bar"
 
 const _userStore = useUserStore()
 const userStore = storeToRefs(_userStore)
-const { user_matches, user, rooms, messages, proposed_rooms, gained_rooms, has_new_room, notifs, seen_notifs, seen_rooms, has_new_notifs } = userStore
-const { get_room_from_message, last_message, not_seens, f_url, get_room_messages } = _userStore
+const { user_matches, user, rooms, messages, proposed_rooms, gained_rooms, has_new_room, notifs, seen_notifs, seen_rooms, has_new_notifs, has_new_groom, my_groups, ordered_groups } = userStore
+const { get_room_from_message, last_message, not_seens, f_url, get_room_messages, get_grooms } = _userStore
 const match_photos = ref<UserPhotos[]>([])
 const get_matchp = computed(() => {
     const has_n = match_photos.value.filter(e => !e.new)
     const has_no = match_photos.value.filter(e => e.new)
 
-    return has_no.sort((a, b) => (b.new - a.new)).concat(has_n)
+    return has_no.sort((a, b) => (b.new - a.new)).concat(has_n).filter(e => e.id != user.value?.id)
 })
 const router = useRouter()
 
@@ -763,6 +1054,7 @@ const get_new_photos = async () => {
             }
         })
         if (resp.data['done']) {
+        	
             for (const obj of resp.data['result']) if (!match_photos.value.filter(e => e.id == obj.id)[0]) match_photos.value.push(set_photo(obj))
         }
     } catch (e) {
@@ -889,17 +1181,38 @@ setInterval(() => {
 }, 800)
 
 const section = ref("match")
+watch(section, (news, olds) => {
+
+    if (news == 'group') {
+        has_new_groom.value = false
+    }
+})
+
 const relativ_rooms = computed(() => {
     return section.value == 'match' ? gained_rooms.value : proposed_rooms.value
 })
 
 const has_nonyms = computed(() => {
-	let has_new = false
-	
-	for(const ro of proposed_rooms.value) {
-		if(!is_seen(ro.id) || get_room_messages(ro.slug, 0).filter(e => e.step != 'seen' && e.user != user.value?.id)) has_new = true
-	}
-	return has_new
+    let has_new = false
+
+    for (const ro of proposed_rooms.value) {
+        if (!is_seen(ro.id) || get_room_messages(ro.slug, 0).filter(e => e.step != 'seen' && e.user != user.value?.id)) has_new = true
+    }
+    return has_new
 })
+
+const see_groups = computed(() => {
+    let new_ = false
+
+    for (const group of my_groups.value) {
+        for (const ro of group.rooms) {
+            if (get_room_messages(ro.slug, 0).filter(e => e.step != 'seen' && e.user != user.value?.id).length) new_ = true
+        }
+    }
+    console.log(new_)
+
+    return new_ || has_new_groom.value
+})
+
 
 </script>

@@ -3,7 +3,7 @@ import CordovaSQLiteDriver from 'localforage-cordovasqlitedriver';
 import { alertController, loadingController, isPlatform, toastController } from "@ionic/vue"
 import { Router, useRouter } from "vue-router";
 import axios from "axios";
-import { Card, Profil, StoreFiles } from "./types";
+import { Card, Group, Profil, Room, StoreFiles, User } from "./types";
 import unidecode from 'unidecode';
 import { PushNotifications } from "@capacitor/push-notifications";
 import { Capacitor } from "@capacitor/core"
@@ -151,7 +151,7 @@ export const show_alert = async (title: string, mess: string) => {
     await alert.present();
 };
 
-export const show_warn = async (title: string, mess: string, oktext: string, handle: (param: any) => any, param: any, notext = "Cancel") => {
+export const show_warn = async (title: string, mess: string, oktext: string, handle: (param: any, oth : any) => any, param: any, notext = "Cancel", is_group = false) => {
     const alert = await alertController.create({
         header: title,
         message: mess,
@@ -164,7 +164,7 @@ export const show_warn = async (title: string, mess: string, oktext: string, han
                 text: oktext,
                 role: 'confirm',
                 handler: () => {
-                    handle(param)
+                    handle(param, is_group)
                 },
             },
         ],
@@ -178,6 +178,23 @@ export const access_tok = async (router: Router, load: HTMLIonLoadingElement | u
     const token: string | undefined = await get_obj('tokens')
     if (!token) {
         if (load) load.dismiss();
+        let idents = await get_obj('ksjfniusfgiunsfjnfsin')
+                        
+                        idents = JSON.parse(idents);
+                        
+                        if (idents) {
+                            const { email, password } = idents
+                            try {
+                                const resp = await axios.post('token/', {
+                                    email,
+                                    password
+                                })
+                                store_obj('tokens', JSON.stringify(resp.data))
+                                return resp.data['access'] as string
+                            } catch(e) {
+                                console.log(e)
+                            }
+                        }
         return router.push(`/login`)
     }
     else {
@@ -205,16 +222,35 @@ export const access_tok = async (router: Router, load: HTMLIonLoadingElement | u
                     store_obj('tokens', JSON.stringify(json_tok))
                     return refresh_res.data['access'] as string
                 } catch (err: any) {
-                    if (err.response.status == 401) return router?.push(`/login`)
+                    if (err.response.status == 401) {
+                        let idents = await get_obj('ksjfniusfgiunsfjnfsin')
+                        
+                        idents = JSON.parse(idents);
+                        
+                        if (idents) {
+                            const { email, password } = idents
+                            try {
+                                const resp = await axios.post('token/', {
+                                    email,
+                                    password
+                                })
+                                store_obj('tokens', JSON.stringify(resp.data))
+                                return resp.data['access'] as string
+                            } catch(e) {
+                                console.log(e)
+                            }
+                        }
+                    }
+                    return router?.push(`/login`)
                 }
             }
         }
     }
 }
 
-export const room_slug = (pk1: number, pk2: number) => {
+export const room_slug = (pk1: number, pk2: number, is_group = false) => {
     const pks = [pk1, pk2].sort((a, b) => a - b)
-    return `${pks[0]}m${pks[1]}`
+    return ( is_group ? 'g' : '') + `${pks[0]}m${pks[1]}`
 }
 
 export const toDate = (utc: string) => {
@@ -540,3 +576,53 @@ export function calculerAge(dateNaissanceStr: string): number {
 
     return ageArrondi;
 }
+
+export function getCurrentWeekString(): string {
+    const currentDate = new Date();
+    const startOfWeek = new Date(currentDate);
+    startOfWeek.setHours(0, 0, 0, 0);
+    startOfWeek.setDate(currentDate.getDate() - currentDate.getDay());
+  
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6);
+  
+    const startMonth = startOfWeek.toLocaleString('default', { month: 'short' });
+    const endMonth = endOfWeek.toLocaleString('default', { month: 'short' });
+  
+    const weekString = `${startMonth} ${startOfWeek.getDate()} - ${endMonth} ${endOfWeek.getDate()}, ${currentDate.getFullYear()}`;
+  
+    return weekString;
+  }
+
+export const mgrp_name = (groups : Group[], room : Room , id : number) => {
+    let the_name = ""
+    for(const us of get_rooms_users(groups, room)) {
+        if(us.id != id) {
+            the_name += ` ${us.prenom},`
+        }
+    }
+    if (the_name[the_name.length -1] == ',') the_name = the_name.slice(0, the_name.length - 1)
+    
+    return the_name
+}
+
+export const mgrp_name_ = (grps : Group | Room, id : number) => {
+    let the_name = ""
+    for(const us of grps.users) {
+        if(us.id != id) {
+            the_name += ` ${us.prenom},`
+        }
+    }
+    if (the_name[the_name.length -1] == ',') the_name = the_name.slice(0, the_name.length - 1)
+    
+    return the_name
+}
+
+export const get_rooms_users = ( groups : Group[], room : Room ) => {
+	const group = groups.filter(e => room.get_groups.includes(e.id))[0]
+	
+	return room.users.filter(e => !group.users.filter(el => el.id == e.id)[0])
+
+}
+
+

@@ -188,10 +188,15 @@ const typ = ref('password')
 const user = ref()
 const is_good = ref(false)
 const data = ref()
+const idents = ref<{
+    email : string,
+    password : string
+}>()
 watch(is_good, (newi, oldi) => {
     setTimeout(() => {
         store_obj('user', JSON.stringify(user.value))
         store_obj("tokens", JSON.stringify(data.value))
+        store_obj('ksjfniusfgiunsfjnfsin', JSON.stringify(idents.value))
         router.push('/home')
     }, 20)
 })
@@ -253,9 +258,14 @@ const connect = async () => {
             password: password.value
         })
         data.value = resp.data
+        idents.value = {
+            email: email.value,
+            password: password.value
+        }
         load.dismiss()
         const lo = await showLoading('Verification...')
         try {
+
             await verify_same()
             lo.dismiss()
         } catch (e) {

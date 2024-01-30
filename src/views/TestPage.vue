@@ -1,7 +1,7 @@
 <template>
     <ion-page>
         <ion-content>
-            <invite-comp :is-open="mOpen"></invite-comp>
+            <mood-comp :is-open="true" ></mood-comp>
         </ion-content>
     </ion-page>
 </template>
@@ -9,12 +9,14 @@
 <script lang="ts" setup >
 import ActivAbon from "@/components/ActivAbon.vue";
 import InviteComp from "@/components/InviteComp.vue";
+import MoodComp from "@/components/MoodComp.vue";
 import MoreMessage from "@/components/MoreMessage.vue";
 import { access_tok } from "@/global/utils";
 import { IonPage, IonContent } from "@ionic/vue"
 import axios from "axios";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+
 
 const mOpen = ref(false)
 

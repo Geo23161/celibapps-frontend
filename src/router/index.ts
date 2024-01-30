@@ -60,6 +60,14 @@ const routes: Array<RouteRecordRaw> = [
     component : () => import('@/views/RoomPage.vue')
   },
   {
+    path : '/groom/:id',
+    component : () => import('@/views/RoomGroPage.vue')
+  },
+  {
+    path : '/gprofil/:id',
+    component : () => import('@/views/GProfilPage.vue')
+  },
+  {
     path : '/nroom/:id',
     component : () => import('@/views/RoomNoPage.vue')
   },
@@ -92,8 +100,16 @@ const routes: Array<RouteRecordRaw> = [
     component : () => import('@/views/RegisterPage.vue')
   },
   {
+    path : '/group/:id',
+    component : () => import('@/views/GroupPage.vue')
+  },
+  {
     path: '/af/:id',
     component: () => import('@/views/AfPage.vue')
+  },
+  {
+    path: '/quiz-builder',
+    component: () => import('@/views/QuizBuilder.vue')
   },
   {
     path: '/tabs/',
