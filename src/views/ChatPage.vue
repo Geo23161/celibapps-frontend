@@ -1026,8 +1026,8 @@ const { user_matches, user, rooms, messages, proposed_rooms, gained_rooms, has_n
 const { get_room_from_message, last_message, not_seens, f_url, get_room_messages, get_grooms } = _userStore
 const match_photos = ref<UserPhotos[]>([])
 const get_matchp = computed(() => {
-    const has_n = match_photos.value.filter(e => !e.new)
-    const has_no = match_photos.value.filter(e => e.new)
+    const has_n = match_photos.value.filter(e => !e.new).filter(e => !!e.user.get_picture )
+    const has_no = match_photos.value.filter(e => e.new).filter(e => !!e.user.get_picture )
 
     return has_no.sort((a, b) => (b.new - a.new)).concat(has_n).filter(e => e.id != user.value?.id)
 })
